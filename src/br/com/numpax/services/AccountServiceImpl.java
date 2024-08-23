@@ -45,6 +45,11 @@ public class AccountServiceImpl implements AccountService{
         return accountRepository.findByUser(user);
     }
 
+    @Override
+    public List<Account> getAllAccounts() {
+        return accountRepository.findAll();
+    }
+
     public void deposit(String id, BigDecimal amount){
         Account account = getAccountById(id);
         account.setBalance(account.getBalance().add(amount));
@@ -63,4 +68,11 @@ public class AccountServiceImpl implements AccountService{
         withdraw(fromAccountId, amount);
         deposit(toAccountId, amount);
     }
+
+    public BigDecimal calculateTotalFunds(){
+        List<Account> accounts = getAllAccounts();
+        return accounts.stream().map(Account::getBalance).reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    
 }
