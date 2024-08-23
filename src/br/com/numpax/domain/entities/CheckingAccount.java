@@ -12,4 +12,15 @@ public class CheckingAccount extends RegularAccount {
         this.accountNumber = accountNumber;
     }
 
+    public String getBankName() { return bankName; }
+
+    public void setBankName(String bankName) { this.bankName = bankName; }
+
+    public String getAgency() { return agency; }
+
+    public void setAgency(String agency) { this.agency = agency; }
+
+    public String getAccountNumber() { return accountNumber; }
+
+    public void setAccountNumber(String accountNumber) { this.accountNumber = accountNumber; }
 }

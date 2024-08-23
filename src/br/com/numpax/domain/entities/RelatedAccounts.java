@@ -12,4 +12,19 @@ public class RelatedAccounts extends Account {
         this.totalAccounts = totalAccounts;
     }
 
+    public Double getTotalBalance() {
+        return totalBalance;
+    }
+
+    public Account[] getRelatedAccounts() {
+        return relatedAccounts;
+    }
+
+    public void setRelatedAccounts(Account[] relatedAccounts) {
+        this.relatedAccounts = relatedAccounts;
+    }
+
+    public Integer getTotalAccounts() {
+        return totalAccounts;
+    }
 }
