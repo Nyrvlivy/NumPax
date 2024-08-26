@@ -12,4 +12,5 @@ public interface AccountService {
     void deleteAccount(String id);
     Account getAccountById(String id);
     List<Account> getAccountsByUser(User user);
+    List<Account> getAllAccounts();
 }
