@@ -44,35 +44,4 @@ public class AccountServiceImpl implements AccountService{
     public List<Account> getAccountsByUser(User user) {
         return accountRepository.findByUser(user);
     }
-
-    @Override
-    public List<Account> getAllAccounts() {
-        return accountRepository.findAll();
-    }
-
-    public void deposit(String id, BigDecimal amount){
-        Account account = getAccountById(id);
-        account.setBalance(account.getBalance().add(amount));
-        accountRepository.save(account);
-    }
-    
-    public void withdraw(String id, BigDecimal amount){
-        Account account =  getAccountById(id);
-        if(account.getBalance().compareTo(amount) >= 0){
-            account.setBalance(account.getBalance().subtract(amount));
-            accountRepository.save(account);
-        }
-    }
-
-    public void tranferFunds(String fromAccountId, String toAccountId, BigDecimal amount){
-        withdraw(fromAccountId, amount);
-        deposit(toAccountId, amount);
-    }
-
-    public BigDecimal calculateTotalFunds(){
-        List<Account> accounts = getAllAccounts();
-        return accounts.stream().map(Account::getBalance).reduce(BigDecimal.ZERO, BigDecimal::add);
-    }
-
-    
 }
