@@ -9,39 +9,39 @@ import br.com.numpax.domain.enums.NatureOfTransaction;
 import br.com.numpax.domain.enums.RepeatableType;
 
 public class Transaction {
-    private final String id;                          // Identificador da transação
-    private final String code;                              // Código da transação
-    private String name;                              // Nome da transação
-    private String description;                       // Descrição da transação
-    private BigDecimal amount;                        // Valor da transação 
-    private Category category;                        // Categoria associada
-    private Account account;                          // Conta associada
-    private NatureOfTransaction natureOfTransaction;  // Natureza da transação -> Receita, Despesa ou Transferência (junçao de Receita e Despesa)
-    private String receiver;                          // Recebedor da transação
-    private String sender;                            // Remetente da transação
-    private LocalDate transactionDate;                // Data da transação (Agendada ou não)
-    private boolean isRepeatable;                     // A transação é repetível?
-    private RepeatableType repeatableType;            // Tipo de repetição (Nunca, Diária, Semanal, Mensal, Anual)
-    private String note;                              // Nota da transação
-    private boolean isActive;                         // Ativa ou Inativa
-    private LocalDateTime createdAt;                  // Data de criação
-    private LocalDateTime updatedAt;                  // Data de atualização
-    private boolean isEffective;                      // Efetivado ou não
+    private final String id;                         
+    private final String code;
+    private boolean isEffective;                      
+    private String name;                              
+    private String description;                       
+    private BigDecimal amount;                        
+    private Category category;                        
+    private RegularAccount regularAccount;            
+    private NatureOfTransaction natureOfTransaction;  
+    private String receiver;                          
+    private String sender;                            
+    private LocalDate transactionDate;                
+    private boolean isRepeatable;                     
+    private RepeatableType repeatableType;            
+    private String note;                              
+    private boolean isActive;                         
+    private final LocalDateTime createdAt;            
+    private LocalDateTime updatedAt;                  
 
-    public Transaction(String code, String name, String description, BigDecimal amount, Category category, Account account, NatureOfTransaction natureOfTransaction, String receiver, String sender, LocalDate transactionDate, RepeatableType repeatableType, String note) {
+    public Transaction(String code, String name, String description, BigDecimal amount, Category category, RegularAccount regularAccount, NatureOfTransaction natureOfTransaction, String receiver, String sender, LocalDate transactionDate, RepeatableType repeatableType, String note) {
         this.id = UUID.randomUUID().toString();
         this.code = code;
         this.name = name;
         this.description = description;
         this.amount = amount;
         this.category = category;
-        this.account = account;
-        this.natureOfTransaction = natureOfTransaction; // Automático dependendo do acesso no app
+        this.regularAccount = regularAccount;
+        this.natureOfTransaction = natureOfTransaction; 
         this.receiver = receiver;
         this.sender = sender;
         this.transactionDate = transactionDate;
-        this.isRepeatable = false; // está sendo inicializado como false, independentemente do valor passado. Se a intenção for permitir uma transação repetível, o valor deveria ser definido com base no argumento ou na lógica interna. Oque torna uma transação repetitivel ou não?
-        this.repeatableType = repeatableType; // Padrão Never
+        this.isRepeatable = false; 
+        this.repeatableType = repeatableType; 
         this.note = note;
         this.isActive = true;
         this.createdAt = LocalDateTime.now();
@@ -93,12 +93,12 @@ public class Transaction {
         this.updatedAt = LocalDateTime.now();
     }
 
-    public Account getAccount() {
-        return account;
+    public RegularAccount getAccount() {
+        return regularAccount;
     }
 
-    public void setAccount(Account account) {
-        this.account = account;
+    public void setAccount(RegularAccount regularAccount) {
+        this.regularAccount = regularAccount;
         this.updatedAt = LocalDateTime.now();
     }
 
@@ -201,7 +201,11 @@ public class Transaction {
 
     public void apply() {
         if (!isEffective) {
-            account.withdraw(amount); // Exemplo: Saque do valor da conta
+            if (natureOfTransaction == NatureOfTransaction.EXPENSE) {
+                regularAccount.withdraw(amount.doubleValue());
+            } else if (natureOfTransaction == NatureOfTransaction.INCOME) {
+                regularAccount.deposit(amount.doubleValue());
+            }
             isEffective = true;
             updatedAt = LocalDateTime.now();
         } else {

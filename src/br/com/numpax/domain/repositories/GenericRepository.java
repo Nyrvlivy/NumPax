@@ -8,4 +8,5 @@ public interface GenericRepository <T, ID> {
     List<T> findAll();
     T save(T entity);
     void deleteById(ID id);
+    boolean existsById(ID id);
 }

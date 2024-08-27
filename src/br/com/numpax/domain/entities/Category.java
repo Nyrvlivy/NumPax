@@ -1,20 +1,20 @@
 package br.com.numpax.domain.entities;
 
-import br.com.numpax.domain.enums.CategoryType;
-
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+import br.com.numpax.domain.enums.CategoryType;
+
 public class Category {
-    private final String id;                 // Identificador único
-    private String name;                     // Nome da categoria
-    private String description;              // Descrição da categoria
-    private String icon;                     // Ícone da categoria
-    private CategoryType categoryType;       // Tipo da categoria (Contas, Transações, Pessoal)
-    private boolean isActive;                // Ativa ou Inativa
-    private boolean isDefault;               // Padrão (criadas por nós) ou não (criadas pelo usuário)
-    private final LocalDateTime createdAt;   // Data de criação
-    private LocalDateTime updatedAt;         // Data de atualização
+    private final String id;                 
+    private String name;                     
+    private String description;              
+    private String icon;                     
+    private CategoryType categoryType;       
+    private boolean isActive;                
+    private boolean isDefault;               
+    private final LocalDateTime createdAt;   
+    private LocalDateTime updatedAt;         
 
     public Category(String name, String description, String icon, CategoryType categoryType, boolean isDefault) {
         this.id = UUID.randomUUID().toString();
