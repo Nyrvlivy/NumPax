@@ -6,16 +6,16 @@ import java.time.LocalDateTime;
 import br.com.numpax.domain.enums.AccountType;
 
 public class GoalAccount extends RegularAccount{
-    private Double targetValue;         // Valor alvo
-    private Double amountValue;         // Valor acumulado
-    private Double targetTaxRate;       // Juros no valor alvo
-    private Double monthlyTaxRate;      // Juros mensal no valor acumulado
-    private Double monthlyEstimate;     // Estimativa de entrada mensal
-    private Double monthlyAchievement;  // Entrada mensal alvo
-    private Category category;          // Categoria
-    private LocalDate targetDate;       // Data alvo
-    private LocalDate startDate;        // Data de início manual (se o usuário quiser começar antes da data atual)
-    private LocalDate endDate;          // Data de conquista do objetivo
+    private Double targetValue;         
+    private Double amountValue;         
+    private Double targetTaxRate;       
+    private Double monthlyTaxRate;      
+    private Double monthlyEstimate;     
+    private Double monthlyAchievement;  
+    private Category category;          
+    private LocalDate targetDate;       
+    private LocalDate startDate;        
+    private LocalDate endDate;          
 
     public GoalAccount(String name, String description, User user, AccountType accountType, Double targetValue, Double targetTaxRate, Double monthlyTaxRate, Double monthlyEstimate, Double monthlyAchievement, Category category, LocalDate targetDate, LocalDate startDate, LocalDate endDate) {
         super(name, description, user, accountType);

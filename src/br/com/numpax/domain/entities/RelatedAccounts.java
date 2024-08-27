@@ -3,9 +3,9 @@ package br.com.numpax.domain.entities;
 import java.time.LocalDateTime;
 
 public class RelatedAccounts extends Account {
-    private Double totalBalance;          // Saldo total das contas relacionadas
-    private Account[] relatedAccounts;    // Contas relacionadas
-    private Integer totalAccounts;        // Total de contas relacionadas
+    private Double totalBalance;          
+    private Account[] relatedAccounts;    
+    private Integer totalAccounts;        
 
     public RelatedAccounts(String name, String description, User user, Double totalBalance, Account[] relatedAccounts, Integer totalAccounts) {
         super(name, description, user);

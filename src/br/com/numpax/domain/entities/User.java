@@ -15,7 +15,7 @@ public class User {
     private final LocalDateTime createdAt;    
     private LocalDateTime updatedAt;          
 
-    public User(String id, String name, String email, String password, LocalDate birthdate) {
+    public User(String name, String email, String password, LocalDate birthdate) {
         this.id = UUID.randomUUID().toString();
         this.name = name;
         this.email = email;

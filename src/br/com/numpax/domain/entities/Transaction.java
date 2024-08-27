@@ -36,12 +36,12 @@ public class Transaction {
         this.amount = amount;
         this.category = category;
         this.regularAccount = regularAccount;
-        this.natureOfTransaction = natureOfTransaction; // Automático dependendo do acesso no app
+        this.natureOfTransaction = natureOfTransaction; 
         this.receiver = receiver;
         this.sender = sender;
         this.transactionDate = transactionDate;
-        this.isRepeatable = false; // está sendo inicializado como false, independentemente do valor passado. Se a intenção for permitir uma transação repetível, o valor deveria ser definido com base no argumento ou na lógica interna. Oque torna uma transação repetitivel ou não?
-        this.repeatableType = repeatableType; // Padrão Never
+        this.isRepeatable = false; 
+        this.repeatableType = repeatableType; 
         this.note = note;
         this.isActive = true;
         this.createdAt = LocalDateTime.now();
