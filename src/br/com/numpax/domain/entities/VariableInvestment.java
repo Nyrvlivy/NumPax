@@ -9,18 +9,17 @@ import br.com.numpax.domain.enums.RepeatableType;
 import br.com.numpax.domain.enums.VariableInvestmentType;
 
 public class VariableInvestment extends Transaction {
-    private VariableInvestmentType variableInvestmentType;        // Tipo de investimento variável
-    private String broker;                                        // Corretora
-    private LocalDate purchaseDate;                               // Data de compra
-    private LocalDate expirationDate;                             // Data de vencimento
-    private final String assetCode;                               // Código do ativo
-    private BigDecimal quantity;                                  // Quantidade de ativos
-    private BigDecimal unitPrice;                                 // Preço unitário do ativo
-    private LocalDate saleDate;                                   // Data de venda (se houver)
-    private BigDecimal salePrice;                                 // Preço de venda (se houver)
-    private BigDecimal[] brokerFees;                              // Taxas da corretora
-    private BigDecimal[] otherFees;                               // Outras taxas
-    private LocalDateTime updatedAt;                              // Data de atualização
+    private VariableInvestmentType variableInvestmentType;        
+    private String broker;                                        
+    private LocalDate purchaseDate;                               
+    private LocalDate expirationDate;                             
+    private final String assetCode;                               
+    private BigDecimal quantity;                                  
+    private BigDecimal unitPrice;                                 
+    private LocalDate saleDate;                                   
+    private BigDecimal salePrice;                                 
+    private BigDecimal[] brokerFees;                              
+    private BigDecimal[] otherFees;                               
 
     public VariableInvestment(String code, String name, String description, BigDecimal amount, Category category, RegularAccount regularAccount, NatureOfTransaction natureOfTransaction, String receiver, String sender, LocalDate transactionDate, boolean isRepeatable, RepeatableType repeatableType, String note, VariableInvestmentType variableInvestmentType, LocalDate expirationDate, String broker, LocalDate purchaseDate, String assetCode, BigDecimal quantity, BigDecimal unitPrice, LocalDate saleDate, BigDecimal salePrice, BigDecimal[] brokerFees, BigDecimal[] otherFees) {
         super(code, name, description, amount, category, regularAccount, natureOfTransaction, receiver, sender, transactionDate, repeatableType, note);
@@ -35,7 +34,6 @@ public class VariableInvestment extends Transaction {
         this.salePrice = salePrice;
         this.brokerFees = brokerFees;
         this.otherFees = otherFees;
-        this.updatedAt = LocalDateTime.now();
     }
 
     // Getters e Setters
@@ -45,7 +43,8 @@ public class VariableInvestment extends Transaction {
 
     public void setVariableInvestmentType(VariableInvestmentType variableInvestmentType) {
         this.variableInvestmentType = variableInvestmentType;
-        this.updatedAt = LocalDateTime.now();
+        this.setUpdatedAt(LocalDateTime.now());
+
     }
 
     public String getBroker() {
@@ -54,7 +53,7 @@ public class VariableInvestment extends Transaction {
 
     public void setBroker(String broker) {
         this.broker = broker;
-        this.updatedAt = LocalDateTime.now();
+        this.setUpdatedAt(LocalDateTime.now());
     }
 
     public LocalDate getPurchaseDate() {
@@ -75,7 +74,8 @@ public class VariableInvestment extends Transaction {
 
     public void setQuantity(BigDecimal quantity) {
         this.quantity = quantity;
-        this.updatedAt = LocalDateTime.now();
+        this.setUpdatedAt(LocalDateTime.now());
+
     }
 
     public BigDecimal getUnitPrice() {
@@ -84,7 +84,8 @@ public class VariableInvestment extends Transaction {
 
     public void setUnitPrice(BigDecimal unitPrice) {
         this.unitPrice = unitPrice;
-        this.updatedAt = LocalDateTime.now();
+        this.setUpdatedAt(LocalDateTime.now());
+
     }
 
     public LocalDate getSaleDate() {
@@ -93,7 +94,8 @@ public class VariableInvestment extends Transaction {
 
     public void setSaleDate(LocalDate saleDate) {
         this.saleDate = saleDate;
-        this.updatedAt = LocalDateTime.now();
+        this.setUpdatedAt(LocalDateTime.now());
+
     }
 
     public BigDecimal getSalePrice() {
@@ -102,7 +104,7 @@ public class VariableInvestment extends Transaction {
 
     public void setSalePrice(BigDecimal salePrice) {
         this.salePrice = salePrice;
-        this.updatedAt = LocalDateTime.now();
+        this.setUpdatedAt(LocalDateTime.now());
     }
 
     public BigDecimal[] getBrokerFees() {
@@ -111,7 +113,7 @@ public class VariableInvestment extends Transaction {
 
     public void setBrokerFees(BigDecimal[] brokerFees) {
         this.brokerFees = brokerFees;
-        this.updatedAt = LocalDateTime.now();
+        this.setUpdatedAt(LocalDateTime.now());
     }
 
     public BigDecimal[] getOtherFees() {
@@ -120,10 +122,9 @@ public class VariableInvestment extends Transaction {
 
     public void setOtherFees(BigDecimal[] otherFees) {
         this.otherFees = otherFees;
-        this.updatedAt = LocalDateTime.now();
+        this.setUpdatedAt(LocalDateTime.now());
     }
 
-    // Cálculos Dinâmicos
     public BigDecimal getInvestedAmount() {
         return this.quantity.multiply(this.unitPrice);
     }
@@ -139,7 +140,7 @@ public class VariableInvestment extends Transaction {
         return getReceivedAmount().subtract(getInvestedAmount());
     }
 
-    public BigDecimal getTotalFees() { //calcula a soma total de todas as taxas associadas a uma transação de investimento variável. 
+    public BigDecimal getTotalFees() { 
         BigDecimal totalBrokerFees = BigDecimal.ZERO;
         BigDecimal totalOtherFees = BigDecimal.ZERO;
 
@@ -169,7 +170,5 @@ public class VariableInvestment extends Transaction {
     public void setExpirationDate(LocalDate expirationDate) {
         this.expirationDate = expirationDate;
     }
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
+   
 }

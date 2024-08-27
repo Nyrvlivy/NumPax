@@ -1,5 +1,7 @@
 package br.com.numpax.domain.entities;
 
+import java.time.LocalDateTime;
+
 import br.com.numpax.domain.enums.AccountType;
 import br.com.numpax.domain.enums.RiskLevelType;
 
@@ -76,5 +78,6 @@ public class InvestmentAccount extends RegularAccount {
 
     public void setRiskLevelType(RiskLevelType riskLevelType) {
         this.riskLevelType = riskLevelType;
+        this.setUpdatedAt(LocalDateTime.now());
     }
 }

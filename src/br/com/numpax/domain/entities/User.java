@@ -6,14 +6,14 @@ import java.util.UUID;
 
 
 public class User {
-    private final String id;                  // Identificador único
-    private String name;                      // Nome completo
-    private String email;                     // E-mail
-    private String password;                  // Senha
-    private LocalDate birthdate;              // Data de nascimento
-    private boolean isActive;                 // Ativo ou Inativo
-    private final LocalDateTime createdAt;          // Data de criação
-    private LocalDateTime updatedAt;          // Data de atualização
+    private final String id;                  
+    private String name;                      
+    private String email;                     
+    private String password;                  
+    private LocalDate birthdate;              
+    private boolean isActive;                 
+    private final LocalDateTime createdAt;    
+    private LocalDateTime updatedAt;          
 
     public User(String id, String name, String email, String password, LocalDate birthdate) {
         this.id = UUID.randomUUID().toString();

@@ -9,24 +9,24 @@ import br.com.numpax.domain.enums.NatureOfTransaction;
 import br.com.numpax.domain.enums.RepeatableType;
 
 public class Transaction {
-    private final String id;                          // Identificador da transação
-    private final String code;                              // Código da transação
-    private String name;                              // Nome da transação
-    private String description;                       // Descrição da transação
-    private BigDecimal amount;                        // Valor da transação 
-    private Category category;                        // Categoria associada
-    private RegularAccount regularAccount;                          // Conta associada
-    private NatureOfTransaction natureOfTransaction;  // Natureza da transação -> Receita, Despesa ou Transferência (junçao de Receita e Despesa)
-    private String receiver;                          // Recebedor da transação
-    private String sender;                            // Remetente da transação
-    private LocalDate transactionDate;                // Data da transação (Agendada ou não)
-    private boolean isRepeatable;                     // A transação é repetível?
-    private RepeatableType repeatableType;            // Tipo de repetição (Nunca, Diária, Semanal, Mensal, Anual)
-    private String note;                              // Nota da transação
-    private boolean isActive;                         // Ativa ou Inativa
-    private LocalDateTime createdAt;                  // Data de criação
-    private LocalDateTime updatedAt;                  // Data de atualização
-    private boolean isEffective;                      // Efetivado ou não
+    private final String id;                         
+    private final String code;
+    private boolean isEffective;                      
+    private String name;                              
+    private String description;                       
+    private BigDecimal amount;                        
+    private Category category;                        
+    private RegularAccount regularAccount;            
+    private NatureOfTransaction natureOfTransaction;  
+    private String receiver;                          
+    private String sender;                            
+    private LocalDate transactionDate;                
+    private boolean isRepeatable;                     
+    private RepeatableType repeatableType;            
+    private String note;                              
+    private boolean isActive;                         
+    private final LocalDateTime createdAt;            
+    private LocalDateTime updatedAt;                  
 
     public Transaction(String code, String name, String description, BigDecimal amount, Category category, RegularAccount regularAccount, NatureOfTransaction natureOfTransaction, String receiver, String sender, LocalDate transactionDate, RepeatableType repeatableType, String note) {
         this.id = UUID.randomUUID().toString();

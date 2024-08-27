@@ -6,8 +6,7 @@ import java.time.LocalDateTime;
 import br.com.numpax.domain.enums.AccountType;
 
 public class RegularAccount extends Account{
-    private AccountType accountType;    // Tipo de conta -> Corrente, Poupança, Investimento ou Objetivo
-                            // Pode ser um enum: private AccountType accountType;
+    private AccountType accountType;    
 
     public RegularAccount(String name, String description, User user, AccountType accountType) {
         super(name, description, user);
@@ -20,6 +19,7 @@ public class RegularAccount extends Account{
 
     public void setType(AccountType accountType) {
         this.accountType = accountType;
+        this.setUpdatedAt(LocalDateTime.now());
     }
 
     public void withdraw(double amount) {

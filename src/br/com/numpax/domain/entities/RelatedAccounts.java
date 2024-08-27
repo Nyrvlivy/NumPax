@@ -1,5 +1,7 @@
 package br.com.numpax.domain.entities;
 
+import java.time.LocalDateTime;
+
 public class RelatedAccounts extends Account {
     private Double totalBalance;          // Saldo total das contas relacionadas
     private Account[] relatedAccounts;    // Contas relacionadas
@@ -22,6 +24,7 @@ public class RelatedAccounts extends Account {
 
     public void setRelatedAccounts(Account[] relatedAccounts) {
         this.relatedAccounts = relatedAccounts;
+        this.setUpdatedAt(LocalDateTime.now());
     }
 
     public Integer getTotalAccounts() {
