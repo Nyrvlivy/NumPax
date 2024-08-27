@@ -22,8 +22,8 @@ public class VariableInvestment extends Transaction {
     private BigDecimal[] otherFees;                               // Outras taxas
     private LocalDateTime updatedAt;                              // Data de atualização
 
-    public VariableInvestment(String code, String name, String description, BigDecimal amount, Category category, Account account, NatureOfTransaction natureOfTransaction, String receiver, String sender, LocalDate transactionDate, boolean isRepeatable, RepeatableType repeatableType, String note, VariableInvestmentType variableInvestmentType, LocalDate expirationDate, String broker, LocalDate purchaseDate, String assetCode, BigDecimal quantity, BigDecimal unitPrice, LocalDate saleDate, BigDecimal salePrice, BigDecimal[] brokerFees, BigDecimal[] otherFees) {
-        super(code, name, description, amount, category, account, natureOfTransaction, receiver, sender, transactionDate, repeatableType, note);
+    public VariableInvestment(String code, String name, String description, BigDecimal amount, Category category, RegularAccount regularAccount, NatureOfTransaction natureOfTransaction, String receiver, String sender, LocalDate transactionDate, boolean isRepeatable, RepeatableType repeatableType, String note, VariableInvestmentType variableInvestmentType, LocalDate expirationDate, String broker, LocalDate purchaseDate, String assetCode, BigDecimal quantity, BigDecimal unitPrice, LocalDate saleDate, BigDecimal salePrice, BigDecimal[] brokerFees, BigDecimal[] otherFees) {
+        super(code, name, description, amount, category, regularAccount, natureOfTransaction, receiver, sender, transactionDate, repeatableType, note);
         this.variableInvestmentType = variableInvestmentType;
         this.broker = broker;
         this.purchaseDate = purchaseDate;
