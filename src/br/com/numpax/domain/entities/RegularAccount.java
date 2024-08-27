@@ -30,5 +30,4 @@ public class RegularAccount extends Account{
             throw new IllegalArgumentException("Insufficient balance or invalid amount");
         }
     }
-
 }
