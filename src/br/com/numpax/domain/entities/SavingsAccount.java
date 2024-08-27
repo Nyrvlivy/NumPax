@@ -2,6 +2,8 @@ package br.com.numpax.domain.entities;
 
 import java.time.LocalDateTime;
 
+import br.com.numpax.domain.enums.AccountType;
+
 public class SavingsAccount extends RegularAccount {
     private LocalDateTime nearestDeadline;    // Data de vencimento mais próxima
     private LocalDateTime furthestDeadline;   // Data de vencimento mais distante
@@ -11,8 +13,8 @@ public class SavingsAccount extends RegularAccount {
     private Double totalMaturityAmount;       // Valor total esperado de todos os investimentos
     private Double totalDepositAmount;        // Valor total depositado dos investimentos
 
-    public SavingsAccount(String name, String description, User user, String type, LocalDateTime nearestDeadline, LocalDateTime furthestDeadline, LocalDateTime lastestDeadline, Double averageTaxRate, Double numberOfFixedInvestments, Double totalMaturityAmount, Double totalDepositAmount) {
-        super(name, description, user, type);
+    public SavingsAccount(String name, String description, User user, AccountType accountType, LocalDateTime nearestDeadline, LocalDateTime furthestDeadline, LocalDateTime lastestDeadline, Double averageTaxRate, Double numberOfFixedInvestments, Double totalMaturityAmount, Double totalDepositAmount) {
+        super(name, description, user, accountType);
         this.nearestDeadline = nearestDeadline;
         this.furthestDeadline = furthestDeadline;
         this.lastestDeadline = lastestDeadline;

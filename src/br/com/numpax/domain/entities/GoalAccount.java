@@ -2,6 +2,8 @@ package br.com.numpax.domain.entities;
 
 import java.time.LocalDate;
 
+import br.com.numpax.domain.enums.AccountType;
+
 public class GoalAccount extends RegularAccount{
     private Double targetValue;         // Valor alvo
     private Double amountValue;         // Valor acumulado
@@ -14,8 +16,8 @@ public class GoalAccount extends RegularAccount{
     private LocalDate startDate;        // Data de início manual (se o usuário quiser começar antes da data atual)
     private LocalDate endDate;          // Data de conquista do objetivo
 
-    public GoalAccount(String name, String description, User user, String type, Double targetValue, Double targetTaxRate, Double monthlyTaxRate, Double monthlyEstimate, Double monthlyAchievement, Category category, LocalDate targetDate, LocalDate startDate, LocalDate endDate) {
-        super(name, description, user, type);
+    public GoalAccount(String name, String description, User user, AccountType accountType, Double targetValue, Double targetTaxRate, Double monthlyTaxRate, Double monthlyEstimate, Double monthlyAchievement, Category category, LocalDate targetDate, LocalDate startDate, LocalDate endDate) {
+        super(name, description, user, accountType);
         this.targetValue = targetValue;
         this.amountValue = 0.0;
         this.targetTaxRate = targetTaxRate;

@@ -1,5 +1,6 @@
 package br.com.numpax.domain.entities;
 
+import br.com.numpax.domain.enums.AccountType;
 import br.com.numpax.domain.enums.RiskLevelType;
 
 public class InvestmentAccount extends RegularAccount {
@@ -16,8 +17,8 @@ public class InvestmentAccount extends RegularAccount {
     private RiskLevelType riskLevelType;  // Nível de risco (aqui será a média, então aplicar a lógica com base nos riscos das transações)
     // Enum riskLevel = VERY LOW, LOW, MEDIUM, HIGH, VERY_HIGH ou logica por numeros
 
-    public InvestmentAccount(String name, String description, User user, String type, Double totalInvestedAmount, Double totalProfit, Double totalCurrentAmount, Double totalWithdrawnAmount, Double numberOfWithdrawals, Double numberOfEntries, Double numberOfAssets, Double averagePurchasePrice, Double totalGainLoss, Double totalDividendYield, RiskLevelType riskLevelType) {
-        super(name, description, user, type);
+    public InvestmentAccount(String name, String description, User user, AccountType accountType, Double totalInvestedAmount, Double totalProfit, Double totalCurrentAmount, Double totalWithdrawnAmount, Double numberOfWithdrawals, Double numberOfEntries, Double numberOfAssets, Double averagePurchasePrice, Double totalGainLoss, Double totalDividendYield, RiskLevelType riskLevelType) {
+        super(name, description, user, accountType);
         this.totalInvestedAmount = totalInvestedAmount;
         this.totalProfit = totalProfit;
         this.totalCurrentAmount = totalCurrentAmount;

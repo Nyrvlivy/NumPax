@@ -6,7 +6,7 @@ import java.util.UUID;
 
 public class Account {
     private final String id;
-    private String name;                      // Nome da conta
+    private String name;                      
     private String description;               // Descrição da conta
     private BigDecimal balance;               // Saldo -> começa com 0.0
     private boolean isActive;                 // Ativa ou Inativa
@@ -88,7 +88,9 @@ public class Account {
 
     public void setActive(boolean active) {
         this.isActive = active;
+        this.updatedAt = LocalDateTime.now();
     }
+    
     public void withdraw(BigDecimal amount) {
         if (amount.compareTo(BigDecimal.ZERO) > 0 && this.balance.compareTo(amount) >= 0) {
             this.balance = this.balance.subtract(amount);
@@ -98,7 +100,6 @@ public class Account {
         }
     }
 
-    
 }
 
 
