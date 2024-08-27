@@ -87,4 +87,13 @@ public class User {
         isActive = active;
         this.updatedAt = LocalDateTime.now();
     }
+
+    public void deactivate() {
+        this.isActive = false;
+        this.updatedAt = LocalDateTime.now();
+}
+
+public boolean checkPassword(String inputPassword) {
+    return this.password.equals(inputPassword);
+}
 }

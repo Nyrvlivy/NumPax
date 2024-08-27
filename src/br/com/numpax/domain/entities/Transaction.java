@@ -24,7 +24,7 @@ public class Transaction {
     private RepeatableType repeatableType;            // Tipo de repetição (Nunca, Diária, Semanal, Mensal, Anual)
     private String note;                              // Nota da transação
     private boolean isActive;                         // Ativa ou Inativa
-    private final LocalDateTime createdAt;                  // Data de criação
+    private LocalDateTime createdAt;                  // Data de criação
     private LocalDateTime updatedAt;                  // Data de atualização
     private boolean isEffective;                      // Efetivado ou não
 
@@ -169,9 +169,13 @@ public class Transaction {
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
-
+    
     public LocalDateTime getUpdatedAt() {
         return updatedAt;
+    }
+    
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
     public boolean getIsEffective() { return isEffective; }
@@ -194,4 +198,20 @@ public class Transaction {
         isActive = active;
         this.updatedAt = LocalDateTime.now();
     }
+
+    public void apply() {
+        if (!isEffective) {
+            account.withdraw(amount); // Exemplo: Saque do valor da conta
+            isEffective = true;
+            updatedAt = LocalDateTime.now();
+        } else {
+            throw new IllegalStateException("Transaction has already been applied.");
+        }
+    }
+
+    public boolean isEffective() { return isEffective; }
+
+    public void setEffective(boolean effective) { isEffective = effective; }
 }
+
+
