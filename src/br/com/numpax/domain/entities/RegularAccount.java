@@ -30,4 +30,32 @@ public class RegularAccount extends Account{
             throw new IllegalArgumentException("Insufficient balance or invalid amount");
         }
     }
+
+    public void deposit(double amount) {
+        if (amount > 0) {
+            super.setBalance(super.getBalance().add(BigDecimal.valueOf(amount)));
+            super.setUpdatedAt(LocalDateTime.now());
+        } else {
+            throw new IllegalArgumentException("Deposit amount must be positive");
+        }
+    }
+
+    public void apply(double amount) {
+        BigDecimal bigAmount = BigDecimal.valueOf(amount);
+
+        if (amount < 0) {  // Lógica para saque
+            BigDecimal withdrawAmount = bigAmount.negate();
+            if (withdrawAmount.compareTo(super.getBalance()) <= 0) {
+                super.setBalance(super.getBalance().subtract(withdrawAmount));
+                super.setUpdatedAt(LocalDateTime.now());
+            } else {
+                throw new IllegalArgumentException("Insufficient balance for withdrawal");
+            }
+        } else if (amount > 0) {  // Lógica para depósito
+            super.setBalance(super.getBalance().add(bigAmount));
+            super.setUpdatedAt(LocalDateTime.now());
+        } else {
+            throw new IllegalArgumentException("Amount must be non-zero");
+        }
+    }
 }

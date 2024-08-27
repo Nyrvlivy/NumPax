@@ -15,7 +15,7 @@ public class Transaction {
     private String description;                       // Descrição da transação
     private BigDecimal amount;                        // Valor da transação 
     private Category category;                        // Categoria associada
-    private Account account;                          // Conta associada
+    private RegularAccount regularAccount;                          // Conta associada
     private NatureOfTransaction natureOfTransaction;  // Natureza da transação -> Receita, Despesa ou Transferência (junçao de Receita e Despesa)
     private String receiver;                          // Recebedor da transação
     private String sender;                            // Remetente da transação
@@ -28,14 +28,14 @@ public class Transaction {
     private LocalDateTime updatedAt;                  // Data de atualização
     private boolean isEffective;                      // Efetivado ou não
 
-    public Transaction(String code, String name, String description, BigDecimal amount, Category category, Account account, NatureOfTransaction natureOfTransaction, String receiver, String sender, LocalDate transactionDate, RepeatableType repeatableType, String note) {
+    public Transaction(String code, String name, String description, BigDecimal amount, Category category, RegularAccount regularAccount, NatureOfTransaction natureOfTransaction, String receiver, String sender, LocalDate transactionDate, RepeatableType repeatableType, String note) {
         this.id = UUID.randomUUID().toString();
         this.code = code;
         this.name = name;
         this.description = description;
         this.amount = amount;
         this.category = category;
-        this.account = account;
+        this.regularAccount = regularAccount;
         this.natureOfTransaction = natureOfTransaction; // Automático dependendo do acesso no app
         this.receiver = receiver;
         this.sender = sender;
@@ -93,12 +93,12 @@ public class Transaction {
         this.updatedAt = LocalDateTime.now();
     }
 
-    public Account getAccount() {
-        return account;
+    public RegularAccount getAccount() {
+        return regularAccount;
     }
 
-    public void setAccount(Account account) {
-        this.account = account;
+    public void setAccount(RegularAccount regularAccount) {
+        this.regularAccount = regularAccount;
         this.updatedAt = LocalDateTime.now();
     }
 
@@ -201,7 +201,11 @@ public class Transaction {
 
     public void apply() {
         if (!isEffective) {
-            account.withdraw(amount); // Exemplo: Saque do valor da conta
+            if (natureOfTransaction == NatureOfTransaction.EXPENSE) {
+                regularAccount.withdraw(amount.doubleValue());
+            } else if (natureOfTransaction == NatureOfTransaction.INCOME) {
+                regularAccount.deposit(amount.doubleValue());
+            }
             isEffective = true;
             updatedAt = LocalDateTime.now();
         } else {

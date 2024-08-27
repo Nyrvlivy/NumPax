@@ -90,16 +90,6 @@ public class Account {
         this.isActive = active;
         this.updatedAt = LocalDateTime.now();
     }
-    
-    public void withdraw(BigDecimal amount) {
-        if (amount.compareTo(BigDecimal.ZERO) > 0 && this.balance.compareTo(amount) >= 0) {
-            this.balance = this.balance.subtract(amount);
-            this.updatedAt = LocalDateTime.now();
-        } else {
-            throw new IllegalArgumentException("Insufficient balance or invalid amount.");
-        }
-    }
-
 }
 
 
