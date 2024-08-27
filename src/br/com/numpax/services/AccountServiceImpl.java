@@ -32,7 +32,7 @@ public class AccountServiceImpl implements AccountService{
 
     @Override
     public void deleteAccount(String id) {
-        accountRepository.delete(id);
+        accountRepository.deleteById(id);
     }
 
     @Override
