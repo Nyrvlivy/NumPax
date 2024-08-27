@@ -10,7 +10,7 @@ public class Account {
     private String description;               // Descrição da conta
     private BigDecimal balance;               // Saldo -> começa com 0.0
     private boolean isActive;                 // Ativa ou Inativa
-    private final User user;                        // Usuário associado
+    private User user;                        // Usuário associado
     private final LocalDateTime createdAt;    // Data de criação
     private LocalDateTime updatedAt;          // Data de atualização
 
@@ -31,6 +31,11 @@ public class Account {
 
     public String getName() {
         return name;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+        this.updatedAt = LocalDateTime.now();
     }
 
     public void setName(String name) {
@@ -71,8 +76,16 @@ public class Account {
         return createdAt;
     }
 
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
     public LocalDateTime getUpdatedAt() {
         return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
     public boolean isActive() { return isActive; }
@@ -80,6 +93,16 @@ public class Account {
     public void setActive(boolean active) {
         this.isActive = active;
     }
+    public void withdraw(BigDecimal amount) {
+        if (amount.compareTo(BigDecimal.ZERO) > 0 && this.balance.compareTo(amount) >= 0) {
+            this.balance = this.balance.subtract(amount);
+            this.updatedAt = LocalDateTime.now();
+        } else {
+            throw new IllegalArgumentException("Insufficient balance or invalid amount.");
+        }
+    }
+
+    
 }
 
 
