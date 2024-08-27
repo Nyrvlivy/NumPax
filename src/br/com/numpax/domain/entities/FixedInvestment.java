@@ -22,7 +22,7 @@ public class FixedInvestment extends Transaction {
 
 
     public FixedInvestment(String code, String name, String description, BigDecimal amount, Category category, RegularAccount regularAccount, NatureOfTransaction natureOfTransaction, String receiver, String sender, LocalDate transactionDate, boolean isRepeatable, RepeatableType repeatableType, String note, FixedInvestmentType fixedInvestmentType, LocalDate investmentDate, LocalDate expirationDate, String institution, Double[] taxRates, Double redeemValue, LocalDate redeemDate, Integer liquidityPeriod, Double netGainLoss) {
-        super(code, name, description, amount, category, account, natureOfTransaction, receiver, sender, transactionDate, repeatableType, note);
+        super(code, name, description, amount, category, regularAccount, natureOfTransaction, receiver, sender, transactionDate, repeatableType, note);
         this.fixedInvestmentType = fixedInvestmentType;
         this.investmentDate = investmentDate;
         this.expirationDate = expirationDate;
