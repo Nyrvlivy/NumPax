@@ -7,12 +7,12 @@ import java.util.UUID;
 public class Account {
     private final String id;
     private String name;                      
-    private String description;               // Descrição da conta
-    private BigDecimal balance;               // Saldo -> começa com 0.0
-    private boolean isActive;                 // Ativa ou Inativa
-    private User user;                        // Usuário associado
-    private final LocalDateTime createdAt;    // Data de criação
-    private LocalDateTime updatedAt;          // Data de atualização
+    private String description;               
+    private BigDecimal balance;               
+    private boolean isActive;                 
+    private User user;                        
+    private final LocalDateTime createdAt;    
+    private LocalDateTime updatedAt;       
 
     public Account(String name, String description, User user) {
         this.id = UUID.randomUUID().toString();
