@@ -10,7 +10,7 @@ import br.com.numpax.domain.enums.RepeatableType;
 
 public class Transaction {
     private final String id;                          // Identificador da transação
-    private String code;                              // Código da transação
+    private final String code;                              // Código da transação
     private String name;                              // Nome da transação
     private String description;                       // Descrição da transação
     private BigDecimal amount;                        // Valor da transação 
@@ -24,7 +24,7 @@ public class Transaction {
     private RepeatableType repeatableType;            // Tipo de repetição (Nunca, Diária, Semanal, Mensal, Anual)
     private String note;                              // Nota da transação
     private boolean isActive;                         // Ativa ou Inativa
-    private LocalDateTime createdAt;                  // Data de criação
+    private final LocalDateTime createdAt;                  // Data de criação
     private LocalDateTime updatedAt;                  // Data de atualização
     private boolean isEffective;                      // Efetivado ou não
 
@@ -57,16 +57,13 @@ public class Transaction {
         return code;
     }
 
-    public void setCode(String code) {
-        this.code = code;
-    }
-
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
+        this.updatedAt = LocalDateTime.now();
     }
 
     public String getDescription() {
@@ -75,6 +72,7 @@ public class Transaction {
 
     public void setDescription(String description) {
         this.description = description;
+        this.updatedAt = LocalDateTime.now();
     }
 
     public BigDecimal getAmount() {
@@ -83,6 +81,7 @@ public class Transaction {
 
     public void setAmount(BigDecimal amount) {
         this.amount = amount;
+        this.updatedAt = LocalDateTime.now();
     }
 
     public Category getCategory() {
@@ -91,6 +90,7 @@ public class Transaction {
 
     public void setCategory(Category category) {
         this.category = category;
+        this.updatedAt = LocalDateTime.now();
     }
 
     public Account getAccount() {
@@ -99,6 +99,7 @@ public class Transaction {
 
     public void setAccount(Account account) {
         this.account = account;
+        this.updatedAt = LocalDateTime.now();
     }
 
     public NatureOfTransaction getNatureOfTransaction() {
@@ -107,38 +108,35 @@ public class Transaction {
 
     public void setNatureOfTransaction(NatureOfTransaction natureOfTransaction) {
         this.natureOfTransaction = natureOfTransaction;
+        this.updatedAt = LocalDateTime.now();
     }
 
-    public String getReceiver() {
-        return receiver;
-    }
+    public String getReceiver() { return receiver; }
 
     public void setReceiver(String receiver) {
         this.receiver = receiver;
+        this.updatedAt = LocalDateTime.now();
     }
 
-    public String getSender() {
-        return sender;
-    }
+    public String getSender() { return sender; }
 
     public void setSender(String sender) {
         this.sender = sender;
+        this.updatedAt = LocalDateTime.now();
     }
 
-    public LocalDate getTransactionDate() {
-        return transactionDate;
-    }
+    public LocalDate getTransactionDate() { return transactionDate; }
 
     public void setTransactionDate(LocalDate transactionDate) {
         this.transactionDate = transactionDate;
+        this.updatedAt = LocalDateTime.now();
     }
 
-    public boolean isRepeatable() {
-        return isRepeatable;
-    }
+    public boolean isRepeatable() { return isRepeatable; }
 
     public void setRepeatable(boolean isRepeatable) {
         this.isRepeatable = isRepeatable;
+        this.updatedAt = LocalDateTime.now();
     }
 
     public RepeatableType getRepeatableType() {
@@ -147,6 +145,7 @@ public class Transaction {
 
     public void setRepeatableType(RepeatableType repeatableType) {
         this.repeatableType = repeatableType;
+        this.updatedAt = LocalDateTime.now();
     }
 
     public String getNote() {
@@ -155,6 +154,7 @@ public class Transaction {
 
     public void setNote(String note) {
         this.note = note;
+        this.updatedAt = LocalDateTime.now();
     }
 
     public boolean isActive() {
@@ -163,25 +163,35 @@ public class Transaction {
 
     public void setActive(boolean isActive) {
         this.isActive = isActive;
+        this.updatedAt = LocalDateTime.now();
     }
 
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
     public LocalDateTime getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
+    public boolean getIsEffective() { return isEffective; }
+
+    public void setIsEffective(boolean effective) {
+        isEffective = effective;
+        this.updatedAt = LocalDateTime.now();
     }
 
-    public boolean isEffective() { return isEffective; }
+    public boolean getIsRepeatable() { return isRepeatable; }
 
-    public void setEffective(boolean effective) { isEffective = effective; }
+    public void setIsRepeatable(boolean repeatable) {
+        isRepeatable = repeatable;
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    public boolean getIsActive() { return isActive; }
+
+    public void setActive(Boolean active) {
+        isActive = active;
+        this.updatedAt = LocalDateTime.now();
+    }
 }

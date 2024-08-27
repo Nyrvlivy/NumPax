@@ -11,8 +11,8 @@ public class User {
     private String email;                     // E-mail
     private String password;                  // Senha
     private LocalDate birthdate;              // Data de nascimento
-    private Boolean isActive;                 // Ativo ou Inativo
-    private LocalDateTime createdAt;          // Data de criação
+    private boolean isActive;                 // Ativo ou Inativo
+    private final LocalDateTime createdAt;          // Data de criação
     private LocalDateTime updatedAt;          // Data de atualização
 
     public User(String id, String name, String email, String password, LocalDate birthdate) {
@@ -36,6 +36,7 @@ public class User {
 
     public void setName(String name) {
         this.name = name;
+        this.updatedAt = LocalDateTime.now();
     }
 
     public String getEmail() {
@@ -44,6 +45,7 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+        this.updatedAt = LocalDateTime.now();
     }
 
     public String getPassword() {
@@ -52,6 +54,7 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+        this.updatedAt = LocalDateTime.now();
     }
 
     public LocalDate getBirthdate() {
@@ -60,6 +63,7 @@ public class User {
 
     public void setBirthdate(LocalDate birthdate) {
         this.birthdate = birthdate;
+        this.updatedAt = LocalDateTime.now();
     }
 
     public Boolean getIsActive() {
@@ -68,23 +72,19 @@ public class User {
 
     public void setIsActive(Boolean isActive) {
         this.isActive = isActive;
+        this.updatedAt = LocalDateTime.now();
     }
 
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
     public LocalDateTime getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
+    public void setIsActive(boolean active) {
+        isActive = active;
+        this.updatedAt = LocalDateTime.now();
     }
-
-
 }

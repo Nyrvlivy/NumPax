@@ -22,6 +22,19 @@ public class SavingsAccount extends RegularAccount {
         this.totalDepositAmount = totalDepositAmount;
     }
 
+    public LocalDateTime getNearestDeadline() { return nearestDeadline; }
+
+    public LocalDateTime getFurthestDeadline() { return furthestDeadline; }
+
+    public LocalDateTime getLastestDeadline() { return lastestDeadline; }
+
+    public Double getAverageTaxRate() { return averageTaxRate; }
+
+    public Double getNumberOfFixedInvestments() { return numberOfFixedInvestments; }
+
+    public Double getTotalMaturityAmount() { return totalMaturityAmount; }
+
+    public Double getTotalDepositAmount() { return totalDepositAmount; }
 
     // OK / Resolver lógica sobre transação na transacão (ficar colocando mais dinheiro em cada)
 }
