@@ -10,7 +10,7 @@ public class CreateInvestmentAccount {
         String name,
         String description,
         User user,
-        AccountType accountType, // Novo parâmetro
+        AccountType accountType, 
         RiskLevelType riskLevelType,
         AccountType.InvestmentSubtypeAccount investmentSubtypeAccount
     ){
@@ -18,7 +18,7 @@ public class CreateInvestmentAccount {
             name, 
             description, 
             user, 
-            accountType, // Novo parâmetro no construtor
+            accountType,
             0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 
             riskLevelType,
             investmentSubtypeAccount

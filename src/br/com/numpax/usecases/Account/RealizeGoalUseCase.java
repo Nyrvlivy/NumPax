@@ -28,11 +28,11 @@ public class RealizeGoalUseCase {
     "Realização de Objetivo",
     "Valor destinado à realização de um objetivo",
     BigDecimal.valueOf(goalAmount),
-    null, // Category
+    null, 
     account,
     NatureOfTransaction.GOAL,
-    null, // receiver
-    userName, // sender
+    null, 
+    userName, 
     LocalDate.now(),
     RepeatableType.NEVER,
     "Objetivo realizado em " + LocalDate.now()

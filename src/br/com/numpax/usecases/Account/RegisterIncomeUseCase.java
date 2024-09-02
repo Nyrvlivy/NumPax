@@ -41,25 +41,23 @@ public class RegisterIncomeUseCase {
         Category category = new Category("Salário", "Depósito do salário mensal", "icon_salary", null, true);
 
   
-    // Convertendo incomeAmount para BigDecimal
     BigDecimal incomeAmountBigDecimal = BigDecimal.valueOf(incomeAmount);
 
-    // Convertendo Account para RegularAccount, se necessário
     RegularAccount regularAccount = (RegularAccount) account;
 
     Transaction incomeTransaction = new Transaction(
-        "INC" + System.currentTimeMillis(), // code
-        "Salário", // name
-        "Depósito do salário mensal", // description
-        incomeAmountBigDecimal, // amount
-        category, // category
-        regularAccount, // regularAccount
-        NatureOfTransaction.INCOME, // natureOfTransaction
+        "INC" + System.currentTimeMillis(), 
+        "Salário", 
+        "Depósito do salário mensal", 
+        incomeAmountBigDecimal, 
+        category, 
+        regularAccount, 
+        NatureOfTransaction.INCOME,
         userName, // receiver
         null, // sender
-        LocalDate.now(), // transactionDate
-        RepeatableType.MONTHLY, // repeatableType
-        "Salário de " + LocalDate.now().getMonth() // note
+        LocalDate.now(), 
+        RepeatableType.MONTHLY, 
+        "Salário de " + LocalDate.now().getMonth()
     );
 
         incomeTransaction.apply();

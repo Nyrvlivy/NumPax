@@ -30,7 +30,7 @@ public class MakeInvestmentUseCase {
             "Investimento",
             "Aplicação em investimento",
             investmentAmount,
-            null, // ou crie uma categoria apropriada para investimentos
+            null,
             (RegularAccount) account,
             NatureOfTransaction.INVESTMENT,
             null,
