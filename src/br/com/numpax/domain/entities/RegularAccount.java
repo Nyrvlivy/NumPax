@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import br.com.numpax.domain.enums.AccountType;
+import br.com.numpax.exceptions.InsufficientFundsException;
 
 public class RegularAccount extends Account{
     private AccountType accountType;    
@@ -23,12 +24,14 @@ public class RegularAccount extends Account{
     }
 
     public void withdraw(double amount) {
-        if (amount > 0 && amount <= super.getBalance().doubleValue()) {
-            super.setBalance(super.getBalance().subtract(BigDecimal.valueOf(amount)));
-            super.setUpdatedAt(LocalDateTime.now());
-        } else {
-            throw new IllegalArgumentException("Insufficient balance or invalid amount");
+        if (amount <= 0) {
+            throw new IllegalArgumentException("O valor do saque deve ser positivo.");
         }
+        if (amount > super.getBalance().doubleValue()) {
+            throw new InsufficientFundsException("Saldo insuficiente.");
+        }
+        super.setBalance(super.getBalance().subtract(BigDecimal.valueOf(amount)));
+        super.setUpdatedAt(LocalDateTime.now());
     }
 
     public void deposit(double amount) {

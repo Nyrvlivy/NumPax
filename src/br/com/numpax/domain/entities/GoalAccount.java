@@ -73,4 +73,8 @@ public class GoalAccount extends RegularAccount{
     public LocalDate getEndDate() { return endDate; }
 
     public void setEndDate(LocalDate endDate) { this.endDate = endDate; this.setUpdatedAt(LocalDateTime.now());}
+
+    public void viewGoalProgress() {
+        System.out.println("Progresso do objetivo: " + amountValue + " de " + targetValue);
+    }   
 }
