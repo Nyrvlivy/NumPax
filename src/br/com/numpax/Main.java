@@ -63,7 +63,7 @@ public class Main {
             System.out.println("0. Sair");
             System.out.print("Escolha uma opção: ");
             option = scanner.nextInt();
-            scanner.nextLine(); // Consumir a nova linha
+            scanner.nextLine(); 
 
             switch (option) {
                 case 1:
@@ -99,7 +99,7 @@ public class Main {
             System.out.println("0. Voltar");
             System.out.print("Escolha o tipo de conta para criar: ");
             option = scanner.nextInt();
-            scanner.nextLine(); // Consumir a nova linha
+            scanner.nextLine(); 
 
             switch (option) {
                 case 1:
@@ -154,7 +154,7 @@ public class Main {
         regularAccount.deposit(depositAmount);
 
         System.out.println("Conta criada com sucesso! Saldo inicial: " + regularAccount.getBalance());
-        scanner.nextLine(); // Consumir a nova linha deixada pelo nextDouble()
+        scanner.nextLine(); 
         pauseForUserInput();
     }
 
@@ -208,7 +208,7 @@ public class Main {
                 user,
                 accountType,
                 riskLevel,
-                investmentSubtype // Adiciona o subtipo aqui
+                investmentSubtype 
         );
 
         System.out.println("Digite o valor do depósito inicial:");
@@ -216,7 +216,7 @@ public class Main {
         investmentAccount.deposit(depositAmount);
 
         System.out.println("Conta criada com sucesso! Saldo inicial: " + investmentAccount.getBalance());
-        scanner.nextLine(); // Consumir a nova linha deixada pelo nextDouble()
+        scanner.nextLine();
         pauseForUserInput();
     }
 
@@ -266,7 +266,7 @@ public class Main {
         goalAccount.deposit(depositAmount);
 
         System.out.println("Conta criada com sucesso! Saldo inicial: " + goalAccount.getBalance());
-        scanner.nextLine(); // Consumir a nova linha deixada pelo nextDouble()
+        scanner.nextLine(); 
         pauseForUserInput();
     }
 
@@ -282,7 +282,7 @@ public class Main {
             System.out.println("0. Voltar");
             System.out.print("Escolha a conta para acessar: ");
             option = scanner.nextInt();
-            scanner.nextLine(); // Consumir a nova linha
+            scanner.nextLine(); 
 
             switch (option) {
                 case 1:
@@ -331,7 +331,6 @@ public class Main {
             System.out.println("4. Registrar despesa");
             System.out.println("5. Registrar receita");
 
-            // Adiciona opções específicas para cada tipo de conta
             if (account instanceof InvestmentAccount) {
                 System.out.println("6. Realizar investimento");
                 System.out.println("7. Ver extrato de investimentos");
@@ -343,7 +342,7 @@ public class Main {
             System.out.println("0. Voltar");
             System.out.print("Escolha uma opção: ");
             option = scanner.nextInt();
-            scanner.nextLine(); // Consumir a nova linha
+            scanner.nextLine(); 
 
             switch (option) {
                 case 1:
