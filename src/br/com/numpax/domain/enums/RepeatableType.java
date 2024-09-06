@@ -6,5 +6,6 @@ public enum RepeatableType {
     WEEKLY,
     MONTHLY,
     YEARLY,
-    CUSTOM
+    CUSTOM,
+    NONE
 }

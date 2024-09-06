@@ -13,7 +13,7 @@ public class VariableInvestment extends Transaction {
     private String broker;                                        
     private LocalDate purchaseDate;                               
     private LocalDate expirationDate;                             
-    private final String assetCode;                               
+    private String assetCode;                               
     private BigDecimal quantity;                                  
     private BigDecimal unitPrice;                                 
     private LocalDate saleDate;                                   
@@ -29,7 +29,7 @@ public class VariableInvestment extends Transaction {
         this.expirationDate = expirationDate;
         this.assetCode = assetCode;
         this.quantity = quantity;
-        this.unitPrice = unitPrice;
+        this.unitPrice = unitPrice; 
         this.saleDate = saleDate;
         this.salePrice = salePrice;
         this.brokerFees = brokerFees;
@@ -170,5 +170,9 @@ public class VariableInvestment extends Transaction {
     public void setExpirationDate(LocalDate expirationDate) {
         this.expirationDate = expirationDate;
     }
-   
+    
+    public void setAssetCode(String assetCode) {
+        this.assetCode = assetCode;
+        this.setUpdatedAt(LocalDateTime.now());
+    }
 }

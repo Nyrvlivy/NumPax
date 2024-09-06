@@ -93,8 +93,13 @@ public class Transaction {
         this.updatedAt = LocalDateTime.now();
     }
 
-    public RegularAccount getAccount() {
+    public RegularAccount getRegularAccount() {
         return regularAccount;
+    }
+
+    public void setRegularAccount(RegularAccount regularAccount) {
+        this.regularAccount = regularAccount;
+        this.updatedAt = LocalDateTime.now();
     }
 
     public void setAccount(RegularAccount regularAccount) {
