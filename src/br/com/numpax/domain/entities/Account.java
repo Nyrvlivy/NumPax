@@ -6,13 +6,13 @@ import java.util.UUID;
 
 public class Account {
     private final String id;
-    private String name;                      
-    private String description;               
-    private BigDecimal balance;               
-    private boolean isActive;                 
-    private User user;                        
-    private final LocalDateTime createdAt;    
-    private LocalDateTime updatedAt;       
+    private String name;
+    private String description;
+    private BigDecimal balance;
+    private boolean isActive;
+    private User user;
+    private final LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
     public Account(String name, String description, User user) {
         this.id = UUID.randomUUID().toString();
@@ -61,7 +61,9 @@ public class Account {
         this.updatedAt = LocalDateTime.now();
     }
 
-    public boolean getIsActive() { return isActive; }
+    public boolean getIsActive() {
+        return isActive;
+    }
 
     public void setIsActive(boolean isActive) {
         this.isActive = isActive;
@@ -84,12 +86,12 @@ public class Account {
         this.updatedAt = updatedAt;
     }
 
-    public boolean isActive() { return isActive; }
+    public boolean isActive() {
+        return isActive;
+    }
 
     public void setActive(boolean active) {
         this.isActive = active;
         this.updatedAt = LocalDateTime.now();
     }
 }
-
-

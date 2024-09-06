@@ -1,10 +1,10 @@
 package br.com.numpax.test.domain.entities;
 
-import java.time.LocalDate;
-
 import br.com.numpax.domain.entities.Account;
 import br.com.numpax.domain.entities.RelatedAccounts;
 import br.com.numpax.domain.entities.User;
+
+import java.time.LocalDate;
 
 public class RelatedAccountsTest {
     public static void main(String[] args) {
@@ -13,7 +13,7 @@ public class RelatedAccountsTest {
     }
 
     private static void testRelatedAccountsCreation() {
-        User user = new User("John Doe", "john.doe@example.com", "password", LocalDate.of(1990, 1, 1));
+        User user = new User("Sarah Regina Santos", "sarah.regina.santos@ci.com.br", "72qLyjOJHf", LocalDate.of(2000, 9, 1));
         Account[] relatedAccounts = new Account[2];
         relatedAccounts[0] = new Account("Account 1", "Description 1", user);
         relatedAccounts[1] = new Account("Account 2", "Description 2", user);
@@ -25,7 +25,7 @@ public class RelatedAccountsTest {
     }
 
     private static void testSetRelatedAccounts() {
-        User user = new User("John Doe", "john.doe@example.com", "password", LocalDate.of(1990, 1, 1));
+        User user = new User("Daiane Mirella Nunes", "daiane_nunes@iname.com", "yFzFMeWNCg", LocalDate.of(2000, 5, 17));
         Account[] relatedAccounts = new Account[2];
         relatedAccounts[0] = new Account("Account 1", "Description 1", user);
         relatedAccounts[1] = new Account("Account 2", "Description 2", user);

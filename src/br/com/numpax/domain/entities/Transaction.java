@@ -1,32 +1,32 @@
 package br.com.numpax.domain.entities;
 
+import br.com.numpax.domain.enums.NatureOfTransaction;
+import br.com.numpax.domain.enums.RepeatableType;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-import br.com.numpax.domain.enums.NatureOfTransaction;
-import br.com.numpax.domain.enums.RepeatableType;
-
 public class Transaction {
-    private final String id;                         
+    private final String id;
     private final String code;
-    private boolean isEffective;                      
-    private String name;                              
-    private String description;                       
-    private BigDecimal amount;                        
-    private Category category;                        
-    private RegularAccount regularAccount;            
-    private NatureOfTransaction natureOfTransaction;  
-    private String receiver;                          
-    private String sender;                            
-    private LocalDate transactionDate;                
-    private boolean isRepeatable;                     
-    private RepeatableType repeatableType;            
-    private String note;                              
-    private boolean isActive;                         
-    private final LocalDateTime createdAt;            
-    private LocalDateTime updatedAt;                  
+    private boolean isEffective;
+    private String name;
+    private String description;
+    private BigDecimal amount;
+    private Category category;
+    private RegularAccount regularAccount;
+    private NatureOfTransaction natureOfTransaction;
+    private String receiver;
+    private String sender;
+    private LocalDate transactionDate;
+    private boolean isRepeatable;
+    private RepeatableType repeatableType;
+    private String note;
+    private boolean isActive;
+    private final LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
     public Transaction(String code, String name, String description, BigDecimal amount, Category category, RegularAccount regularAccount, NatureOfTransaction natureOfTransaction, String receiver, String sender, LocalDate transactionDate, RepeatableType repeatableType, String note) {
         this.id = UUID.randomUUID().toString();
@@ -36,12 +36,12 @@ public class Transaction {
         this.amount = amount;
         this.category = category;
         this.regularAccount = regularAccount;
-        this.natureOfTransaction = natureOfTransaction; 
+        this.natureOfTransaction = natureOfTransaction;
         this.receiver = receiver;
         this.sender = sender;
         this.transactionDate = transactionDate;
-        this.isRepeatable = false; 
-        this.repeatableType = repeatableType; 
+        this.isRepeatable = false;
+        this.repeatableType = repeatableType;
         this.note = note;
         this.isActive = true;
         this.createdAt = LocalDateTime.now();
@@ -116,28 +116,36 @@ public class Transaction {
         this.updatedAt = LocalDateTime.now();
     }
 
-    public String getReceiver() { return receiver; }
+    public String getReceiver() {
+        return receiver;
+    }
 
     public void setReceiver(String receiver) {
         this.receiver = receiver;
         this.updatedAt = LocalDateTime.now();
     }
 
-    public String getSender() { return sender; }
+    public String getSender() {
+        return sender;
+    }
 
     public void setSender(String sender) {
         this.sender = sender;
         this.updatedAt = LocalDateTime.now();
     }
 
-    public LocalDate getTransactionDate() { return transactionDate; }
+    public LocalDate getTransactionDate() {
+        return transactionDate;
+    }
 
     public void setTransactionDate(LocalDate transactionDate) {
         this.transactionDate = transactionDate;
         this.updatedAt = LocalDateTime.now();
     }
 
-    public boolean isRepeatable() { return isRepeatable; }
+    public boolean isRepeatable() {
+        return isRepeatable;
+    }
 
     public void setRepeatable(boolean isRepeatable) {
         this.isRepeatable = isRepeatable;
@@ -174,30 +182,36 @@ public class Transaction {
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
-    
+
     public LocalDateTime getUpdatedAt() {
         return updatedAt;
     }
-    
+
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
     }
 
-    public boolean getIsEffective() { return isEffective; }
+    public boolean getIsEffective() {
+        return isEffective;
+    }
 
     public void setIsEffective(boolean effective) {
         isEffective = effective;
         this.updatedAt = LocalDateTime.now();
     }
 
-    public boolean getIsRepeatable() { return isRepeatable; }
+    public boolean getIsRepeatable() {
+        return isRepeatable;
+    }
 
     public void setIsRepeatable(boolean repeatable) {
         isRepeatable = repeatable;
         this.updatedAt = LocalDateTime.now();
     }
 
-    public boolean getIsActive() { return isActive; }
+    public boolean getIsActive() {
+        return isActive;
+    }
 
     public void setActive(Boolean active) {
         isActive = active;
@@ -218,9 +232,11 @@ public class Transaction {
         }
     }
 
-    public boolean isEffective() { return isEffective; }
+    public boolean isEffective() {
+        return isEffective;
+    }
 
-    public void setEffective(boolean effective) { isEffective = effective; }
+    public void setEffective(boolean effective) {
+        isEffective = effective;
+    }
 }
-
-

@@ -1,9 +1,9 @@
 package br.com.numpax.usecases.Account;
 
-import java.util.Scanner;
-
 import br.com.numpax.domain.entities.RegularAccount;
 import br.com.numpax.exceptions.InsufficientFundsException;
+
+import java.util.Scanner;
 
 public class WithdrawUseCase {
     private final Scanner scanner;
@@ -12,9 +12,9 @@ public class WithdrawUseCase {
         this.scanner = scanner;
     }
 
- 
+
     public void execute(RegularAccount account) {
-        System.out.println("Digite o valor para saque:");
+        System.out.print("Digite o valor para saque: ");
         double withdrawAmount = scanner.nextDouble();
         scanner.nextLine();
         try {

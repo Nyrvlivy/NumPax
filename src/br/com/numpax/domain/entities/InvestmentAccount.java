@@ -1,22 +1,22 @@
 package br.com.numpax.domain.entities;
 
-import java.time.LocalDateTime;
-
 import br.com.numpax.domain.enums.AccountType;
 import br.com.numpax.domain.enums.RiskLevelType;
 
+import java.time.LocalDateTime;
+
 public class InvestmentAccount extends RegularAccount {
-    private Double totalInvestedAmount;   
-    private Double totalProfit;           
-    private Double totalCurrentAmount;    
-    private Double totalWithdrawnAmount;  
-    private Double numberOfWithdrawals;   
-    private Double numberOfEntries;       
-    private Double numberOfAssets;        
-    private Double averagePurchasePrice;  
-    private Double totalGainLoss;         
-    private Double totalDividendYield;    
-    private RiskLevelType riskLevelType; 
+    private Double totalInvestedAmount;
+    private Double totalProfit;
+    private Double totalCurrentAmount;
+    private Double totalWithdrawnAmount;
+    private Double numberOfWithdrawals;
+    private Double numberOfEntries;
+    private Double numberOfAssets;
+    private Double averagePurchasePrice;
+    private Double totalGainLoss;
+    private Double totalDividendYield;
+    private RiskLevelType riskLevelType;
     private AccountType.InvestmentSubtypeAccount investmentSubtypeAccount;
 
     public InvestmentAccount(String name, String description, User user, AccountType accountType, Double totalInvestedAmount, Double totalProfit, Double totalCurrentAmount, Double totalWithdrawnAmount, Double numberOfWithdrawals, Double numberOfEntries, Double numberOfAssets, Double averagePurchasePrice, Double totalGainLoss, Double totalDividendYield, RiskLevelType riskLevelType, AccountType.InvestmentSubtypeAccount investmentSubtypeAccount) {
@@ -35,7 +35,9 @@ public class InvestmentAccount extends RegularAccount {
         this.investmentSubtypeAccount = investmentSubtypeAccount;
     }
 
-    public Double getTotalInvestedAmount() { return totalInvestedAmount; }
+    public Double getTotalInvestedAmount() {
+        return totalInvestedAmount;
+    }
 
     public Double getTotalProfit() {
         return totalProfit;
@@ -105,5 +107,4 @@ public class InvestmentAccount extends RegularAccount {
         System.out.println("Ganho/Perda total: " + totalGainLoss);
         System.out.println("Dividend Yield total: " + totalDividendYield);
     }
-
 }

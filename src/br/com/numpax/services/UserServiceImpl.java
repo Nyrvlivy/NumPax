@@ -4,10 +4,10 @@ import br.com.numpax.domain.entities.User;
 import br.com.numpax.domain.repositories.UserRepository;
 import br.com.numpax.exceptions.ResourceNotFoundException;
 
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
-    public UserServiceImpl(UserRepository userRepository){
+    public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 

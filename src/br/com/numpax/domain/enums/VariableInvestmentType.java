@@ -16,5 +16,4 @@ public enum VariableInvestmentType {
     ETF,
     REIT,
     P2P,
-    
 }

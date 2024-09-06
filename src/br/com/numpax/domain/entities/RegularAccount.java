@@ -1,13 +1,13 @@
 package br.com.numpax.domain.entities;
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-
 import br.com.numpax.domain.enums.AccountType;
 import br.com.numpax.exceptions.InsufficientFundsException;
 
-public class RegularAccount extends Account{
-    private AccountType accountType;    
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+
+public class RegularAccount extends Account {
+    private AccountType accountType;
 
     public RegularAccount(String name, String description, User user, AccountType accountType) {
         super(name, description, user);

@@ -1,11 +1,11 @@
 package br.com.numpax.test.domain.entities;
 
-import java.time.LocalDate;
-
 import br.com.numpax.domain.entities.InvestmentAccount;
 import br.com.numpax.domain.entities.User;
 import br.com.numpax.domain.enums.AccountType;
 import br.com.numpax.domain.enums.RiskLevelType;
+
+import java.time.LocalDate;
 
 public class InvestmentAccountTest {
     public static void main(String[] args) {
@@ -16,7 +16,7 @@ public class InvestmentAccountTest {
     }
 
     private static void testInvestmentAccountCreation() {
-        User user = new User("John Doe", "john.doe@example.com", "password", LocalDate.of(1990, 1, 1));
+        User user = new User("Sarah Regina Santos", "sarah.regina.santos@ci.com.br", "72qLyjOJHf", LocalDate.of(2000, 9, 1));
         InvestmentAccount investmentAccount = new InvestmentAccount("Investment Account", "Account for investments", user, AccountType.INVESTMENT, 10000.0, 2000.0, 12000.0, 1000.0, 5.0, 10.0, 15.0, 50.0, 2000.0, 0.05, RiskLevelType.HIGH, AccountType.InvestmentSubtypeAccount.STOCKS);
 
         assert 10000.0 == investmentAccount.getTotalInvestedAmount();
@@ -34,7 +34,7 @@ public class InvestmentAccountTest {
     }
 
     private static void testSetRiskLevelType() {
-        User user = new User("John Doe", "john.doe@example.com", "password", LocalDate.of(1990, 1, 1));
+        User user = new User("Daiane Mirella Nunes", "daiane_nunes@iname.com", "yFzFMeWNCg", LocalDate.of(2000, 5, 17));
         InvestmentAccount investmentAccount = new InvestmentAccount("Investment Account", "Account for investments", user, AccountType.INVESTMENT, 10000.0, 2000.0, 12000.0, 1000.0, 5.0, 10.0, 15.0, 50.0, 2000.0, 0.05, RiskLevelType.HIGH, AccountType.InvestmentSubtypeAccount.STOCKS);
         investmentAccount.setRiskLevelType(RiskLevelType.LOW);
 
@@ -42,7 +42,7 @@ public class InvestmentAccountTest {
     }
 
     private static void testSetInvestmentSubtypeAccount() {
-        User user = new User("John Doe", "john.doe@example.com", "password", LocalDate.of(1990, 1, 1));
+        User user = new User("Olivia Melissa Sandra Aparício", "olivia-aparicio85@adherminer.com.br", "5toCgr0uRF", LocalDate.of(2000, 9, 3));
         InvestmentAccount investmentAccount = new InvestmentAccount("Investment Account", "Account for investments", user, AccountType.INVESTMENT, 10000.0, 2000.0, 12000.0, 1000.0, 5.0, 10.0, 15.0, 50.0, 2000.0, 0.05, RiskLevelType.HIGH, AccountType.InvestmentSubtypeAccount.STOCKS);
         investmentAccount.setInvestmentSubtypeAccount(AccountType.InvestmentSubtypeAccount.BONDS);
 
@@ -50,7 +50,7 @@ public class InvestmentAccountTest {
     }
 
     private static void testViewInvestmentStatement() {
-        User user = new User("John Doe", "john.doe@example.com", "password", LocalDate.of(1990, 1, 1));
+        User user = new User("Priscila Priscila Rita da Conceição", "priscila-daconceicao90@eguia.com.br", "xlkx4iiYwC", LocalDate.of(2000, 3, 6));
         InvestmentAccount investmentAccount = new InvestmentAccount("Investment Account", "Account for investments", user, AccountType.INVESTMENT, 10000.0, 2000.0, 12000.0, 1000.0, 5.0, 10.0, 15.0, 50.0, 2000.0, 0.05, RiskLevelType.HIGH, AccountType.InvestmentSubtypeAccount.STOCKS);
         investmentAccount.viewInvestmentStatement();
     }

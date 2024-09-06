@@ -1,11 +1,11 @@
 package br.com.numpax.usecases.Account;
 
-import java.time.LocalDate;
-
 import br.com.numpax.domain.entities.Category;
 import br.com.numpax.domain.entities.GoalAccount;
 import br.com.numpax.domain.entities.User;
 import br.com.numpax.domain.enums.AccountType;
+
+import java.time.LocalDate;
 
 public class CreateGoalAccount {
     public GoalAccount execute(
@@ -17,11 +17,11 @@ public class CreateGoalAccount {
         double monthlyTaxRate,
         double monthlyEstimate,
         double monthlyAchievement,
-        Category category, 
+        Category category,
         LocalDate targetDate,
         LocalDate startDate,
         LocalDate endDate
-    ){
+    ) {
         LocalDate finalEndDate = (endDate == null) ? LocalDate.now() : endDate;
         return new GoalAccount(name,
             description,

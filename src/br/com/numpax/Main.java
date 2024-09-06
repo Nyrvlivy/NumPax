@@ -24,7 +24,7 @@ import br.com.numpax.usecases.Account.ViewInvestmentStatementUseCase;
 import br.com.numpax.usecases.Account.WithdrawUseCase;
 
 public class Main {
-    private static Scanner scanner = new Scanner(System.in);
+    private static final Scanner scanner = new Scanner(System.in);
     private static User user;
     private static RegularAccount regularAccount;
     private static InvestmentAccount investmentAccount;
@@ -36,16 +36,16 @@ public class Main {
     }
 
     private static void createUser() {
-        System.out.println("Digite seu nome completo:");
+        System.out.print("Digite seu nome completo: ");
         String name = scanner.nextLine();
 
-        System.out.println("Digite seu email:");
+        System.out.print("Digite seu email: ");
         String email = scanner.nextLine();
 
-        System.out.println("Digite sua senha:");
+        System.out.print("Digite sua senha: ");
         String password = scanner.nextLine();
 
-        System.out.println("Digite sua data de nascimento (YYYY-MM-DD):");
+        System.out.print("Digite sua data de nascimento (YYYY-MM-DD): ");
         String birthdateStr = scanner.nextLine();
         LocalDate birthdate = LocalDate.parse(birthdateStr);
 
@@ -88,9 +88,9 @@ public class Main {
     }
 
     private static void createAccountMenu() {
-        int option = -1;
+        int option;
 
-        while (option != 0) {
+        while (true) {
             clearScreen();
             System.out.println("\n--- Criar Conta ---");
             if (regularAccount == null) System.out.println("1. Conta Corrente");
@@ -141,15 +141,15 @@ public class Main {
     }
 
     private static void createRegularAccount() {
-        System.out.println("Digite o nome da conta:");
+        System.out.print("Digite o nome da conta: ");
         String accountName = scanner.nextLine();
 
-        System.out.println("Digite a descrição da conta:");
+        System.out.print("Digite a descrição da conta: ");
         String accountDescription = scanner.nextLine();
 
         regularAccount = new CreateRegularAccount().execute(accountName, accountDescription, user);
 
-        System.out.println("Digite o valor do depósito inicial:");
+        System.out.print("Digite o valor do depósito inicial: ");
         double depositAmount = scanner.nextDouble();
         regularAccount.deposit(depositAmount);
 
@@ -159,48 +159,35 @@ public class Main {
     }
 
     private static void createInvestmentAccount() {
-        System.out.println("Digite o nome da conta:");
+        System.out.print("Digite o nome da conta: ");
         String accountName = scanner.nextLine();
 
-        System.out.println("Digite a descrição da conta:");
+        System.out.print("Digite a descrição da conta: ");
         String accountDescription = scanner.nextLine();
 
-        System.out.println("Digite o nível de risco (1- Baixo, 2- Médio, 3- Alto): ");
+        System.out.print("Digite o nível de risco (1- Baixo, 2- Médio, 3- Alto): ");
         int riskLevelOption = scanner.nextInt();
-        RiskLevelType riskLevel;
-        switch (riskLevelOption) {
-            case 1:
-                riskLevel = RiskLevelType.LOW;
-                break;
-            case 2:
-                riskLevel = RiskLevelType.MEDIUM;
-                break;
-            case 3:
-                riskLevel = RiskLevelType.HIGH;
-                break;
-            default:
+        RiskLevelType riskLevel = switch (riskLevelOption) {
+            case 1 -> RiskLevelType.LOW;
+            case 2 -> RiskLevelType.MEDIUM;
+            case 3 -> RiskLevelType.HIGH;
+            default -> {
                 System.out.println("Opção inválida. Criando com nível de risco baixo por padrão.");
-                riskLevel = RiskLevelType.LOW;
-                break;
-        }
+                yield RiskLevelType.LOW;
+            }
+        };
 
-        System.out.println("Digite o tipo de investimento (1- Fixo, 2- Variável): ");
+        System.out.print("Digite o tipo de investimento (1- Fixo, 2- Variável): ");
         int investmentTypeOption = scanner.nextInt();
         AccountType accountType = AccountType.INVESTMENT;
-        AccountType.InvestmentSubtypeAccount investmentSubtype;
-
-        switch (investmentTypeOption) {
-            case 1:
-                investmentSubtype = AccountType.InvestmentSubtypeAccount.FIXED_INVESTMENT;
-                break;
-            case 2:
-                investmentSubtype = AccountType.InvestmentSubtypeAccount.VARIABLE_INVESTMENT;
-                break;
-            default:
+        AccountType.InvestmentSubtypeAccount investmentSubtype = switch (investmentTypeOption) {
+            case 1 -> AccountType.InvestmentSubtypeAccount.FIXED_INVESTMENT;
+            case 2 -> AccountType.InvestmentSubtypeAccount.VARIABLE_INVESTMENT;
+            default -> {
                 System.out.println("Opção inválida. Criando com investimento fixo por padrão.");
-                investmentSubtype = AccountType.InvestmentSubtypeAccount.FIXED_INVESTMENT;
-                break;
-        }
+                yield AccountType.InvestmentSubtypeAccount.FIXED_INVESTMENT;
+            }
+        };
 
         investmentAccount = new CreateInvestmentAccount().execute(
                 accountName,
@@ -211,7 +198,7 @@ public class Main {
                 investmentSubtype 
         );
 
-        System.out.println("Digite o valor do depósito inicial:");
+        System.out.print("Digite o valor do depósito inicial: ");
         double depositAmount = scanner.nextDouble();
         investmentAccount.deposit(depositAmount);
 
@@ -221,47 +208,46 @@ public class Main {
     }
 
     private static void createGoalAccount() {
-        System.out.println("Digite o nome da conta:");
+        System.out.print("Digite o nome da conta: ");
         String accountName = scanner.nextLine();
 
-        System.out.println("Digite a descrição da conta:");
+        System.out.print("Digite a descrição da conta: ");
         String accountDescription = scanner.nextLine();
 
-        System.out.println("Digite o valor alvo do objetivo:");
+        System.out.print("Digite o valor alvo do objetivo: ");
         double targetValue = scanner.nextDouble();
 
-        System.out.println("Digite a taxa alvo:");
+        System.out.print("Digite a taxa alvo: ");
         double targetTaxRate = scanner.nextDouble();
 
-        System.out.println("Digite a taxa mensal:");
+        System.out.print("Digite a taxa mensal: ");
         double monthlyTaxRate = scanner.nextDouble();
 
-        System.out.println("Digite a data de início (YYYY-MM-DD):");
-        scanner.nextLine(); // Consumir nova linha
+        System.out.print("Digite a data de início (YYYY-MM-DD): ");
+        scanner.nextLine();
         LocalDate startDate = LocalDate.parse(scanner.nextLine());
 
-        System.out.println("Digite a data alvo (YYYY-MM-DD):");
+        System.out.print("Digite a data alvo (YYYY-MM-DD): ");
         LocalDate targetDate = LocalDate.parse(scanner.nextLine());
 
-        // Definindo categoria fictícia para o objetivo
         Category category = new Category("Objetivo", "Economia para um objetivo específico", "icon_goal", null, true);
 
         goalAccount = new CreateGoalAccount().execute(
                 accountName,
                 accountDescription,
                 user,
-                targetValue, //verificar se tem que ser o valor inicial
+                targetValue,
                 targetTaxRate,
                 monthlyTaxRate,
-                0.0, // Estimativa inicial
-                0.0, // Realização inicial
+                0.0,
+                0.0,
                 category,
                 targetDate,
                 startDate,
-                null // Data de término inicialmente nula
+                null
         );
 
-        System.out.println("Digite o valor do depósito inicial:");
+        System.out.print("Digite o valor do depósito inicial: ");
         double depositAmount = scanner.nextDouble();
         goalAccount.deposit(depositAmount);
 
@@ -271,9 +257,9 @@ public class Main {
     }
 
     private static void accessAccountMenu() {
-        int option = -1;
+        int option;
 
-        while (option != 0) {
+        while (true) {
             clearScreen();
             System.out.println("\n--- Acessar Conta ---");
             if (regularAccount != null) System.out.println("1. Conta Corrente");
@@ -321,8 +307,8 @@ public class Main {
     }
 
     private static void accessAccount(RegularAccount account) {
-        int option = -1;
-        while (option != 0) {
+        int option;
+        while (true) {
             clearScreen();
             System.out.println("\n--- Menu da Conta ---");
             System.out.println("1. Ver saldo da conta");

@@ -1,17 +1,13 @@
 package br.com.numpax.test.domain.entities;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
-
 import br.com.numpax.domain.entities.Category;
 import br.com.numpax.domain.entities.RegularAccount;
 import br.com.numpax.domain.entities.User;
 import br.com.numpax.domain.entities.VariableInvestment;
-import br.com.numpax.domain.enums.AccountType;
-import br.com.numpax.domain.enums.CategoryType;
-import br.com.numpax.domain.enums.NatureOfTransaction;
-import br.com.numpax.domain.enums.RepeatableType;
-import br.com.numpax.domain.enums.VariableInvestmentType;
+import br.com.numpax.domain.enums.*;
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
 
 public class VariableInvestmentTest {
     public static void main(String[] args) {
@@ -31,7 +27,7 @@ public class VariableInvestmentTest {
 
     private static VariableInvestment createDefaultVariableInvestment() {
         Category category = new Category("Investment", "Investment category", "icon.png", CategoryType.INCOME, true);
-        User user = new User("John Doe", "john.doe@example.com", "password", LocalDate.of(1990, 1, 1));
+        User user = new User("Márcia Kamilly Pietra Lima", "marcia.kamilly.lima@solviagens.com", "qdDsgPDZtO", LocalDate.of(2000, 2, 2));
         RegularAccount regularAccount = new RegularAccount("Main Account", "Primary account", user, AccountType.SAVINGS);
         return new VariableInvestment("INV001", "Variable Investment", "Description", BigDecimal.valueOf(1000), category, regularAccount, NatureOfTransaction.INCOME, "Receiver", "Sender", LocalDate.now(), false, RepeatableType.NONE, "Note", VariableInvestmentType.STOCK, LocalDate.now().plusYears(1), "Broker XYZ", LocalDate.now(), "ASSET001", BigDecimal.valueOf(10), BigDecimal.valueOf(100), LocalDate.now().plusYears(1), BigDecimal.valueOf(150), new BigDecimal[]{BigDecimal.valueOf(1), BigDecimal.valueOf(2)}, new BigDecimal[]{BigDecimal.valueOf(3), BigDecimal.valueOf(4)});
     }

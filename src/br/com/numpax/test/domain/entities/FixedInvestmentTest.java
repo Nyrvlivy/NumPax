@@ -1,17 +1,13 @@
 package br.com.numpax.test.domain.entities;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
-
 import br.com.numpax.domain.entities.Category;
 import br.com.numpax.domain.entities.FixedInvestment;
 import br.com.numpax.domain.entities.RegularAccount;
 import br.com.numpax.domain.entities.User;
-import br.com.numpax.domain.enums.AccountType;
-import br.com.numpax.domain.enums.CategoryType;
-import br.com.numpax.domain.enums.FixedInvestmentType;
-import br.com.numpax.domain.enums.NatureOfTransaction;
-import br.com.numpax.domain.enums.RepeatableType;
+import br.com.numpax.domain.enums.*;
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
 
 public class FixedInvestmentTest {
     public static void main(String[] args) {
@@ -29,7 +25,7 @@ public class FixedInvestmentTest {
 
     private static FixedInvestment createDefaultFixedInvestment() {
         Category category = new Category("Investment", "Investment category", "icon.png", CategoryType.INCOME, true);
-        User user = new User("John Doe", "john.doe@example.com", "password", LocalDate.of(1990, 1, 1));
+        User user = new User("Sarah Regina Santos", "sarah.regina.santos@ci.com.br", "72qLyjOJHf", LocalDate.of(2000, 9, 1));
         RegularAccount regularAccount = new RegularAccount("Main Account", "Primary account", user, AccountType.SAVINGS);
         return new FixedInvestment("INV001", "Fixed Investment", "Description", BigDecimal.valueOf(1000), category, regularAccount, NatureOfTransaction.INCOME, "Receiver", "Sender", LocalDate.now(), false, RepeatableType.NONE, "Note", FixedInvestmentType.CDB, LocalDate.now(), LocalDate.now().plusYears(1), "Bank XYZ", new Double[]{0.1, 0.2}, 1100.0, LocalDate.now().plusYears(1), 30, 100.0);
     }

@@ -6,14 +6,14 @@ import java.util.UUID;
 
 
 public class User {
-    private final String id;                  
-    private String name;                      
-    private String email;                     
-    private String password;                  
-    private LocalDate birthdate;              
-    private boolean isActive;                 
-    private final LocalDateTime createdAt;    
-    private LocalDateTime updatedAt;          
+    private final String id;
+    private String name;
+    private String email;
+    private String password;
+    private LocalDate birthdate;
+    private boolean isActive;
+    private final LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
     public User(String name, String email, String password, LocalDate birthdate) {
         this.id = UUID.randomUUID().toString();
@@ -91,9 +91,9 @@ public class User {
     public void deactivate() {
         this.isActive = false;
         this.updatedAt = LocalDateTime.now();
-}
+    }
 
-public boolean checkPassword(String inputPassword) {
-    return this.password.equals(inputPassword);
-}
+    public boolean checkPassword(String inputPassword) {
+        return this.password.equals(inputPassword);
+    }
 }

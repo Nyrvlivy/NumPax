@@ -1,25 +1,25 @@
 package br.com.numpax.domain.entities;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-
 import br.com.numpax.domain.enums.NatureOfTransaction;
 import br.com.numpax.domain.enums.RepeatableType;
 import br.com.numpax.domain.enums.VariableInvestmentType;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 public class VariableInvestment extends Transaction {
-    private VariableInvestmentType variableInvestmentType;        
-    private String broker;                                        
-    private LocalDate purchaseDate;                               
-    private LocalDate expirationDate;                             
-    private String assetCode;                               
-    private BigDecimal quantity;                                  
-    private BigDecimal unitPrice;                                 
-    private LocalDate saleDate;                                   
-    private BigDecimal salePrice;                                 
-    private BigDecimal[] brokerFees;                              
-    private BigDecimal[] otherFees;                               
+    private VariableInvestmentType variableInvestmentType;
+    private String broker;
+    private LocalDate purchaseDate;
+    private LocalDate expirationDate;
+    private String assetCode;
+    private BigDecimal quantity;
+    private BigDecimal unitPrice;
+    private LocalDate saleDate;
+    private BigDecimal salePrice;
+    private BigDecimal[] brokerFees;
+    private BigDecimal[] otherFees;
 
     public VariableInvestment(String code, String name, String description, BigDecimal amount, Category category, RegularAccount regularAccount, NatureOfTransaction natureOfTransaction, String receiver, String sender, LocalDate transactionDate, boolean isRepeatable, RepeatableType repeatableType, String note, VariableInvestmentType variableInvestmentType, LocalDate expirationDate, String broker, LocalDate purchaseDate, String assetCode, BigDecimal quantity, BigDecimal unitPrice, LocalDate saleDate, BigDecimal salePrice, BigDecimal[] brokerFees, BigDecimal[] otherFees) {
         super(code, name, description, amount, category, regularAccount, natureOfTransaction, receiver, sender, transactionDate, repeatableType, note);
@@ -29,14 +29,13 @@ public class VariableInvestment extends Transaction {
         this.expirationDate = expirationDate;
         this.assetCode = assetCode;
         this.quantity = quantity;
-        this.unitPrice = unitPrice; 
+        this.unitPrice = unitPrice;
         this.saleDate = saleDate;
         this.salePrice = salePrice;
         this.brokerFees = brokerFees;
         this.otherFees = otherFees;
     }
 
-    // Getters e Setters
     public VariableInvestmentType getVariableInvestmentType() {
         return variableInvestmentType;
     }
@@ -140,7 +139,7 @@ public class VariableInvestment extends Transaction {
         return getReceivedAmount().subtract(getInvestedAmount());
     }
 
-    public BigDecimal getTotalFees() { 
+    public BigDecimal getTotalFees() {
         BigDecimal totalBrokerFees = BigDecimal.ZERO;
         BigDecimal totalOtherFees = BigDecimal.ZERO;
 
@@ -170,7 +169,7 @@ public class VariableInvestment extends Transaction {
     public void setExpirationDate(LocalDate expirationDate) {
         this.expirationDate = expirationDate;
     }
-    
+
     public void setAssetCode(String assetCode) {
         this.assetCode = assetCode;
         this.setUpdatedAt(LocalDateTime.now());

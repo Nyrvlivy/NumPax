@@ -1,15 +1,15 @@
 package br.com.numpax.usecases.Account;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.util.Scanner;
-
 import br.com.numpax.domain.entities.Account;
 import br.com.numpax.domain.entities.Category;
 import br.com.numpax.domain.entities.RegularAccount;
 import br.com.numpax.domain.entities.Transaction;
 import br.com.numpax.domain.enums.NatureOfTransaction;
 import br.com.numpax.domain.enums.RepeatableType;
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.Scanner;
 
 public class RegisterIncomeUseCase {
     private final Scanner scanner;
@@ -26,7 +26,7 @@ public class RegisterIncomeUseCase {
 
         while (!validInput) {
             try {
-                System.out.println("Digite o valor da receita:");
+                System.out.print("Digite o valor da receita: ");
                 incomeAmount = Double.parseDouble(scanner.nextLine());
                 if (incomeAmount <= 0) {
                     System.out.println("O valor da receita deve ser positivo. Tente novamente.");
@@ -40,25 +40,25 @@ public class RegisterIncomeUseCase {
 
         Category category = new Category("Salário", "Depósito do salário mensal", "icon_salary", null, true);
 
-  
-    BigDecimal incomeAmountBigDecimal = BigDecimal.valueOf(incomeAmount);
 
-    RegularAccount regularAccount = (RegularAccount) account;
+        BigDecimal incomeAmountBigDecimal = BigDecimal.valueOf(incomeAmount);
 
-    Transaction incomeTransaction = new Transaction(
-        "INC" + System.currentTimeMillis(), 
-        "Salário", 
-        "Depósito do salário mensal", 
-        incomeAmountBigDecimal, 
-        category, 
-        regularAccount, 
-        NatureOfTransaction.INCOME,
-        userName, // receiver
-        null, // sender
-        LocalDate.now(), 
-        RepeatableType.MONTHLY, 
-        "Salário de " + LocalDate.now().getMonth()
-    );
+        RegularAccount regularAccount = (RegularAccount) account;
+
+        Transaction incomeTransaction = new Transaction(
+            "INC" + System.currentTimeMillis(),
+            "Salário",
+            "Depósito do salário mensal",
+            incomeAmountBigDecimal,
+            category,
+            regularAccount,
+            NatureOfTransaction.INCOME,
+            userName, // receiver
+            null, // sender
+            LocalDate.now(),
+            RepeatableType.MONTHLY,
+            "Salário de " + LocalDate.now().getMonth()
+        );
 
         incomeTransaction.apply();
         System.out.printf("Receita registrada com sucesso. Saldo após aplicação de receita: R$ %.2f%n", account.getBalance());

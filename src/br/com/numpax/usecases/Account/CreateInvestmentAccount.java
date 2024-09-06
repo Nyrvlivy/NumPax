@@ -10,18 +10,18 @@ public class CreateInvestmentAccount {
         String name,
         String description,
         User user,
-        AccountType accountType, 
+        AccountType accountType,
         RiskLevelType riskLevelType,
         AccountType.InvestmentSubtypeAccount investmentSubtypeAccount
-    ){
+    ) {
         return new InvestmentAccount(
-            name, 
-            description, 
-            user, 
+            name,
+            description,
+            user,
             accountType,
-            0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 
+            0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
             riskLevelType,
             investmentSubtypeAccount
         );
-    };
+    }
 }

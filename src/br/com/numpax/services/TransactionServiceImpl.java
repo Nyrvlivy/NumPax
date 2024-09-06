@@ -1,13 +1,13 @@
 package br.com.numpax.services;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.List;
-
 import br.com.numpax.domain.entities.Account;
 import br.com.numpax.domain.entities.Transaction;
 import br.com.numpax.domain.repositories.TransactionRepository;
 import br.com.numpax.exceptions.ResourceNotFoundException;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
 
 public class TransactionServiceImpl implements TransactionService {
     private final TransactionRepository transactionRepository;
@@ -17,7 +17,7 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public Transaction createTransaction(Transaction transaction) {     
+    public Transaction createTransaction(Transaction transaction) {
         transaction.setUpdatedAt(LocalDateTime.now());
         return transactionRepository.save(transaction);
     }

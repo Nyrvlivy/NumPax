@@ -1,23 +1,23 @@
 package br.com.numpax.domain.entities;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-
 import br.com.numpax.domain.enums.FixedInvestmentType;
 import br.com.numpax.domain.enums.NatureOfTransaction;
 import br.com.numpax.domain.enums.RepeatableType;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 public class FixedInvestment extends Transaction {
-    private FixedInvestmentType fixedInvestmentType;   
-    private LocalDate investmentDate;                  
-    private LocalDate expirationDate;                  
-    private String institution;                        
-    private Double[] TaxRates;                         
-    private Double redeemValue;                        
-    private LocalDate redeemDate;                      
-    private Integer liquidityPeriod;                   
-    private Double netGainLoss;                                   
+    private FixedInvestmentType fixedInvestmentType;
+    private LocalDate investmentDate;
+    private LocalDate expirationDate;
+    private String institution;
+    private Double[] TaxRates;
+    private Double redeemValue;
+    private LocalDate redeemDate;
+    private Integer liquidityPeriod;
+    private Double netGainLoss;
 
 
     public FixedInvestment(String code, String name, String description, BigDecimal amount, Category category, RegularAccount regularAccount, NatureOfTransaction natureOfTransaction, String receiver, String sender, LocalDate transactionDate, boolean isRepeatable, RepeatableType repeatableType, String note, FixedInvestmentType fixedInvestmentType, LocalDate investmentDate, LocalDate expirationDate, String institution, Double[] taxRates, Double redeemValue, LocalDate redeemDate, Integer liquidityPeriod, Double netGainLoss) {
@@ -77,7 +77,7 @@ public class FixedInvestment extends Transaction {
     public Double[] getTaxRates() {
         return TaxRates;
     }
-    
+
     public void setTaxRates(Double[] taxRates) {
         TaxRates = taxRates;
     }
@@ -120,4 +120,3 @@ public class FixedInvestment extends Transaction {
         this.netGainLoss = netGainLoss;
     }
 }
-

@@ -1,14 +1,14 @@
 package br.com.numpax.usecases.Account;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.util.Scanner;
-
 import br.com.numpax.domain.entities.InvestmentAccount;
 import br.com.numpax.domain.entities.RegularAccount;
 import br.com.numpax.domain.entities.Transaction;
 import br.com.numpax.domain.enums.NatureOfTransaction;
 import br.com.numpax.domain.enums.RepeatableType;
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.Scanner;
 
 public class MakeInvestmentUseCase {
     private final Scanner scanner;
@@ -20,12 +20,12 @@ public class MakeInvestmentUseCase {
     }
 
     public void execute(InvestmentAccount account) {
-        System.out.println("Digite o valor do investimento:");
-                BigDecimal investmentAmount = new BigDecimal(scanner.nextLine());
+        System.out.print("Digite o valor do investimento: ");
+        BigDecimal investmentAmount = new BigDecimal(scanner.nextLine());
 
         scanner.nextLine();
 
-         Transaction investmentTransaction = new Transaction(
+        Transaction investmentTransaction = new Transaction(
             "INV" + System.currentTimeMillis(),
             "Investimento",
             "Aplicação em investimento",
@@ -39,7 +39,6 @@ public class MakeInvestmentUseCase {
             RepeatableType.NEVER,
             "Investimento realizado em " + LocalDate.now()
         );
-
 
         investmentTransaction.apply();
         System.out.println("Investimento realizado com sucesso. Saldo após aplicação de investimento: " + account.getBalance());

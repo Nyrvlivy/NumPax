@@ -1,8 +1,8 @@
 package br.com.numpax.usecases.Account;
 
-import java.util.Scanner;
-
 import br.com.numpax.domain.entities.RegularAccount;
+
+import java.util.Scanner;
 
 public class DepositUseCase {
     private final Scanner scanner;
@@ -12,7 +12,7 @@ public class DepositUseCase {
     }
 
     public void execute(RegularAccount account) {
-        System.out.println("Digite o valor para depósito:");
+        System.out.print("Digite o valor para depósito: ");
         double depositAmount = scanner.nextDouble();
         scanner.nextLine();
         account.deposit(depositAmount);

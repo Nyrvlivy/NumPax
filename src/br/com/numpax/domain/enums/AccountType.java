@@ -9,7 +9,8 @@ public enum AccountType {
 
     private InvestmentSubtypeAccount investmentSubtype;
 
-    AccountType() {}
+    AccountType() {
+    }
 
     AccountType(InvestmentSubtypeAccount investmentSubtype) {
         this.investmentSubtype = investmentSubtype;
