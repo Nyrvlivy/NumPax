@@ -81,7 +81,7 @@ public class TransactionServiceImpl implements TransactionService {
                 transaction.setDescription(updatedTransaction.getDescription());
                 transaction.setAmount(updatedTransaction.getAmount());
                 transaction.setCategory(updatedTransaction.getCategory());
-                transaction.setAccount(updatedTransaction.getAccount());
+                transaction.setRegularAccount(updatedTransaction.getRegularAccount());
                 transaction.setNatureOfTransaction(updatedTransaction.getNatureOfTransaction());
                 transaction.setReceiver(updatedTransaction.getReceiver());
                 transaction.setSender(updatedTransaction.getSender());
