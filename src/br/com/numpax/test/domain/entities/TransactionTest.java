@@ -178,12 +178,23 @@ public class TransactionTest {
     }
 
     private static void testApply() {
-        Category category = new Category("Expense", "Expense category", "icon.png", CategoryType.EXPENSE, true);
-        User user = new User("Carla Mariana Gomes", "carla_gomes@signa.net.br", "TjTIAdhS5c", LocalDate.of(2000, 4, 14));
-        RegularAccount regularAccount = new RegularAccount("Main Account", "Primary account", user, AccountType.CHECKING);
-        Transaction transaction = new Transaction("TRX001", "Transaction", "Description", BigDecimal.valueOf(100.0), category, regularAccount, NatureOfTransaction.EXPENSE, "Receiver", "Sender", LocalDate.now(), RepeatableType.NONE, "Note");
-        transaction.apply();
+        try {
+            Category category = new Category("Expense", "Expense category", "icon.png", CategoryType.EXPENSE, true);
+            User user = new User("Carla Mariana Gomes", "carla_gomes@signa.net.br", "TjTIAdhS5c", LocalDate.of(2000, 4, 14));
+            RegularAccount regularAccount = new RegularAccount("Main Account", "Primary account", user, AccountType.CHECKING);
 
-        assert transaction.isEffective();
+            regularAccount.deposit(200.0);
+
+            Transaction transaction = new Transaction("TRX001", "Transaction", "Description", BigDecimal.valueOf(100.0),
+                category, regularAccount, NatureOfTransaction.EXPENSE, "Receiver", "Sender",
+                LocalDate.now(), RepeatableType.NONE, "Note");
+
+            transaction.apply();
+
+            assert transaction.isEffective();
+        } catch (Exception e) {
+            e.printStackTrace();
+            assert false : "Exception occurred during apply: " + e.getMessage();
+        }
     }
 }
