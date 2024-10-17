@@ -1,15 +1,20 @@
 package br.com.numpax.application.services.impl;
 
+import br.com.numpax.API.V1.dto.AccountDTO;
 import br.com.numpax.API.V1.dto.DetailedUserDTO;
 import br.com.numpax.API.V1.dto.UserDTO;
 import br.com.numpax.API.V1.mappers.UserMapper;
+import br.com.numpax.application.enums.AccountType;
+import br.com.numpax.application.services.AccountService;
 import br.com.numpax.infrastructure.dao.UserDAO;
 import br.com.numpax.infrastructure.dao.impl.UserDAOImpl;
 import br.com.numpax.infrastructure.entities.User;
 import br.com.numpax.application.services.UserService;
 
+import java.math.BigDecimal;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,11 +27,28 @@ public class UserServiceImpl implements UserService {
 
         User user = UserMapper.toEntity(userDTO, hashedPassword);
         userDAO.saveOrUpdate(user);
+
+        AccountService accountService = new AccountServiceImpl();
+
+        AccountDTO defaultAccountDTO = new AccountDTO(
+            null,
+            "Conta Corrente",
+            "Conta corrente padrão",
+            BigDecimal.ZERO,
+            AccountType.CHECKING,
+            true,
+            LocalDateTime.now(),
+            LocalDateTime.now(),
+            user.getId()
+        );
+
+        accountService.createAccount(defaultAccountDTO, user.getId());
+
         return UserMapper.toSimpleDTO(user);
     }
 
     @Override
-    public UserDTO getSimpleUserById(String id) {
+    public UserDTO getUserById(String id) {
         User user = userDAO.findSimpleById(id)
             .orElseThrow(() -> new RuntimeException("Usuário não encontrado com o ID: " + id));
         return UserMapper.toSimpleDTO(user);

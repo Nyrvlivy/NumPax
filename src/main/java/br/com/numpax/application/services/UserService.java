@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface UserService {
     UserDTO createOrUpdateUser(UserDTO userDTO, String password);
-    UserDTO getSimpleUserById(String id);
+    UserDTO getUserById(String id);
     DetailedUserDTO getDetailedUserById(String id);
     List<UserDTO> getAllUsers();
     List<UserDTO> getAllActiveUsers();

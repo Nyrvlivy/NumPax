@@ -7,20 +7,9 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 public class RegularAccount extends Account {
-    private AccountType accountType;
 
-    public RegularAccount(String name, String description, User user, AccountType accountType) {
-        super(name, description, user);
-        this.accountType = accountType;
-    }
-
-    public AccountType getType() {
-        return accountType;
-    }
-
-    public void setType(AccountType accountType) {
-        this.accountType = accountType;
-        this.setUpdatedAt(LocalDateTime.now());
+    public RegularAccount(String name, String description, AccountType accountType, String userId) {
+        super(name, description, accountType, userId);
     }
 
     public void withdraw(double amount) {
@@ -31,15 +20,15 @@ public class RegularAccount extends Account {
             throw new InsufficientFundsException("Saldo insuficiente.");
         }
         super.setBalance(super.getBalance().subtract(BigDecimal.valueOf(amount)));
-        super.setUpdatedAt(LocalDateTime.now());
+        this.setUpdatedAt(LocalDateTime.now());
     }
 
     public void deposit(double amount) {
         if (amount > 0) {
             super.setBalance(super.getBalance().add(BigDecimal.valueOf(amount)));
-            super.setUpdatedAt(LocalDateTime.now());
+            this.setUpdatedAt(LocalDateTime.now());
         } else {
-            throw new IllegalArgumentException("Deposit amount must be positive");
+            throw new IllegalArgumentException("O valor do depósito deve ser positivo.");
         }
     }
 
@@ -50,15 +39,15 @@ public class RegularAccount extends Account {
             BigDecimal withdrawAmount = bigAmount.negate();
             if (withdrawAmount.compareTo(super.getBalance()) <= 0) {
                 super.setBalance(super.getBalance().subtract(withdrawAmount));
-                super.setUpdatedAt(LocalDateTime.now());
+                this.setUpdatedAt(LocalDateTime.now());
             } else {
-                throw new IllegalArgumentException("Insufficient balance for withdrawal");
+                throw new IllegalArgumentException("Saldo insuficiente para saque.");
             }
         } else if (amount > 0) {
             super.setBalance(super.getBalance().add(bigAmount));
-            super.setUpdatedAt(LocalDateTime.now());
+            this.setUpdatedAt(LocalDateTime.now());
         } else {
-            throw new IllegalArgumentException("Amount must be non-zero");
+            throw new IllegalArgumentException("O valor deve ser diferente de zero.");
         }
     }
 }

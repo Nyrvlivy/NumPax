@@ -5,7 +5,7 @@ import br.com.numpax.application.enums.AccountType;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-public class GoalAccount extends RegularAccount {
+public class GoalAccount extends Account {
     private Double targetValue;
     private Double amountValue;
     private Double targetTaxRate;
@@ -17,8 +17,8 @@ public class GoalAccount extends RegularAccount {
     private LocalDate startDate;
     private LocalDate endDate;
 
-    public GoalAccount(String name, String description, User user, AccountType accountType, Double targetValue, Double targetTaxRate, Double monthlyTaxRate, Double monthlyEstimate, Double monthlyAchievement, Category category, LocalDate targetDate, LocalDate startDate, LocalDate endDate) {
-        super(name, description, user, accountType);
+    public GoalAccount(String name, String description, AccountType accountType, String userId, Double targetValue, Double targetTaxRate, Double monthlyTaxRate, Double monthlyEstimate, Double monthlyAchievement, Category category, LocalDate targetDate, LocalDate startDate, LocalDate endDate) {
+        super(name, description, accountType, userId);
         this.targetValue = targetValue;
         this.amountValue = 0.0;
         this.targetTaxRate = targetTaxRate;

@@ -1,16 +1,13 @@
 package br.com.numpax.application.services;
 
-import java.math.BigDecimal;
+import br.com.numpax.API.V1.dto.AccountDTO;
+
 import java.util.List;
 
-import br.com.numpax.infrastructure.entities.Account;
-import br.com.numpax.infrastructure.entities.User;
-
 public interface AccountService {
-    Account createAccount(User user, BigDecimal balance);
-    Account updateAccount(String id, Account account);
-    void deleteAccount(String id);
-    Account getAccountById(String id);
-    List<Account> getAccountsByUser(User user);
-    List<Account> getAllAccounts();
+    AccountDTO createAccount(AccountDTO accountDTO, String userId);
+    AccountDTO getAccountById(String id);
+    List<AccountDTO> getAccountsByUserId(String userId);
+    List<AccountDTO> getAllAccounts();
+    void disableAccountById(String id);
 }

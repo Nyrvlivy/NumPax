@@ -9,8 +9,8 @@ public class CheckingAccount extends RegularAccount {
     private String agency;
     private String accountNumber;
 
-    public CheckingAccount(String name, String description, User user, AccountType accountType, String bankName, String agency, String accountNumber) {
-        super(name, description, user, accountType);
+    public CheckingAccount(String name, String description, AccountType accountType, String userId, String bankName, String agency, String accountNumber) {
+        super(name, description, accountType, userId);
         this.bankName = bankName;
         this.agency = agency;
         this.accountNumber = accountNumber;

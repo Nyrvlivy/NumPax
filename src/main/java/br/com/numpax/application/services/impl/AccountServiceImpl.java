@@ -1,60 +1,54 @@
 package br.com.numpax.application.services.impl;
 
+import br.com.numpax.API.V1.dto.AccountDTO;
+import br.com.numpax.API.V1.mappers.AccountMapper;
 import br.com.numpax.application.services.AccountService;
 import br.com.numpax.infrastructure.dao.AccountDAO;
 import br.com.numpax.infrastructure.dao.impl.AccountDAOImpl;
 import br.com.numpax.infrastructure.entities.Account;
-import br.com.numpax.infrastructure.entities.User;
-import br.com.numpax.API.V1.exceptions.ResourceNotFoundException;
 
-import java.math.BigDecimal;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class AccountServiceImpl implements AccountService {
-    private final AccountDAO accountDAO;
 
-    public AccountServiceImpl() {
-        this.accountDAO = new AccountDAOImpl();
+    private final AccountDAO accountDAO = new AccountDAOImpl();
+
+    @Override
+    public AccountDTO createAccount(AccountDTO accountDTO, String userId) {
+        Account account = AccountMapper.toEntity(accountDTO);
+        account.setUserId(userId);
+        accountDAO.saveOrUpdate(account);
+
+        return AccountMapper.toDTO(account);
     }
 
     @Override
-    public Account createAccount(User user, BigDecimal balance) {
-        Account account = new Account(user.getName(), "Descrição da conta", user);
-        account.setBalance(balance);
-        accountDAO.save(account);
-        return account;
+    public AccountDTO getAccountById(String id) {
+        Account account = accountDAO.findById(id)
+            .orElseThrow(() -> new RuntimeException("Conta não encontrada com o ID: " + id));
+
+        return AccountMapper.toDTO(account);
     }
 
     @Override
-    public Account updateAccount(String id, Account account) {
-        Account existingAccount = getAccountById(id);
-        existingAccount.setName(account.getName());
-        existingAccount.setDescription(account.getDescription());
-        existingAccount.setBalance(account.getBalance());
-        existingAccount.setIsActive(account.getIsActive());
-        existingAccount.setUpdatedAt(account.getUpdatedAt());
-        accountDAO.update(existingAccount);
-        return existingAccount;
+    public List<AccountDTO> getAccountsByUserId(String userId) {
+        List<Account> accounts = accountDAO.findByUserId(userId);
+        return accounts.stream()
+            .map(AccountMapper::toDTO)
+            .collect(Collectors.toList());
     }
 
     @Override
-    public void deleteAccount(String id) {
-        accountDAO.deleteById(id);
+    public List<AccountDTO> getAllAccounts() {
+        List<Account> accounts = accountDAO.findAll();
+        return accounts.stream()
+            .map(AccountMapper::toDTO)
+            .collect(Collectors.toList());
     }
 
     @Override
-    public Account getAccountById(String id) {
-        return accountDAO.findById(id)
-            .orElseThrow(() -> new ResourceNotFoundException("Conta não encontrada com ID: " + id));
-    }
-
-    @Override
-    public List<Account> getAccountsByUser(User user) {
-        return accountDAO.findByUser(user);
-    }
-
-    @Override
-    public List<Account> getAllAccounts() {
-        return accountDAO.findAll();
+    public void disableAccountById(String id) {
+        accountDAO.disableById(id);
     }
 }

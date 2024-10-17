@@ -1,5 +1,7 @@
 package br.com.numpax.infrastructure.entities;
 
+import br.com.numpax.application.enums.AccountType;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -9,100 +11,53 @@ public class Account {
     private String name;
     private String description;
     private BigDecimal balance;
-    private boolean isActive;
-    private User user;
+    private AccountType accountType;
+    private Boolean isActive;
     private final LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+    private String userId;
 
-    public Account(String name, String description, User user) {
+    public Account(String name, String description, AccountType accountType, String userId) {
         this.id = UUID.randomUUID().toString();
         this.name = name;
         this.description = description;
-        this.balance = BigDecimal.valueOf(0.0);
+        this.balance = BigDecimal.ZERO;
+        this.accountType = accountType;
         this.isActive = true;
-        this.user = user;
         this.createdAt = LocalDateTime.now();
         this.updatedAt = LocalDateTime.now();
+        this.userId = userId;
     }
 
-    public Account(String id, String name, String description, BigDecimal balance, boolean isActive, User user, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        this.id = id;
+    public Account(String id, String name, String description, BigDecimal balance, AccountType accountType, Boolean isActive, LocalDateTime createdAt, LocalDateTime updatedAt, String userId) {
+        this.id = id != null ? id : UUID.randomUUID().toString();
         this.name = name;
         this.description = description;
-        this.balance = balance;
-        this.isActive = isActive;
-        this.user = user;
-        this.createdAt = createdAt;
+        this.balance = balance != null ? balance : BigDecimal.ZERO;
+        this.accountType = accountType;
+        this.isActive = isActive != null ? isActive : true;
+        this.createdAt = createdAt != null ? createdAt : LocalDateTime.now();
+        this.updatedAt = updatedAt != null ? updatedAt : LocalDateTime.now();
+        this.userId = userId;
+    }
+
+    public String getId() { return id; }
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; this.updatedAt = LocalDateTime.now(); }
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; this.updatedAt = LocalDateTime.now(); }
+    public BigDecimal getBalance() { return balance; }
+    public void setBalance(BigDecimal balance) { this.balance = balance; this.updatedAt = LocalDateTime.now(); }
+    public AccountType getAccountType() { return accountType; }
+    public void setAccountType(AccountType accountType) { this.accountType = accountType; this.updatedAt = LocalDateTime.now(); }
+    public Boolean getIsActive() { return isActive; }
+    public void setIsActive(Boolean isActive) { this.isActive = isActive; this.updatedAt = LocalDateTime.now(); }
+    public LocalDateTime getCreatedAt() { return createdAt; }
+    public LocalDateTime getUpdatedAt() { return updatedAt; }
+    public String getUserId() { return userId; }
+    public void setUserId(String userId) { this.userId = userId; this.updatedAt = LocalDateTime.now(); }
+
+    protected void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-        this.updatedAt = LocalDateTime.now();
-    }
-
-    public void setName(String name) {
-        this.name = name;
-        this.updatedAt = LocalDateTime.now();
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-        this.updatedAt = LocalDateTime.now();
-    }
-
-    public BigDecimal getBalance() {
-        return balance;
-    }
-
-    public void setBalance(BigDecimal balance) {
-        this.balance = balance;
-        this.updatedAt = LocalDateTime.now();
-    }
-
-    public boolean getIsActive() {
-        return isActive;
-    }
-
-    public void setIsActive(boolean isActive) {
-        this.isActive = isActive;
-        this.updatedAt = LocalDateTime.now();
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
-    public boolean isActive() {
-        return isActive;
-    }
-
-    public void setActive(boolean active) {
-        this.isActive = active;
-        this.updatedAt = LocalDateTime.now();
     }
 }
