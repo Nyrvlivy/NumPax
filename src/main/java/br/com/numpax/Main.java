@@ -26,7 +26,7 @@ public class Main {
         /* 1. Testes de Contas (Accounts)
          *
          * - Toda vez que um novo usuário é criado, ele recebe uma conta corrente associada a ele
-         * - Nos testes, além da inicial, criamos mais 4 contas para o mesmo usuário:
+         * - Nos testes, além da inicial, criamos mais 4 contas (4 entidades diferentes) para o mesmo usuário:
          *      - Conta Corrente -> Checking
          *      - Conta Poupança -> Savings
          *      - Conta Investimento -> Investment
