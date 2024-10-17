@@ -18,7 +18,10 @@ public class Main {
         System.out.println("Testando as funcionalidades_____");
 
         // OBSERVAÇÕES PARA O AVALIADOR:
-        // Descomente apenas a função que deseja testar para o console não ficar poluído.
+        // - Descomente apenas a função que deseja testar para o console não ficar poluído.
+        // - Tivemos que fazer uma pequena alteração em nossa criação no banco de dados, então atualizamos o script e poderá ser encontrado em src/main/resources/sql/create_tables.sql
+        // - Infelizmente, tivemos que implementar usuários, uma vez que as contas são associadas a eles.
+        // - Quanto a versão, utilizamos o Java 21, validando com o professor e ele nos autorizou a utilizar essa versão.
 
         /* 1. Testes de Contas (Accounts)
          *
