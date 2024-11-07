@@ -463,13 +463,7 @@ public class AccountDAOImpl implements AccountDAO {
         return account;
     }
 
-    private void copyBaseAccountProperties(Account from, Account to) {
-        to.setId(from.getId());
-        to.setBalance(from.getBalance());
-        to.setIsActive(from.getIsActive());
-        to.setCreatedAt(from.getCreatedAt());
-        to.setUpdatedAt(from.getUpdatedAt());
-    }
+
 
     @Override
     public List<Account> findAllInactive() {
@@ -508,24 +502,38 @@ public class AccountDAOImpl implements AccountDAO {
     }
 
     private Account findCheckingAccountById(String id, Account baseAccount, Connection conn) throws SQLException {
-        // Implementação
+        String sql = "SELECT * FROM CheckingAccounts WHERE account_id = ?";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, id);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return mapResultSetToCheckingAccount(rs, baseAccount);
+            }
+        }
+        return null;
     }
 
     private Account findSavingsAccountById(String id, Account baseAccount, Connection conn) throws SQLException {
-        // Implementação
+        String sql = "SELECT * FROM SavingsAccounts WHERE account_id = ?";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, id);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return mapResultSetToSavingsAccount(rs, baseAccount);
+            }
+        }
+        return null;
     }
 
     private Account findInvestmentAccountById(String id, Account baseAccount, Connection conn) throws SQLException {
-        // Implementação
-    }
-
-    private void copyAccountData(Account from, Account to) {
-        to.setId(from.getId());
-        to.setName(from.getName());
-        to.setDescription(from.getDescription());
-        to.setBalance(from.getBalance());
-        to.setActive(from.isActive());
-        to.setCreatedAt(from.getCreatedAt());
-        to.setUpdatedAt(from.getUpdatedAt());
+        String sql = "SELECT * FROM InvestmentAccounts WHERE account_id = ?";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, id);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return mapResultSetToInvestmentAccount(rs, baseAccount);
+            }
+        }
+        return null;
     }
 }
