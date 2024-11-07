@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.math.BigDecimal;
 
 public class AccountDAOImpl implements AccountDAO {
     private final ConnectionManager connectionManager = ConnectionManager.getInstance();
@@ -61,7 +62,7 @@ public class AccountDAOImpl implements AccountDAO {
             stmt.setString(3, account.getDescription());
             stmt.setBigDecimal(4, account.getBalance());
             stmt.setString(5, account.getAccountType().name());
-            stmt.setInt(6, account.getIsActive() ? 1 : 0);
+            stmt.setInt(6, account.isActive() ? 1 : 0);
             stmt.setString(7, account.getUserId());
             stmt.setTimestamp(8, Timestamp.valueOf(account.getCreatedAt()));
             stmt.setTimestamp(9, Timestamp.valueOf(account.getUpdatedAt()));
@@ -72,7 +73,7 @@ public class AccountDAOImpl implements AccountDAO {
     private void saveCheckingAccount(CheckingAccount account, Connection conn) throws SQLException {
         String sql = """
             INSERT INTO CheckingAccounts (
-                account_id, bank_name, agency, account_number
+                account_id, bank_code, agency, account_number
             ) VALUES (?, ?, ?, ?)
         """;
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -159,7 +160,7 @@ public class AccountDAOImpl implements AccountDAO {
             stmt.setString(2, account.getDescription());
             stmt.setBigDecimal(3, account.getBalance());
             stmt.setString(4, account.getAccountType().name());
-            stmt.setInt(5, account.getIsActive() ? 1 : 0);
+            stmt.setInt(5, account.isActive() ? 1 : 0);
             stmt.setTimestamp(6, Timestamp.valueOf(LocalDateTime.now()));
             stmt.setString(7, account.getId());
             stmt.executeUpdate();
@@ -169,7 +170,7 @@ public class AccountDAOImpl implements AccountDAO {
     private void updateCheckingAccount(CheckingAccount account, Connection conn) throws SQLException {
         String sql = """
             UPDATE CheckingAccounts 
-            SET bank_name = ?, agency = ?, account_number = ?
+            SET bank_code = ?, agency = ?, account_number = ?
             WHERE account_id = ?
         """;
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -413,7 +414,7 @@ public class AccountDAOImpl implements AccountDAO {
             baseAccount.getDescription(),
             baseAccount.getAccountType(),
             baseAccount.getUserId(),
-            rs.getString("bank_name"),
+            rs.getString("bank_code"),
             rs.getString("agency"),
             rs.getString("account_number")
         );
@@ -535,5 +536,38 @@ public class AccountDAOImpl implements AccountDAO {
             }
         }
         return null;
+    }
+
+    @Override
+    public List<Account> findAllActive() {
+        return findAccountsByStatus(true);
+    }
+
+    private Account mapResultSetToBaseAccount(ResultSet rs) throws SQLException {
+        AccountType accountType = AccountType.valueOf(rs.getString("account_type"));
+        Account account;
+        
+        switch (accountType) {
+            case CHECKING:
+                account = new CheckingAccount("", "", accountType, "", "", "", "");
+                break;
+            case SAVINGS:
+                account = new SavingsAccount("", "", "", null, null, null, 
+                    BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO);
+                break;
+            case INVESTMENT:
+                account = new InvestmentAccount("", "", "", InvestmentSubtype.OTHER);
+                break;
+            default:
+                throw new IllegalArgumentException("Tipo de conta não suportado: " + accountType);
+        }
+        
+        account.setBalance(rs.getBigDecimal("balance"));
+        account.setActive(rs.getInt("is_active") == 1);
+        account.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime());
+        account.setUpdatedAt(rs.getTimestamp("updated_at").toLocalDateTime());
+        account.setUserId(rs.getString("user_id"));
+        
+        return account;
     }
 }

@@ -3,19 +3,20 @@ package br.com.numpax.infrastructure.entities;
 import br.com.numpax.application.enums.AccountType;
 
 import java.time.LocalDateTime;
+import java.math.BigDecimal;
 
 public class SavingsAccount extends RegularAccount {
     private LocalDateTime nearestDeadline;
     private LocalDateTime furthestDeadline;
     private LocalDateTime latestDeadline;
-    private Double averageTaxRate;
-    private Double numberOfFixedInvestments;
-    private Double totalMaturityAmount;
-    private Double totalDepositAmount;
+    private BigDecimal averageTaxRate;
+    private BigDecimal numberOfFixedInvestments;
+    private BigDecimal totalMaturityAmount;
+    private BigDecimal totalDepositAmount;
 
     public SavingsAccount(String name, String description, String userId, LocalDateTime nearestDeadline,
-                          LocalDateTime furthestDeadline, LocalDateTime latestDeadline, Double averageTaxRate,
-                          Double numberOfFixedInvestments, Double totalMaturityAmount, Double totalDepositAmount) {
+                          LocalDateTime furthestDeadline, LocalDateTime latestDeadline, BigDecimal averageTaxRate,
+                          BigDecimal numberOfFixedInvestments, BigDecimal totalMaturityAmount, BigDecimal totalDepositAmount) {
         super(name, description, AccountType.SAVINGS, userId);
         this.nearestDeadline = nearestDeadline;
         this.furthestDeadline = furthestDeadline;
@@ -55,38 +56,38 @@ public class SavingsAccount extends RegularAccount {
         this.setUpdatedAt(LocalDateTime.now());
     }
 
-    public Double getAverageTaxRate() {
+    public BigDecimal getAverageTaxRate() {
         return averageTaxRate;
     }
 
-    public void setAverageTaxRate(Double averageTaxRate) {
+    public void setAverageTaxRate(BigDecimal averageTaxRate) {
         this.averageTaxRate = averageTaxRate;
         this.setUpdatedAt(LocalDateTime.now());
     }
 
-    public Double getNumberOfFixedInvestments() {
+    public BigDecimal getNumberOfFixedInvestments() {
         return numberOfFixedInvestments;
     }
 
-    public void setNumberOfFixedInvestments(Double numberOfFixedInvestments) {
+    public void setNumberOfFixedInvestments(BigDecimal numberOfFixedInvestments) {
         this.numberOfFixedInvestments = numberOfFixedInvestments;
         this.setUpdatedAt(LocalDateTime.now());
     }
 
-    public Double getTotalMaturityAmount() {
+    public BigDecimal getTotalMaturityAmount() {
         return totalMaturityAmount;
     }
 
-    public void setTotalMaturityAmount(Double totalMaturityAmount) {
+    public void setTotalMaturityAmount(BigDecimal totalMaturityAmount) {
         this.totalMaturityAmount = totalMaturityAmount;
         this.setUpdatedAt(LocalDateTime.now());
     }
 
-    public Double getTotalDepositAmount() {
+    public BigDecimal getTotalDepositAmount() {
         return totalDepositAmount;
     }
 
-    public void setTotalDepositAmount(Double totalDepositAmount) {
+    public void setTotalDepositAmount(BigDecimal totalDepositAmount) {
         this.totalDepositAmount = totalDepositAmount;
         this.setUpdatedAt(LocalDateTime.now());
     }
