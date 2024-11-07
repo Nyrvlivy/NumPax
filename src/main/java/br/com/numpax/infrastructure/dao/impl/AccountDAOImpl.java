@@ -38,13 +38,13 @@ public class AccountDAOImpl implements AccountDAO {
 
     private void saveAccount(Account account, Connection conn) throws SQLException {
         saveBaseAccount(account, conn);
-        
-        if (account instanceof CheckingAccount) {
-            saveCheckingAccount((CheckingAccount) account, conn);
-        } else if (account instanceof SavingsAccount) {
-            saveSavingsAccount((SavingsAccount) account, conn);
-        } else if (account instanceof InvestmentAccount) {
-            saveInvestmentAccount((InvestmentAccount) account, conn);
+
+        switch (account) {
+            case CheckingAccount checkingAccount -> saveCheckingAccount(checkingAccount, conn);
+            case SavingsAccount savingsAccount -> saveSavingsAccount(savingsAccount, conn);
+            case InvestmentAccount investmentAccount -> saveInvestmentAccount(investmentAccount, conn);
+            default -> {
+            }
         }
     }
 
@@ -138,13 +138,13 @@ public class AccountDAOImpl implements AccountDAO {
 
     private void updateAccount(Account account, Connection conn) throws SQLException {
         updateBaseAccount(account, conn);
-        
-        if (account instanceof CheckingAccount) {
-            updateCheckingAccount((CheckingAccount) account, conn);
-        } else if (account instanceof SavingsAccount) {
-            updateSavingsAccount((SavingsAccount) account, conn);
-        } else if (account instanceof InvestmentAccount) {
-            updateInvestmentAccount((InvestmentAccount) account, conn);
+
+        switch (account) {
+            case CheckingAccount checkingAccount -> updateCheckingAccount(checkingAccount, conn);
+            case SavingsAccount savingsAccount -> updateSavingsAccount(savingsAccount, conn);
+            case InvestmentAccount investmentAccount -> updateInvestmentAccount(investmentAccount, conn);
+            default -> {
+            }
         }
     }
 
@@ -242,13 +242,13 @@ public class AccountDAOImpl implements AccountDAO {
                 Optional<Account> accountOpt = findById(id);
                 if (accountOpt.isPresent()) {
                     Account account = accountOpt.get();
-                    
-                    if (account instanceof CheckingAccount) {
-                        deleteFromTable("CheckingAccounts", id, conn);
-                    } else if (account instanceof SavingsAccount) {
-                        deleteFromTable("SavingsAccounts", id, conn);
-                    } else if (account instanceof InvestmentAccount) {
-                        deleteFromTable("InvestmentAccounts", id, conn);
+
+                    switch (account) {
+                        case CheckingAccount checkingAccount -> deleteFromTable("CheckingAccounts", id, conn);
+                        case SavingsAccount savingsAccount -> deleteFromTable("SavingsAccounts", id, conn);
+                        case InvestmentAccount investmentAccount -> deleteFromTable("InvestmentAccounts", id, conn);
+                        default -> {
+                        }
                     }
                     
                     deleteFromTable("Accounts", id, conn);
@@ -281,19 +281,13 @@ public class AccountDAOImpl implements AccountDAO {
                 if (rs.next()) {
                     Account baseAccount = mapResultSetToAccount(rs);
                     
-                    Account specificAccount = null;
-                    switch (baseAccount.getAccountType()) {
-                        case CHECKING:
-                            specificAccount = findCheckingAccountById(id, baseAccount, conn);
-                            break;
-                        case SAVINGS:
-                            specificAccount = findSavingsAccountById(id, baseAccount, conn);
-                            break;
-                        case INVESTMENT:
-                            specificAccount = findInvestmentAccountById(id, baseAccount, conn);
-                            break;
-                    }
-                    return Optional.ofNullable(specificAccount != null ? specificAccount : baseAccount);
+                    Account specificAccount = switch (baseAccount.getAccountType()) {
+                        case CHECKING -> findCheckingAccountById(id, baseAccount, conn);
+                        case SAVINGS -> findSavingsAccountById(id, baseAccount, conn);
+                        case INVESTMENT -> findInvestmentAccountById(id, baseAccount, conn);
+                        default -> null;
+                    };
+                    return Optional.of(specificAccount != null ? specificAccount : baseAccount);
                 }
             }
         } catch (SQLException e) {
@@ -312,19 +306,13 @@ public class AccountDAOImpl implements AccountDAO {
                 ResultSet rs = stmt.executeQuery();
                 while (rs.next()) {
                     Account baseAccount = mapResultSetToAccount(rs);
-                    Account specificAccount = null;
-                    
-                    switch (baseAccount.getAccountType()) {
-                        case CHECKING:
-                            specificAccount = findCheckingAccountById(baseAccount.getId(), baseAccount, conn);
-                            break;
-                        case SAVINGS:
-                            specificAccount = findSavingsAccountById(baseAccount.getId(), baseAccount, conn);
-                            break;
-                        case INVESTMENT:
-                            specificAccount = findInvestmentAccountById(baseAccount.getId(), baseAccount, conn);
-                            break;
-                    }
+                    Account specificAccount = switch (baseAccount.getAccountType()) {
+                        case CHECKING -> findCheckingAccountById(baseAccount.getId(), baseAccount, conn);
+                        case SAVINGS -> findSavingsAccountById(baseAccount.getId(), baseAccount, conn);
+                        case INVESTMENT -> findInvestmentAccountById(baseAccount.getId(), baseAccount, conn);
+                        default -> null;
+                    };
+
                     accounts.add(specificAccount != null ? specificAccount : baseAccount);
                 }
             }
@@ -343,19 +331,13 @@ public class AccountDAOImpl implements AccountDAO {
             
             while (rs.next()) {
                 Account baseAccount = mapResultSetToAccount(rs);
-                Account specificAccount = null;
-                
-                switch (baseAccount.getAccountType()) {
-                    case CHECKING:
-                        specificAccount = findCheckingAccountById(baseAccount.getId(), baseAccount, conn);
-                        break;
-                    case SAVINGS:
-                        specificAccount = findSavingsAccountById(baseAccount.getId(), baseAccount, conn);
-                        break;
-                    case INVESTMENT:
-                        specificAccount = findInvestmentAccountById(baseAccount.getId(), baseAccount, conn);
-                        break;
-                }
+                Account specificAccount = switch (baseAccount.getAccountType()) {
+                    case CHECKING -> findCheckingAccountById(baseAccount.getId(), baseAccount, conn);
+                    case SAVINGS -> findSavingsAccountById(baseAccount.getId(), baseAccount, conn);
+                    case INVESTMENT -> findInvestmentAccountById(baseAccount.getId(), baseAccount, conn);
+                    default -> null;
+                };
+
                 accounts.add(specificAccount != null ? specificAccount : baseAccount);
             }
         } catch (SQLException e) {
@@ -409,7 +391,7 @@ public class AccountDAOImpl implements AccountDAO {
     }
 
     private CheckingAccount mapResultSetToCheckingAccount(ResultSet rs, Account baseAccount) throws SQLException {
-        CheckingAccount account = new CheckingAccount(
+        return new CheckingAccount(
             baseAccount.getName(),
             baseAccount.getDescription(),
             baseAccount.getAccountType(),
@@ -418,28 +400,24 @@ public class AccountDAOImpl implements AccountDAO {
             rs.getString("agency"),
             rs.getString("account_number")
         );
-        copyBaseAccountProperties(baseAccount, account);
-        return account;
     }
 
     private SavingsAccount mapResultSetToSavingsAccount(ResultSet rs, Account baseAccount) throws SQLException {
-        SavingsAccount account = new SavingsAccount(
+        return new SavingsAccount(
             baseAccount.getName(),
             baseAccount.getDescription(),
             baseAccount.getUserId(),
-            rs.getTimestamp("nearest_deadline") != null ? 
+            rs.getTimestamp("nearest_deadline") != null ?
                 rs.getTimestamp("nearest_deadline").toLocalDateTime() : null,
-            rs.getTimestamp("furthest_deadline") != null ? 
+            rs.getTimestamp("furthest_deadline") != null ?
                 rs.getTimestamp("furthest_deadline").toLocalDateTime() : null,
-            rs.getTimestamp("latest_deadline") != null ? 
+            rs.getTimestamp("latest_deadline") != null ?
                 rs.getTimestamp("latest_deadline").toLocalDateTime() : null,
-            rs.getDouble("average_tax_rate"),
-            rs.getDouble("number_of_fixed_investments"),
-            rs.getDouble("total_maturity_amount"),
-            rs.getDouble("total_deposit_amount")
+            rs.getBigDecimal("average_tax_rate"),
+            rs.getBigDecimal("number_of_fixed_investments"),
+            rs.getBigDecimal("total_maturity_amount"),
+            rs.getBigDecimal("total_deposit_amount")
         );
-        copyBaseAccountProperties(baseAccount, account);
-        return account;
     }
 
     private InvestmentAccount mapResultSetToInvestmentAccount(ResultSet rs, Account baseAccount) throws SQLException {
@@ -449,7 +427,6 @@ public class AccountDAOImpl implements AccountDAO {
             baseAccount.getUserId(),
             InvestmentSubtype.valueOf(rs.getString("investment_subtype"))
         );
-        copyBaseAccountProperties(baseAccount, account);
         account.setTotalInvestedAmount(rs.getBigDecimal("total_invested_amount"));
         account.setTotalProfit(rs.getBigDecimal("total_profit"));
         account.setTotalCurrentAmount(rs.getBigDecimal("total_current_amount"));
@@ -480,19 +457,13 @@ public class AccountDAOImpl implements AccountDAO {
                 ResultSet rs = stmt.executeQuery();
                 while (rs.next()) {
                     Account baseAccount = mapResultSetToAccount(rs);
-                    Account specificAccount = null;
-                    
-                    switch (baseAccount.getAccountType()) {
-                        case CHECKING:
-                            specificAccount = findCheckingAccountById(baseAccount.getId(), baseAccount, conn);
-                            break;
-                        case SAVINGS:
-                            specificAccount = findSavingsAccountById(baseAccount.getId(), baseAccount, conn);
-                            break;
-                        case INVESTMENT:
-                            specificAccount = findInvestmentAccountById(baseAccount.getId(), baseAccount, conn);
-                            break;
-                    }
+                    Account specificAccount = switch (baseAccount.getAccountType()) {
+                        case CHECKING -> findCheckingAccountById(baseAccount.getId(), baseAccount, conn);
+                        case SAVINGS -> findSavingsAccountById(baseAccount.getId(), baseAccount, conn);
+                        case INVESTMENT -> findInvestmentAccountById(baseAccount.getId(), baseAccount, conn);
+                        default -> null;
+                    };
+
                     accounts.add(specificAccount != null ? specificAccount : baseAccount);
                 }
             }
@@ -545,23 +516,14 @@ public class AccountDAOImpl implements AccountDAO {
 
     private Account mapResultSetToBaseAccount(ResultSet rs) throws SQLException {
         AccountType accountType = AccountType.valueOf(rs.getString("account_type"));
-        Account account;
-        
-        switch (accountType) {
-            case CHECKING:
-                account = new CheckingAccount("", "", accountType, "", "", "", "");
-                break;
-            case SAVINGS:
-                account = new SavingsAccount("", "", "", null, null, null, 
-                    BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO);
-                break;
-            case INVESTMENT:
-                account = new InvestmentAccount("", "", "", InvestmentSubtype.OTHER);
-                break;
-            default:
-                throw new IllegalArgumentException("Tipo de conta não suportado: " + accountType);
-        }
-        
+        Account account = switch (accountType) {
+            case CHECKING -> new CheckingAccount("", "", accountType, "", "", "", "");
+            case SAVINGS -> new SavingsAccount("", "", "", null, null, null,
+                BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO);
+            case INVESTMENT -> new InvestmentAccount("", "", "", InvestmentSubtype.OTHER);
+            default -> throw new IllegalArgumentException("Tipo de conta não suportado: " + accountType);
+        };
+
         account.setBalance(rs.getBigDecimal("balance"));
         account.setActive(rs.getInt("is_active") == 1);
         account.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime());

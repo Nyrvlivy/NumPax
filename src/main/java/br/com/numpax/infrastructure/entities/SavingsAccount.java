@@ -21,10 +21,10 @@ public class SavingsAccount extends RegularAccount {
         this.nearestDeadline = nearestDeadline;
         this.furthestDeadline = furthestDeadline;
         this.latestDeadline = latestDeadline;
-        this.averageTaxRate = averageTaxRate != null ? averageTaxRate : 0.0;
-        this.numberOfFixedInvestments = numberOfFixedInvestments != null ? numberOfFixedInvestments : 0.0;
-        this.totalMaturityAmount = totalMaturityAmount != null ? totalMaturityAmount : 0.0;
-        this.totalDepositAmount = totalDepositAmount != null ? totalDepositAmount : 0.0;
+        this.averageTaxRate = averageTaxRate != null ? averageTaxRate : BigDecimal.valueOf(0.0);
+        this.numberOfFixedInvestments = numberOfFixedInvestments != null ? numberOfFixedInvestments : BigDecimal.valueOf(0.0);
+        this.totalMaturityAmount = totalMaturityAmount != null ? totalMaturityAmount : BigDecimal.valueOf(0.0);
+        this.totalDepositAmount = totalDepositAmount != null ? totalDepositAmount : BigDecimal.valueOf(0.0);
     }
 
     // Getters and Setters with updatedAt tracking

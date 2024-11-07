@@ -1,6 +1,7 @@
 package br.com.numpax.infrastructure.dao.impl;
 
 import br.com.numpax.infrastructure.config.database.ConnectionManager;
+import br.com.numpax.infrastructure.dao.AccountDAO;
 import br.com.numpax.infrastructure.dao.UserDAO;
 import br.com.numpax.infrastructure.entities.User;
 import br.com.numpax.infrastructure.entities.CheckingAccount;
