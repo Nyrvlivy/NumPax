@@ -42,7 +42,7 @@ public class UserDAOImpl implements UserDAO {
             stmt.setString(1, user.getId());
             stmt.setString(2, user.getName());
             stmt.setString(3, user.getEmail());
-            stmt.setString(4, BCrypt.hashpw(user.getPassword(), BCrypt.gensalt()));
+            stmt.setString(4, user.getHashedPassword());
             stmt.setDate(5, Date.valueOf(user.getBirthdate()));
             stmt.setBoolean(6, user.getIsActive());
             stmt.setTimestamp(7, Timestamp.valueOf(user.getCreatedAt()));

@@ -10,7 +10,7 @@ import java.util.UUID;
 
 public class Transaction {
     private final String id;
-    private final String code;
+    private String code;
     private boolean isEffective;
     private String name;
     private String description;
@@ -55,6 +55,10 @@ public class Transaction {
 
     public String getCode() {
         return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 
     public String getName() {

@@ -470,4 +470,62 @@ public class AccountDAOImpl implements AccountDAO {
         to.setCreatedAt(from.getCreatedAt());
         to.setUpdatedAt(from.getUpdatedAt());
     }
+
+    @Override
+    public List<Account> findAllInactive() {
+        return findAccountsByStatus(false);
+    }
+
+    private List<Account> findAccountsByStatus(boolean active) {
+        List<Account> accounts = new ArrayList<>();
+        try (Connection conn = connectionManager.getConnection()) {
+            String sql = "SELECT * FROM Accounts WHERE is_active = ?";
+            try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+                stmt.setInt(1, active ? 1 : 0);
+                ResultSet rs = stmt.executeQuery();
+                while (rs.next()) {
+                    Account baseAccount = mapResultSetToAccount(rs);
+                    Account specificAccount = null;
+                    
+                    switch (baseAccount.getAccountType()) {
+                        case CHECKING:
+                            specificAccount = findCheckingAccountById(baseAccount.getId(), baseAccount, conn);
+                            break;
+                        case SAVINGS:
+                            specificAccount = findSavingsAccountById(baseAccount.getId(), baseAccount, conn);
+                            break;
+                        case INVESTMENT:
+                            specificAccount = findInvestmentAccountById(baseAccount.getId(), baseAccount, conn);
+                            break;
+                    }
+                    accounts.add(specificAccount != null ? specificAccount : baseAccount);
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Erro ao buscar contas inativas", e);
+        }
+        return accounts;
+    }
+
+    private Account findCheckingAccountById(String id, Account baseAccount, Connection conn) throws SQLException {
+        // Implementação
+    }
+
+    private Account findSavingsAccountById(String id, Account baseAccount, Connection conn) throws SQLException {
+        // Implementação
+    }
+
+    private Account findInvestmentAccountById(String id, Account baseAccount, Connection conn) throws SQLException {
+        // Implementação
+    }
+
+    private void copyAccountData(Account from, Account to) {
+        to.setId(from.getId());
+        to.setName(from.getName());
+        to.setDescription(from.getDescription());
+        to.setBalance(from.getBalance());
+        to.setActive(from.isActive());
+        to.setCreatedAt(from.getCreatedAt());
+        to.setUpdatedAt(from.getUpdatedAt());
+    }
 }

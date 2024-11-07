@@ -6,6 +6,7 @@ import br.com.numpax.infrastructure.entities.Transaction;
 import br.com.numpax.infrastructure.entities.Account;
 import br.com.numpax.application.enums.NatureOfTransaction;
 import br.com.numpax.application.enums.RepeatableType;
+import br.com.numpax.infrastructure.entities.RegularAccount;
 
 import java.sql.*;
 import java.time.LocalDate;
@@ -205,15 +206,20 @@ public class TransactionDAOImpl implements TransactionDAO {
     }
 
     private Transaction mapResultSetToTransaction(ResultSet rs) throws SQLException {
+        Account account = new AccountDAOImpl().findById(rs.getString("account_id"))
+            .orElseThrow(() -> new RuntimeException("Account not found"));
+        
+        if (!(account instanceof RegularAccount)) {
+            throw new RuntimeException("Invalid account type");
+        }
+
         return new Transaction(
             rs.getString("code"),
             rs.getString("name"),
             rs.getString("description"),
             rs.getBigDecimal("amount"),
             new CategoryDAOImpl().findById(rs.getString("category_id")).orElse(null),
-            (RegularAccount) new AccountDAOImpl().findById(rs.getString("account_id"))
-                .filter(account -> account instanceof RegularAccount)
-                .orElse(null),
+            (RegularAccount) account,
             NatureOfTransaction.valueOf(rs.getString("nature_of_transaction")),
             rs.getString("receiver"),
             rs.getString("sender"),

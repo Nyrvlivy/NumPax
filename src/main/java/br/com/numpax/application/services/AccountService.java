@@ -10,4 +10,6 @@ public interface AccountService {
     List<AccountDTO> getAccountsByUserId(String userId);
     List<AccountDTO> getAllAccounts();
     void disableAccountById(String id);
+    List<AccountDTO> getAllActiveAccounts();
+    List<AccountDTO> getAllInactiveAccounts();
 }

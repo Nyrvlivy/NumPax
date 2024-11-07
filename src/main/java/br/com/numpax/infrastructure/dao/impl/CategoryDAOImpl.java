@@ -145,11 +145,12 @@ public class CategoryDAOImpl implements CategoryDAO {
     }
 
     private Category mapResultSetToCategory(ResultSet rs) throws SQLException {
+        Connection conn = rs.getStatement().getConnection();
         return new Category(
             rs.getString("category_id"),
             rs.getString("name"),
             rs.getString("description"),
-            getCategoryTypeFromId(rs.getInt("category_type_id"), rs.getConnection()),
+            getCategoryTypeFromId(rs.getInt("category_type_id"), conn),
             rs.getBoolean("is_active")
         );
     }
