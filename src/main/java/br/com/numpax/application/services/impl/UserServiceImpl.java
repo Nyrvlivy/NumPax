@@ -10,10 +10,9 @@ import br.com.numpax.infrastructure.dao.UserDAO;
 import br.com.numpax.infrastructure.dao.impl.UserDAOImpl;
 import br.com.numpax.infrastructure.entities.User;
 import br.com.numpax.application.services.UserService;
+import org.mindrot.jbcrypt.BCrypt;
 
 import java.math.BigDecimal;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,13 +22,20 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO createOrUpdateUser(UserDTO userDTO, String password) {
-        String hashedPassword = hashPassword(password);
+        String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
 
         User user = UserMapper.toEntity(userDTO, hashedPassword);
         userDAO.saveOrUpdate(user);
 
-        AccountService accountService = new AccountServiceImpl();
+        if (userDTO.getId() == null) {
+            createDefaultAccount(user);
+        }
 
+        return UserMapper.toSimpleDTO(user);
+    }
+
+    private void createDefaultAccount(User user) {
+        AccountService accountService = new AccountServiceImpl();
         AccountDTO defaultAccountDTO = new AccountDTO(
             null,
             "Conta Corrente",
@@ -41,10 +47,7 @@ public class UserServiceImpl implements UserService {
             LocalDateTime.now(),
             user.getId()
         );
-
         accountService.createAccount(defaultAccountDTO, user.getId());
-
-        return UserMapper.toSimpleDTO(user);
     }
 
     @Override
@@ -85,20 +88,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public void disableUserById(String id) {
         userDAO.disableById(id);
-    }
-
-    private String hashPassword(String password) {
-        try {
-            MessageDigest md = MessageDigest.getInstance("SHA-256");
-            byte[] hashedPasswordBytes = md.digest(password.getBytes());
-            StringBuilder sb = new StringBuilder();
-            for (byte b : hashedPasswordBytes) {
-                sb.append(String.format("%02x", b));
-            }
-            return sb.toString();
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException("Erro ao criptografar a senha", e);
-        }
     }
 }
 

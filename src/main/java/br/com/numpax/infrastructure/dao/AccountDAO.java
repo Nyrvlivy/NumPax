@@ -7,6 +7,7 @@ import java.util.Optional;
 
 public interface AccountDAO {
     void saveOrUpdate(Account account);
+    void deleteById(String id);
     void disableById(String id);
     Optional<Account> findById(String id);
     List<Account> findByUserId(String userId);

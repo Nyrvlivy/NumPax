@@ -76,13 +76,22 @@ public class TransactionServiceImpl implements TransactionService {
     public Transaction updateTransaction(String id, Transaction updatedTransaction) {
         return transactionDAO.findById(id)
             .map(transaction -> {
+                transaction.setCode(updatedTransaction.getCode());
                 transaction.setName(updatedTransaction.getName());
                 transaction.setDescription(updatedTransaction.getDescription());
                 transaction.setAmount(updatedTransaction.getAmount());
                 transaction.setCategory(updatedTransaction.getCategory());
+                transaction.setRegularAccount(updatedTransaction.getRegularAccount());
+                transaction.setNatureOfTransaction(updatedTransaction.getNatureOfTransaction());
+                transaction.setReceiver(updatedTransaction.getReceiver());
+                transaction.setSender(updatedTransaction.getSender());
                 transaction.setTransactionDate(updatedTransaction.getTransactionDate());
                 transaction.setRepeatable(updatedTransaction.isRepeatable());
+                transaction.setRepeatableType(updatedTransaction.getRepeatableType());
+                transaction.setNote(updatedTransaction.getNote());
+                transaction.setActive(updatedTransaction.isActive());
                 transaction.setUpdatedAt(LocalDate.now().atStartOfDay());
+                
                 transactionDAO.update(transaction);
                 return transaction;
             })

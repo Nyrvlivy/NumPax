@@ -51,4 +51,20 @@ public class AccountServiceImpl implements AccountService {
     public void disableAccountById(String id) {
         accountDAO.disableById(id);
     }
+
+    @Override
+    public List<AccountDTO> getAllActiveAccounts() {
+        List<Account> accounts = accountDAO.findAllActive();
+        return accounts.stream()
+            .map(AccountMapper::toDTO)
+            .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<AccountDTO> getAllInactiveAccounts() {
+        List<Account> accounts = accountDAO.findAllInactive();
+        return accounts.stream()
+            .map(AccountMapper::toDTO)
+            .collect(Collectors.toList());
+    }
 }

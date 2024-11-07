@@ -149,8 +149,21 @@ public class CategoryDAOImpl implements CategoryDAO {
             rs.getString("category_id"),
             rs.getString("name"),
             rs.getString("description"),
-            CategoryType.fromString(rs.getString("category_type")),
+            getCategoryTypeFromId(rs.getInt("category_type_id"), rs.getConnection()),
             rs.getBoolean("is_active")
         );
+    }
+
+    private CategoryType getCategoryTypeFromId(int typeId, Connection conn) throws SQLException {
+        String sql = "SELECT name FROM CategoryTypes WHERE id = ?";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, typeId);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return CategoryType.valueOf(rs.getString("name"));
+            } else {
+                throw new RuntimeException("Category type not found for id: " + typeId);
+            }
+        }
     }
 }
