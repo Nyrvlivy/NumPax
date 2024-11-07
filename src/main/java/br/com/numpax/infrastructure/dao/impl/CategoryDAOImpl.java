@@ -1,9 +1,9 @@
 package br.com.numpax.infrastructure.dao.impl;
 
-import br.com.numpax.application.enums.CategoryType;
 import br.com.numpax.infrastructure.config.database.ConnectionManager;
 import br.com.numpax.infrastructure.dao.CategoryDAO;
 import br.com.numpax.infrastructure.entities.Category;
+import br.com.numpax.application.enums.CategoryType;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -11,25 +11,28 @@ import java.util.List;
 import java.util.Optional;
 
 public class CategoryDAOImpl implements CategoryDAO {
-    private final ConnectionManager connectionManager;
 
-    public CategoryDAOImpl() {
-        this.connectionManager = ConnectionManager.getInstance();
-    }
+    private final ConnectionManager connectionManager = ConnectionManager.getInstance();
+
     @Override
     public void save(Category category) {
         String sql = """
-            INSERT INTO Categories (category_id, name, description, is_active) VALUES (?, ?, ?, ?)
-            """;
+            INSERT INTO Categories (category_id, name, description, category_type_id, is_active)
+            VALUES (?, ?, ?, ?, ?)
+        """;
         try (Connection conn = connectionManager.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            conn.setAutoCommit(false); // Start transaction
 
             stmt.setString(1, category.getId());
             stmt.setString(2, category.getName());
             stmt.setString(3, category.getDescription());
-            stmt.setBoolean(4, category.isActive());
+            stmt.setInt(4, getCategoryTypeId(category.getCategoryType(), conn));
+            stmt.setBoolean(5, category.isActive());
 
             stmt.executeUpdate();
+            conn.commit(); // Commit transaction
         } catch (SQLException e) {
             throw new RuntimeException("Erro ao salvar a categoria", e);
         }
@@ -38,17 +41,22 @@ public class CategoryDAOImpl implements CategoryDAO {
     @Override
     public void update(Category category) {
         String sql = """
-            UPDATE Categories SET name = ?, description = ?, is_active = ? WHERE category_id = ?
-            """;
+            UPDATE Categories SET name = ?, description = ?, category_type_id = ?, is_active = ?
+            WHERE category_id = ?
+        """;
         try (Connection conn = connectionManager.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
+            conn.setAutoCommit(false); // Start transaction
+
             stmt.setString(1, category.getName());
             stmt.setString(2, category.getDescription());
-            stmt.setBoolean(3, category.isActive());
-            stmt.setString(4, category.getId());
+            stmt.setInt(3, getCategoryTypeId(category.getCategoryType(), conn));
+            stmt.setBoolean(4, category.isActive());
+            stmt.setString(5, category.getId());
 
             stmt.executeUpdate();
+            conn.commit(); // Commit transaction
         } catch (SQLException e) {
             throw new RuntimeException("Erro ao atualizar a categoria", e);
         }
@@ -60,8 +68,12 @@ public class CategoryDAOImpl implements CategoryDAO {
         try (Connection conn = connectionManager.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
+            conn.setAutoCommit(false); // Start transaction
+
             stmt.setString(1, id);
             stmt.executeUpdate();
+
+            conn.commit(); // Commit transaction
         } catch (SQLException e) {
             throw new RuntimeException("Erro ao deletar a categoria", e);
         }
@@ -117,6 +129,19 @@ public class CategoryDAOImpl implements CategoryDAO {
             throw new RuntimeException("Erro ao buscar categorias ativas", e);
         }
         return categories;
+    }
+
+    private int getCategoryTypeId(CategoryType categoryType, Connection conn) throws SQLException {
+        String sql = "SELECT id FROM CategoryTypes WHERE name = ?";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, categoryType.name());
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("id");
+            } else {
+                throw new RuntimeException("Category type not found");
+            }
+        }
     }
 
     private Category mapResultSetToCategory(ResultSet rs) throws SQLException {

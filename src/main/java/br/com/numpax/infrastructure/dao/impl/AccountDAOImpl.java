@@ -2,10 +2,9 @@ package br.com.numpax.infrastructure.dao.impl;
 
 import br.com.numpax.infrastructure.config.database.ConnectionManager;
 import br.com.numpax.infrastructure.dao.AccountDAO;
-import br.com.numpax.infrastructure.dao.UserDAO;
-import br.com.numpax.infrastructure.entities.Account;
-import br.com.numpax.infrastructure.entities.User;
+import br.com.numpax.infrastructure.entities.*;
 import br.com.numpax.application.enums.AccountType;
+import br.com.numpax.application.enums.InvestmentSubtype;
 
 import java.sql.*;
 import java.time.LocalDateTime;
@@ -14,27 +13,49 @@ import java.util.List;
 import java.util.Optional;
 
 public class AccountDAOImpl implements AccountDAO {
-
     private final ConnectionManager connectionManager = ConnectionManager.getInstance();
-    private final UserDAO userDAO = new UserDAOImpl();
 
     @Override
     public void saveOrUpdate(Account account) {
-        if (existsById(account.getId())) {
-            update(account);
-        } else {
-            save(account);
+        try (Connection conn = connectionManager.getConnection()) {
+            conn.setAutoCommit(false);
+            try {
+                if (existsById(account.getId(), conn)) {
+                    updateAccount(account, conn);
+                } else {
+                    saveAccount(account, conn);
+                }
+                conn.commit();
+            } catch (SQLException e) {
+                conn.rollback();
+                throw new RuntimeException("Erro na transação", e);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Erro ao salvar/atualizar conta", e);
         }
     }
 
-    private void save(Account account) {
-        String sql = """
-            INSERT INTO Accounts (account_id, name, description, balance, account_type, is_active, user_id, created_at, updated_at)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-        """;
-        try (Connection conn = connectionManager.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+    private void saveAccount(Account account, Connection conn) throws SQLException {
+        saveBaseAccount(account, conn);
+        
+        if (account instanceof CheckingAccount) {
+            saveCheckingAccount((CheckingAccount) account, conn);
+        } else if (account instanceof SavingsAccount) {
+            saveSavingsAccount((SavingsAccount) account, conn);
+        } else if (account instanceof InvestmentAccount) {
+            saveInvestmentAccount((InvestmentAccount) account, conn);
+        }
+    }
 
+    private void saveBaseAccount(Account account, Connection conn) throws SQLException {
+        String sql = """
+            INSERT INTO Accounts (
+                account_id, name, description, balance, account_type,
+                is_active, user_id, created_at, updated_at
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+        """;
+        
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, account.getId());
             stmt.setString(2, account.getName());
             stmt.setString(3, account.getDescription());
@@ -44,21 +65,96 @@ public class AccountDAOImpl implements AccountDAO {
             stmt.setString(7, account.getUserId());
             stmt.setTimestamp(8, Timestamp.valueOf(account.getCreatedAt()));
             stmt.setTimestamp(9, Timestamp.valueOf(account.getUpdatedAt()));
-
             stmt.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException("Erro ao salvar a conta", e);
         }
     }
 
-    private void update(Account account) {
+    private void saveCheckingAccount(CheckingAccount account, Connection conn) throws SQLException {
         String sql = """
-            UPDATE Accounts SET name = ?, description = ?, balance = ?, account_type = ?, is_active = ?, updated_at = ?
+            INSERT INTO CheckingAccounts (
+                account_id, bank_name, agency, account_number
+            ) VALUES (?, ?, ?, ?)
+        """;
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, account.getId());
+            stmt.setString(2, account.getBankName());
+            stmt.setString(3, account.getAgency());
+            stmt.setString(4, account.getAccountNumber());
+            stmt.executeUpdate();
+        }
+    }
+
+    private void saveSavingsAccount(SavingsAccount account, Connection conn) throws SQLException {
+        String sql = """
+            INSERT INTO SavingsAccounts (
+                account_id, nearest_deadline, furthest_deadline, latest_deadline,
+                average_tax_rate, number_of_fixed_investments, total_maturity_amount,
+                total_deposit_amount
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+        """;
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, account.getId());
+            stmt.setTimestamp(2, account.getNearestDeadline() != null ? 
+                Timestamp.valueOf(account.getNearestDeadline()) : null);
+            stmt.setTimestamp(3, account.getFurthestDeadline() != null ? 
+                Timestamp.valueOf(account.getFurthestDeadline()) : null);
+            stmt.setTimestamp(4, account.getLatestDeadline() != null ? 
+                Timestamp.valueOf(account.getLatestDeadline()) : null);
+            stmt.setBigDecimal(5, account.getAverageTaxRate());
+            stmt.setBigDecimal(6, account.getNumberOfFixedInvestments());
+            stmt.setBigDecimal(7, account.getTotalMaturityAmount());
+            stmt.setBigDecimal(8, account.getTotalDepositAmount());
+            stmt.executeUpdate();
+        }
+    }
+
+    private void saveInvestmentAccount(InvestmentAccount account, Connection conn) throws SQLException {
+        String sql = """
+            INSERT INTO InvestmentAccounts (
+                account_id, investment_subtype, total_invested_amount, total_profit,
+                total_current_amount, total_withdrawn_amount, number_of_withdrawals,
+                number_of_entries, number_of_assets, average_purchase_price,
+                total_gain_loss, total_dividend_yield, risk_level_type
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        """;
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, account.getId());
+            stmt.setString(2, account.getInvestmentSubtype().name());
+            stmt.setBigDecimal(3, account.getTotalInvestedAmount());
+            stmt.setBigDecimal(4, account.getTotalProfit());
+            stmt.setBigDecimal(5, account.getTotalCurrentAmount());
+            stmt.setBigDecimal(6, account.getTotalWithdrawnAmount());
+            stmt.setInt(7, account.getNumberOfWithdrawals());
+            stmt.setInt(8, account.getNumberOfEntries());
+            stmt.setInt(9, account.getNumberOfAssets());
+            stmt.setBigDecimal(10, account.getAveragePurchasePrice());
+            stmt.setBigDecimal(11, account.getTotalGainLoss());
+            stmt.setBigDecimal(12, account.getTotalDividendYield());
+            stmt.setString(13, account.getRiskLevelType());
+            stmt.executeUpdate();
+        }
+    }
+
+    private void updateAccount(Account account, Connection conn) throws SQLException {
+        updateBaseAccount(account, conn);
+        
+        if (account instanceof CheckingAccount) {
+            updateCheckingAccount((CheckingAccount) account, conn);
+        } else if (account instanceof SavingsAccount) {
+            updateSavingsAccount((SavingsAccount) account, conn);
+        } else if (account instanceof InvestmentAccount) {
+            updateInvestmentAccount((InvestmentAccount) account, conn);
+        }
+    }
+
+    private void updateBaseAccount(Account account, Connection conn) throws SQLException {
+        String sql = """
+            UPDATE Accounts 
+            SET name = ?, description = ?, balance = ?, account_type = ?, 
+                is_active = ?, updated_at = ?
             WHERE account_id = ?
         """;
-        try (Connection conn = connectionManager.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, account.getName());
             stmt.setString(2, account.getDescription());
             stmt.setBigDecimal(3, account.getBalance());
@@ -66,59 +162,170 @@ public class AccountDAOImpl implements AccountDAO {
             stmt.setInt(5, account.getIsActive() ? 1 : 0);
             stmt.setTimestamp(6, Timestamp.valueOf(LocalDateTime.now()));
             stmt.setString(7, account.getId());
-
             stmt.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException("Erro ao atualizar a conta", e);
+        }
+    }
+
+    private void updateCheckingAccount(CheckingAccount account, Connection conn) throws SQLException {
+        String sql = """
+            UPDATE CheckingAccounts 
+            SET bank_name = ?, agency = ?, account_number = ?
+            WHERE account_id = ?
+        """;
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, account.getBankName());
+            stmt.setString(2, account.getAgency());
+            stmt.setString(3, account.getAccountNumber());
+            stmt.setString(4, account.getId());
+            stmt.executeUpdate();
+        }
+    }
+
+    private void updateSavingsAccount(SavingsAccount account, Connection conn) throws SQLException {
+        String sql = """
+            UPDATE SavingsAccounts 
+            SET nearest_deadline = ?, furthest_deadline = ?, latest_deadline = ?,
+                average_tax_rate = ?, number_of_fixed_investments = ?, 
+                total_maturity_amount = ?, total_deposit_amount = ?
+            WHERE account_id = ?
+        """;
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setTimestamp(1, account.getNearestDeadline() != null ? 
+                Timestamp.valueOf(account.getNearestDeadline()) : null);
+            stmt.setTimestamp(2, account.getFurthestDeadline() != null ? 
+                Timestamp.valueOf(account.getFurthestDeadline()) : null);
+            stmt.setTimestamp(3, account.getLatestDeadline() != null ? 
+                Timestamp.valueOf(account.getLatestDeadline()) : null);
+            stmt.setBigDecimal(4, account.getAverageTaxRate());
+            stmt.setBigDecimal(5, account.getNumberOfFixedInvestments());
+            stmt.setBigDecimal(6, account.getTotalMaturityAmount());
+            stmt.setBigDecimal(7, account.getTotalDepositAmount());
+            stmt.setString(8, account.getId());
+            stmt.executeUpdate();
+        }
+    }
+
+    private void updateInvestmentAccount(InvestmentAccount account, Connection conn) throws SQLException {
+        String sql = """
+            UPDATE InvestmentAccounts 
+            SET investment_subtype = ?, total_invested_amount = ?, total_profit = ?,
+                total_current_amount = ?, total_withdrawn_amount = ?, 
+                number_of_withdrawals = ?, number_of_entries = ?, number_of_assets = ?,
+                average_purchase_price = ?, total_gain_loss = ?, 
+                total_dividend_yield = ?, risk_level_type = ?
+            WHERE account_id = ?
+        """;
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, account.getInvestmentSubtype().name());
+            stmt.setBigDecimal(2, account.getTotalInvestedAmount());
+            stmt.setBigDecimal(3, account.getTotalProfit());
+            stmt.setBigDecimal(4, account.getTotalCurrentAmount());
+            stmt.setBigDecimal(5, account.getTotalWithdrawnAmount());
+            stmt.setInt(6, account.getNumberOfWithdrawals());
+            stmt.setInt(7, account.getNumberOfEntries());
+            stmt.setInt(8, account.getNumberOfAssets());
+            stmt.setBigDecimal(9, account.getAveragePurchasePrice());
+            stmt.setBigDecimal(10, account.getTotalGainLoss());
+            stmt.setBigDecimal(11, account.getTotalDividendYield());
+            stmt.setString(12, account.getRiskLevelType());
+            stmt.setString(13, account.getId());
+            stmt.executeUpdate();
         }
     }
 
     @Override
-    public void disableById(String id) {
-        String sql = "UPDATE Accounts SET is_active = ?, updated_at = ? WHERE account_id = ?";
-        try (Connection conn = connectionManager.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-
-            stmt.setInt(1, 0);
-            stmt.setTimestamp(2, Timestamp.valueOf(LocalDateTime.now()));
-            stmt.setString(3, id);
-
-            stmt.executeUpdate();
+    public void deleteById(String id) {
+        try (Connection conn = connectionManager.getConnection()) {
+            conn.setAutoCommit(false);
+            try {
+                Optional<Account> accountOpt = findById(id);
+                if (accountOpt.isPresent()) {
+                    Account account = accountOpt.get();
+                    
+                    if (account instanceof CheckingAccount) {
+                        deleteFromTable("CheckingAccounts", id, conn);
+                    } else if (account instanceof SavingsAccount) {
+                        deleteFromTable("SavingsAccounts", id, conn);
+                    } else if (account instanceof InvestmentAccount) {
+                        deleteFromTable("InvestmentAccounts", id, conn);
+                    }
+                    
+                    deleteFromTable("Accounts", id, conn);
+                }
+                conn.commit();
+            } catch (SQLException e) {
+                conn.rollback();
+                throw new RuntimeException("Erro ao deletar conta", e);
+            }
         } catch (SQLException e) {
-            throw new RuntimeException("Erro ao desativar a conta", e);
+            throw new RuntimeException("Erro ao deletar conta", e);
+        }
+    }
+
+    private void deleteFromTable(String tableName, String id, Connection conn) throws SQLException {
+        String sql = "DELETE FROM " + tableName + " WHERE account_id = ?";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, id);
+            stmt.executeUpdate();
         }
     }
 
     @Override
     public Optional<Account> findById(String id) {
-        String sql = "SELECT * FROM Accounts WHERE account_id = ?";
-        try (Connection conn = connectionManager.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-
-            stmt.setString(1, id);
-            ResultSet rs = stmt.executeQuery();
-
-            if (rs.next()) {
-                return Optional.of(mapResultSetToAccount(rs));
+        try (Connection conn = connectionManager.getConnection()) {
+            String sql = "SELECT * FROM Accounts WHERE account_id = ?";
+            try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+                stmt.setString(1, id);
+                ResultSet rs = stmt.executeQuery();
+                if (rs.next()) {
+                    Account baseAccount = mapResultSetToAccount(rs);
+                    
+                    Account specificAccount = null;
+                    switch (baseAccount.getAccountType()) {
+                        case CHECKING:
+                            specificAccount = findCheckingAccountById(id, baseAccount, conn);
+                            break;
+                        case SAVINGS:
+                            specificAccount = findSavingsAccountById(id, baseAccount, conn);
+                            break;
+                        case INVESTMENT:
+                            specificAccount = findInvestmentAccountById(id, baseAccount, conn);
+                            break;
+                    }
+                    return Optional.ofNullable(specificAccount != null ? specificAccount : baseAccount);
+                }
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Erro ao buscar a conta por ID", e);
+            throw new RuntimeException("Erro ao buscar conta por ID", e);
         }
         return Optional.empty();
     }
 
     @Override
     public List<Account> findByUserId(String userId) {
-        String sql = "SELECT * FROM Accounts WHERE user_id = ?";
         List<Account> accounts = new ArrayList<>();
-        try (Connection conn = connectionManager.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-
-            stmt.setString(1, userId);
-            ResultSet rs = stmt.executeQuery();
-
-            while (rs.next()) {
-                accounts.add(mapResultSetToAccount(rs));
+        try (Connection conn = connectionManager.getConnection()) {
+            String sql = "SELECT * FROM Accounts WHERE user_id = ?";
+            try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+                stmt.setString(1, userId);
+                ResultSet rs = stmt.executeQuery();
+                while (rs.next()) {
+                    Account baseAccount = mapResultSetToAccount(rs);
+                    Account specificAccount = null;
+                    
+                    switch (baseAccount.getAccountType()) {
+                        case CHECKING:
+                            specificAccount = findCheckingAccountById(baseAccount.getId(), baseAccount, conn);
+                            break;
+                        case SAVINGS:
+                            specificAccount = findSavingsAccountById(baseAccount.getId(), baseAccount, conn);
+                            break;
+                        case INVESTMENT:
+                            specificAccount = findInvestmentAccountById(baseAccount.getId(), baseAccount, conn);
+                            break;
+                    }
+                    accounts.add(specificAccount != null ? specificAccount : baseAccount);
+                }
             }
         } catch (SQLException e) {
             throw new RuntimeException("Erro ao buscar contas do usuário", e);
@@ -128,14 +335,27 @@ public class AccountDAOImpl implements AccountDAO {
 
     @Override
     public List<Account> findAll() {
-        String sql = "SELECT * FROM Accounts";
         List<Account> accounts = new ArrayList<>();
         try (Connection conn = connectionManager.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql);
+             PreparedStatement stmt = conn.prepareStatement("SELECT * FROM Accounts");
              ResultSet rs = stmt.executeQuery()) {
-
+            
             while (rs.next()) {
-                accounts.add(mapResultSetToAccount(rs));
+                Account baseAccount = mapResultSetToAccount(rs);
+                Account specificAccount = null;
+                
+                switch (baseAccount.getAccountType()) {
+                    case CHECKING:
+                        specificAccount = findCheckingAccountById(baseAccount.getId(), baseAccount, conn);
+                        break;
+                    case SAVINGS:
+                        specificAccount = findSavingsAccountById(baseAccount.getId(), baseAccount, conn);
+                        break;
+                    case INVESTMENT:
+                        specificAccount = findInvestmentAccountById(baseAccount.getId(), baseAccount, conn);
+                        break;
+                }
+                accounts.add(specificAccount != null ? specificAccount : baseAccount);
             }
         } catch (SQLException e) {
             throw new RuntimeException("Erro ao buscar todas as contas", e);
@@ -144,56 +364,36 @@ public class AccountDAOImpl implements AccountDAO {
     }
 
     @Override
-    public List<Account> findAllActive() {
-        String sql = "SELECT * FROM Accounts WHERE is_active = 1";
-        List<Account> accounts = new ArrayList<>();
-        try (Connection conn = connectionManager.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql);
-             ResultSet rs = stmt.executeQuery()) {
-
-            while (rs.next()) {
-                accounts.add(mapResultSetToAccount(rs));
+    public void disableById(String id) {
+        try (Connection conn = connectionManager.getConnection()) {
+            conn.setAutoCommit(false);
+            try {
+                String sql = "UPDATE Accounts SET is_active = 0, updated_at = ? WHERE account_id = ?";
+                try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+                    stmt.setTimestamp(1, Timestamp.valueOf(LocalDateTime.now()));
+                    stmt.setString(2, id);
+                    stmt.executeUpdate();
+                }
+                conn.commit();
+            } catch (SQLException e) {
+                conn.rollback();
+                throw new RuntimeException("Erro ao desativar conta", e);
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Erro ao buscar contas ativas", e);
+            throw new RuntimeException("Erro ao desativar conta", e);
         }
-        return accounts;
     }
 
-    @Override
-    public List<Account> findAllInactive() {
-        String sql = "SELECT * FROM Accounts WHERE is_active = 0";
-        List<Account> accounts = new ArrayList<>();
-        try (Connection conn = connectionManager.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql);
-             ResultSet rs = stmt.executeQuery()) {
-
-            while (rs.next()) {
-                accounts.add(mapResultSetToAccount(rs));
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException("Erro ao buscar contas inativas", e);
-        }
-        return accounts;
-    }
-
-    private boolean existsById(String id) {
+    private boolean existsById(String id, Connection conn) throws SQLException {
         String sql = "SELECT 1 FROM Accounts WHERE account_id = ?";
-        try (Connection conn = connectionManager.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, id);
             ResultSet rs = stmt.executeQuery();
             return rs.next();
-
-        } catch (SQLException e) {
-            throw new RuntimeException("Erro ao verificar existência da conta", e);
         }
     }
 
     private Account mapResultSetToAccount(ResultSet rs) throws SQLException {
-        String userId = rs.getString("user_id");
-
         return new Account(
             rs.getString("account_id"),
             rs.getString("name"),
@@ -203,7 +403,71 @@ public class AccountDAOImpl implements AccountDAO {
             rs.getInt("is_active") == 1,
             rs.getTimestamp("created_at").toLocalDateTime(),
             rs.getTimestamp("updated_at").toLocalDateTime(),
-            userId
+            rs.getString("user_id")
         );
+    }
+
+    private CheckingAccount mapResultSetToCheckingAccount(ResultSet rs, Account baseAccount) throws SQLException {
+        CheckingAccount account = new CheckingAccount(
+            baseAccount.getName(),
+            baseAccount.getDescription(),
+            baseAccount.getAccountType(),
+            baseAccount.getUserId(),
+            rs.getString("bank_name"),
+            rs.getString("agency"),
+            rs.getString("account_number")
+        );
+        copyBaseAccountProperties(baseAccount, account);
+        return account;
+    }
+
+    private SavingsAccount mapResultSetToSavingsAccount(ResultSet rs, Account baseAccount) throws SQLException {
+        SavingsAccount account = new SavingsAccount(
+            baseAccount.getName(),
+            baseAccount.getDescription(),
+            baseAccount.getUserId(),
+            rs.getTimestamp("nearest_deadline") != null ? 
+                rs.getTimestamp("nearest_deadline").toLocalDateTime() : null,
+            rs.getTimestamp("furthest_deadline") != null ? 
+                rs.getTimestamp("furthest_deadline").toLocalDateTime() : null,
+            rs.getTimestamp("latest_deadline") != null ? 
+                rs.getTimestamp("latest_deadline").toLocalDateTime() : null,
+            rs.getDouble("average_tax_rate"),
+            rs.getDouble("number_of_fixed_investments"),
+            rs.getDouble("total_maturity_amount"),
+            rs.getDouble("total_deposit_amount")
+        );
+        copyBaseAccountProperties(baseAccount, account);
+        return account;
+    }
+
+    private InvestmentAccount mapResultSetToInvestmentAccount(ResultSet rs, Account baseAccount) throws SQLException {
+        InvestmentAccount account = new InvestmentAccount(
+            baseAccount.getName(),
+            baseAccount.getDescription(),
+            baseAccount.getUserId(),
+            InvestmentSubtype.valueOf(rs.getString("investment_subtype"))
+        );
+        copyBaseAccountProperties(baseAccount, account);
+        account.setTotalInvestedAmount(rs.getBigDecimal("total_invested_amount"));
+        account.setTotalProfit(rs.getBigDecimal("total_profit"));
+        account.setTotalCurrentAmount(rs.getBigDecimal("total_current_amount"));
+        account.setTotalWithdrawnAmount(rs.getBigDecimal("total_withdrawn_amount"));
+        account.setNumberOfWithdrawals(rs.getInt("number_of_withdrawals"));
+        account.setNumberOfEntries(rs.getInt("number_of_entries"));
+        account.setNumberOfAssets(rs.getInt("number_of_assets"));
+        account.setAveragePurchasePrice(rs.getBigDecimal("average_purchase_price"));
+        account.setTotalGainLoss(rs.getBigDecimal("total_gain_loss"));
+        account.setTotalDividendYield(rs.getBigDecimal("total_dividend_yield"));
+        account.setRiskLevelType(rs.getString("risk_level_type"));
+        return account;
+    }
+
+    private void copyBaseAccountProperties(Account from, Account to) {
+        to.setId(from.getId());
+        to.setBalance(from.getBalance());
+        to.setIsActive(from.getIsActive());
+        to.setCreatedAt(from.getCreatedAt());
+        to.setUpdatedAt(from.getUpdatedAt());
     }
 }
