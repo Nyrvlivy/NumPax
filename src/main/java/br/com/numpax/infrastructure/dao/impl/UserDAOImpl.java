@@ -3,6 +3,8 @@ package br.com.numpax.infrastructure.dao.impl;
 import br.com.numpax.infrastructure.config.database.ConnectionManager;
 import br.com.numpax.infrastructure.dao.UserDAO;
 import br.com.numpax.infrastructure.entities.User;
+import br.com.numpax.infrastructure.entities.CheckingAccount;
+import br.com.numpax.application.enums.AccountType;
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.sql.*;
@@ -14,6 +16,7 @@ import java.util.Optional;
 public class UserDAOImpl implements UserDAO {
 
     private final ConnectionManager connectionManager = ConnectionManager.getInstance();
+    private final AccountDAO accountDAO = new AccountDAOImpl();
 
     @Override
     public void saveOrUpdate(User user) {
@@ -45,7 +48,24 @@ public class UserDAOImpl implements UserDAO {
             stmt.setTimestamp(7, Timestamp.valueOf(user.getCreatedAt()));
             stmt.setTimestamp(8, Timestamp.valueOf(user.getUpdatedAt()));
             stmt.executeUpdate();
+            
+            // Create default checking account
+            createDefaultAccount(user);
         }
+    }
+
+    private void createDefaultAccount(User user) {
+        CheckingAccount defaultAccount = new CheckingAccount(
+            "Conta Principal",
+            "Conta corrente padrão",
+            AccountType.CHECKING,
+            user.getId(),
+            "Banco Default",
+            "0001",
+            "00000-0"
+        );
+        
+        accountDAO.saveOrUpdate(defaultAccount);
     }
 
     private void update(User user, Connection conn) throws SQLException {
