@@ -6,12 +6,6 @@ import br.com.numpax.API.V1.entities.CheckingAccount;
 import br.com.numpax.API.V1.entities.SavingsAccount;
 import br.com.numpax.API.V1.entities.InvestmentAccount;
 import br.com.numpax.API.V1.entities.GoalAccount;
-import br.com.numpax.API.V1.entities.RelatedAccount;
-import br.com.numpax.API.V1.mappers.CheckingAccountMapper;
-import br.com.numpax.API.V1.mappers.SavingsAccountMapper;
-import br.com.numpax.API.V1.mappers.InvestmentAccountMapper;
-import br.com.numpax.API.V1.mappers.GoalAccountMapper;
-import br.com.numpax.API.V1.mappers.RelatedAccountMapper;
 
 public class AccountMapperFactory {
     private static final AccountMapperFactory INSTANCE = new AccountMapperFactory();
