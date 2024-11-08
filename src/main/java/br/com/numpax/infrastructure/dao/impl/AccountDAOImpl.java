@@ -43,7 +43,6 @@ public class AccountDAOImpl implements AccountDAO {
             case CheckingAccount checkingAccount -> saveCheckingAccount(checkingAccount, conn);
             case SavingsAccount savingsAccount -> saveSavingsAccount(savingsAccount, conn);
             case InvestmentAccount investmentAccount -> saveInvestmentAccount(investmentAccount, conn);
-            case GoalAccount goalAccount -> saveGoalAccount(goalAccount, conn);
             default -> {
             }
         }
@@ -137,26 +136,6 @@ public class AccountDAOImpl implements AccountDAO {
         }
     }
 
-    private void saveGoalAccount(GoalAccount account, Connection conn) throws SQLException {
-        String sql = """
-            INSERT INTO GoalAccounts (
-                account_id, target_amount, target_date, current_progress,
-                monthly_contribution, estimated_completion_date
-            ) VALUES (?, ?, ?, ?, ?, ?)
-        """;
-        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, account.getId());
-            stmt.setBigDecimal(2, account.getTargetAmount());
-            stmt.setTimestamp(3, account.getTargetDate() != null ? 
-                Timestamp.valueOf(account.getTargetDate()) : null);
-            stmt.setBigDecimal(4, account.getCurrentProgress());
-            stmt.setBigDecimal(5, account.getMonthlyContribution());
-            stmt.setTimestamp(6, account.getEstimatedCompletionDate() != null ? 
-                Timestamp.valueOf(account.getEstimatedCompletionDate()) : null);
-            stmt.executeUpdate();
-        }
-    }
-
     private void updateAccount(Account account, Connection conn) throws SQLException {
         updateBaseAccount(account, conn);
 
@@ -164,7 +143,6 @@ public class AccountDAOImpl implements AccountDAO {
             case CheckingAccount checkingAccount -> updateCheckingAccount(checkingAccount, conn);
             case SavingsAccount savingsAccount -> updateSavingsAccount(savingsAccount, conn);
             case InvestmentAccount investmentAccount -> updateInvestmentAccount(investmentAccount, conn);
-            case GoalAccount goalAccount -> updateGoalAccount(goalAccount, conn);
             default -> {
             }
         }
@@ -256,26 +234,6 @@ public class AccountDAOImpl implements AccountDAO {
         }
     }
 
-    private void updateGoalAccount(GoalAccount account, Connection conn) throws SQLException {
-        String sql = """
-            UPDATE GoalAccounts 
-            SET target_amount = ?, target_date = ?, current_progress = ?,
-                monthly_contribution = ?, estimated_completion_date = ?
-            WHERE account_id = ?
-        """;
-        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setBigDecimal(1, account.getTargetAmount());
-            stmt.setTimestamp(2, account.getTargetDate() != null ? 
-                Timestamp.valueOf(account.getTargetDate()) : null);
-            stmt.setBigDecimal(3, account.getCurrentProgress());
-            stmt.setBigDecimal(4, account.getMonthlyContribution());
-            stmt.setTimestamp(5, account.getEstimatedCompletionDate() != null ? 
-                Timestamp.valueOf(account.getEstimatedCompletionDate()) : null);
-            stmt.setString(6, account.getId());
-            stmt.executeUpdate();
-        }
-    }
-
     @Override
     public void deleteById(String id) {
         try (Connection conn = connectionManager.getConnection()) {
@@ -327,7 +285,6 @@ public class AccountDAOImpl implements AccountDAO {
                         case CHECKING -> findCheckingAccountById(id, baseAccount, conn);
                         case SAVINGS -> findSavingsAccountById(id, baseAccount, conn);
                         case INVESTMENT -> findInvestmentAccountById(id, baseAccount, conn);
-                        case GOAL -> findGoalAccountById(id, baseAccount, conn);
                         default -> null;
                     };
                     return Optional.of(specificAccount != null ? specificAccount : baseAccount);
@@ -353,7 +310,6 @@ public class AccountDAOImpl implements AccountDAO {
                         case CHECKING -> findCheckingAccountById(baseAccount.getId(), baseAccount, conn);
                         case SAVINGS -> findSavingsAccountById(baseAccount.getId(), baseAccount, conn);
                         case INVESTMENT -> findInvestmentAccountById(baseAccount.getId(), baseAccount, conn);
-                        case GOAL -> findGoalAccountById(baseAccount.getId(), baseAccount, conn);
                         default -> null;
                     };
 
@@ -379,7 +335,6 @@ public class AccountDAOImpl implements AccountDAO {
                     case CHECKING -> findCheckingAccountById(baseAccount.getId(), baseAccount, conn);
                     case SAVINGS -> findSavingsAccountById(baseAccount.getId(), baseAccount, conn);
                     case INVESTMENT -> findInvestmentAccountById(baseAccount.getId(), baseAccount, conn);
-                    case GOAL -> findGoalAccountById(baseAccount.getId(), baseAccount, conn);
                     default -> null;
                 };
 
@@ -422,26 +377,17 @@ public class AccountDAOImpl implements AccountDAO {
     }
 
     private Account mapResultSetToAccount(ResultSet rs) throws SQLException {
-        AccountType accountType = AccountType.valueOf(rs.getString("account_type"));
-        Account account = switch (accountType) {
-            case CHECKING -> new CheckingAccount("", "", accountType, "", "", "", "");
-            case SAVINGS -> new SavingsAccount("", "", "", null, null, null,
-                BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO);
-            case INVESTMENT -> new InvestmentAccount("", "", "", InvestmentSubtype.OTHER);
-            case GOAL -> new GoalAccount("", "", "", BigDecimal.ZERO, null);
-            default -> throw new IllegalArgumentException("Tipo de conta não suportado: " + accountType);
-        };
-
-        account.setId(rs.getString("account_id"));
-        account.setName(rs.getString("name"));
-        account.setDescription(rs.getString("description"));
-        account.setBalance(rs.getBigDecimal("balance"));
-        account.setActive(rs.getInt("is_active") == 1);
-        account.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime());
-        account.setUpdatedAt(rs.getTimestamp("updated_at").toLocalDateTime());
-        account.setUserId(rs.getString("user_id"));
-        
-        return account;
+        return new Account(
+            rs.getString("account_id"),
+            rs.getString("name"),
+            rs.getString("description"),
+            rs.getBigDecimal("balance"),
+            AccountType.valueOf(rs.getString("account_type")),
+            rs.getInt("is_active") == 1,
+            rs.getTimestamp("created_at").toLocalDateTime(),
+            rs.getTimestamp("updated_at").toLocalDateTime(),
+            rs.getString("user_id")
+        );
     }
 
     private CheckingAccount mapResultSetToCheckingAccount(ResultSet rs, Account baseAccount) throws SQLException {
@@ -495,21 +441,7 @@ public class AccountDAOImpl implements AccountDAO {
         return account;
     }
 
-    private GoalAccount mapResultSetToGoalAccount(ResultSet rs, Account baseAccount) throws SQLException {
-        GoalAccount account = new GoalAccount(
-            baseAccount.getName(),
-            baseAccount.getDescription(),
-            baseAccount.getUserId(),
-            rs.getBigDecimal("target_amount"),
-            rs.getTimestamp("target_date") != null ?
-                rs.getTimestamp("target_date").toLocalDateTime() : null
-        );
-        account.setCurrentProgress(rs.getBigDecimal("current_progress"));
-        account.setMonthlyContribution(rs.getBigDecimal("monthly_contribution"));
-        account.setEstimatedCompletionDate(rs.getTimestamp("estimated_completion_date") != null ?
-            rs.getTimestamp("estimated_completion_date").toLocalDateTime() : null);
-        return account;
-    }
+
 
     @Override
     public List<Account> findAllInactive() {
@@ -529,7 +461,6 @@ public class AccountDAOImpl implements AccountDAO {
                         case CHECKING -> findCheckingAccountById(baseAccount.getId(), baseAccount, conn);
                         case SAVINGS -> findSavingsAccountById(baseAccount.getId(), baseAccount, conn);
                         case INVESTMENT -> findInvestmentAccountById(baseAccount.getId(), baseAccount, conn);
-                        case GOAL -> findGoalAccountById(baseAccount.getId(), baseAccount, conn);
                         default -> null;
                     };
 
@@ -573,18 +504,6 @@ public class AccountDAOImpl implements AccountDAO {
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
                 return mapResultSetToInvestmentAccount(rs, baseAccount);
-            }
-        }
-        return null;
-    }
-
-    private Account findGoalAccountById(String id, Account baseAccount, Connection conn) throws SQLException {
-        String sql = "SELECT * FROM GoalAccounts WHERE account_id = ?";
-        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, id);
-            ResultSet rs = stmt.executeQuery();
-            if (rs.next()) {
-                return mapResultSetToGoalAccount(rs, baseAccount);
             }
         }
         return null;
