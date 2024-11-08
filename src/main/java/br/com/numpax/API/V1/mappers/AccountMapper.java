@@ -2,11 +2,7 @@ package br.com.numpax.API.V1.mappers;
 
 import br.com.numpax.API.V1.dto.AccountDTO;
 import br.com.numpax.application.enums.InvestmentSubtype;
-import br.com.numpax.infrastructure.entities.Account;
-import br.com.numpax.infrastructure.entities.CheckingAccount;
-import br.com.numpax.infrastructure.entities.InvestmentAccount;
-import br.com.numpax.infrastructure.entities.SavingsAccount;
-import java.math.BigDecimal;
+import br.com.numpax.infrastructure.entities.*;
 
 public class AccountMapper {
 

@@ -1,8 +1,9 @@
 package br.com.numpax.API.V1.mappers;
 
+import br.com.numpax.API.V1.dto.AccountDTO;
 import br.com.numpax.API.V1.dto.GoalAccountDTO;
-import br.com.numpax.API.V1.entities.Account;
-import br.com.numpax.API.V1.entities.GoalAccount;
+import br.com.numpax.infrastructure.entities.Account;
+import br.com.numpax.infrastructure.entities.GoalAccount;
 
 public class GoalAccountMapper {
     private static final GoalAccountMapper INSTANCE = new GoalAccountMapper();

@@ -1,10 +1,12 @@
 package br.com.numpax.API.V1.dto;
 
 import br.com.numpax.application.enums.AccountType;
+import lombok.experimental.SuperBuilder;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+@SuperBuilder
 public abstract class AccountDTO {
     private String id;
     private String name;
@@ -27,27 +29,6 @@ public abstract class AccountDTO {
         this.updatedAt = updatedAt;
         this.userId = userId;
     }
-
-    public String getId() { return id; }
-    public String getName() { return name; }
-    public String getDescription() { return description; }
-    public BigDecimal getBalance() { return balance; }
-    public AccountType getAccountType() { return accountType; }
-    public Boolean getIsActive() { return isActive; }
-    public LocalDateTime getCreatedAt() { return createdAt; }
-    public LocalDateTime getUpdatedAt() { return updatedAt; }
-    public String getUserId() { return userId; }
-
-    // Setters
-    public void setId(String id) { this.id = id; }
-    public void setName(String name) { this.name = name; }
-    public void setDescription(String description) { this.description = description; }
-    public void setBalance(BigDecimal balance) { this.balance = balance; }
-    public void setAccountType(AccountType accountType) { this.accountType = accountType; }
-    public void setIsActive(Boolean isActive) { this.isActive = isActive; }
-    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
-    public void setUpdatedAt(LocalDateTime updatedAt) { this.updatedAt = updatedAt; }
-    public void setUserId(String userId) { this.userId = userId; }
 
     @Override
     public String toString() {

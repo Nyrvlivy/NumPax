@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import br.com.numpax.application.enums.AccountType;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -26,7 +27,7 @@ public class InvestmentAccountDTO extends AccountDTO {
                               BigDecimal totalInvested, BigDecimal profitability,
                               BigDecimal currentYield, LocalDateTime lastUpdate,
                               List<String> investmentTypes) {
-        super(id, name, description, balance, AccountType.INVESTMENT, isActive, 
+        super(id, name, description, balance, AccountType.INVESTMENT, isActive,
               createdAt, updatedAt, userId);
         this.broker = broker;
         this.accountNumber = accountNumber;

@@ -2,6 +2,8 @@ package br.com.numpax.API.V1.dto;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+
+import br.com.numpax.application.enums.AccountType;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

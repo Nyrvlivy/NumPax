@@ -1,9 +1,9 @@
 package br.com.numpax.API.V1.mappers;
 
+import br.com.numpax.API.V1.dto.AccountDTO;
 import br.com.numpax.API.V1.dto.CheckingAccountDTO;
-import br.com.numpax.API.V1.entities.CheckingAccount;
-import br.com.numpax.API.V1.entities.Account;
-import br.com.numpax.API.V1.entities.AccountDTO;
+import br.com.numpax.infrastructure.entities.Account;
+import br.com.numpax.infrastructure.entities.CheckingAccount;
 
 public class CheckingAccountMapper {
     public CheckingAccount toEntity(CheckingAccountDTO dto) {

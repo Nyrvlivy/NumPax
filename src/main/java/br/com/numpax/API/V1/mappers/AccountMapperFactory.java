@@ -1,11 +1,7 @@
 package br.com.numpax.API.V1.mappers;
 
-import br.com.numpax.API.V1.dto.AccountDTO;
-import br.com.numpax.API.V1.entities.Account;
-import br.com.numpax.API.V1.entities.CheckingAccount;
-import br.com.numpax.API.V1.entities.SavingsAccount;
-import br.com.numpax.API.V1.entities.InvestmentAccount;
-import br.com.numpax.API.V1.entities.GoalAccount;
+import br.com.numpax.API.V1.dto.*;
+import br.com.numpax.infrastructure.entities.*;
 
 public class AccountMapperFactory {
     private static final AccountMapperFactory INSTANCE = new AccountMapperFactory();

@@ -1,9 +1,9 @@
 package br.com.numpax.API.V1.mappers;
 
+import br.com.numpax.API.V1.dto.AccountDTO;
 import br.com.numpax.API.V1.dto.InvestmentAccountDTO;
-import br.com.numpax.API.V1.entities.InvestmentAccount;
-import br.com.numpax.API.V1.entities.Account;
-import br.com.numpax.API.V1.entities.AccountDTO;
+import br.com.numpax.infrastructure.entities.Account;
+import br.com.numpax.infrastructure.entities.InvestmentAccount;
 
 public class InvestmentAccountMapper {
     private static final InvestmentAccountMapper INSTANCE = new InvestmentAccountMapper();

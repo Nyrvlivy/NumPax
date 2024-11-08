@@ -6,10 +6,10 @@ import br.com.numpax.API.V1.dto.UserDTO;
 import br.com.numpax.API.V1.mappers.UserMapper;
 import br.com.numpax.application.enums.AccountType;
 import br.com.numpax.application.services.AccountService;
+import br.com.numpax.application.services.UserService;
 import br.com.numpax.infrastructure.dao.UserDAO;
 import br.com.numpax.infrastructure.dao.impl.UserDAOImpl;
 import br.com.numpax.infrastructure.entities.User;
-import br.com.numpax.application.services.UserService;
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.math.BigDecimal;

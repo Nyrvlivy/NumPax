@@ -2,6 +2,8 @@ package br.com.numpax.API.V1.dto;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+
+import br.com.numpax.application.enums.AccountType;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -23,7 +25,7 @@ public class GoalAccountDTO extends AccountDTO {
                          String userId, BigDecimal targetAmount, LocalDateTime targetDate,
                          BigDecimal monthlyContribution, Double progressPercentage,
                          String category, String priority, Boolean isCompleted) {
-        super(id, name, description, balance, AccountType.GOAL, isActive, 
+        super(id, name, description, balance, AccountType.GOAL, isActive,
               createdAt, updatedAt, userId);
         this.targetAmount = targetAmount;
         this.targetDate = targetDate;
