@@ -1,33 +1,26 @@
 package br.com.numpax.API.V1.dto.request;
 
-import br.com.numpax.application.enums.AccountType;
-import br.com.numpax.application.enums.InvestmentSubtype;
-import br.com.numpax.application.enums.RiskLevelType;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.PositiveOrZero;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.math.BigDecimal;
-
 @Getter
 @Setter
-public class InvestmentAccountRequestDTO extends AccountRequestDTO {
-
-//    private BigDecimal totalInvestedAmount;
-//    private BigDecimal totalProfit;
-//    private BigDecimal totalCurrentAmount;
-//    private BigDecimal totalWithdrawnAmount;
-//    private Integer numberOfWithdrawals;
-//    private Integer numberOfEntries;
-//    private Integer numberOfAssets;
-//    private BigDecimal averagePurchasePrice;
-//    private BigDecimal totalGainLoss;
-//    private BigDecimal totalDividendYield;
-//    private RiskLevelType riskLevelType;
-//    private InvestmentSubtype investmentSubtype;
-
-    public InvestmentAccountRequestDTO() {
-        this.setAccountType(AccountType.INVESTMENT);
-    }
+public class InvestmentAccountRequestDTO {
+    
+    @NotBlank(message = "Name is required")
+    @Size(max = 100, message = "Name must have a maximum of 100 characters")
+    private String name;
+    
+    @Size(max = 255, message = "Description must have a maximum of 255 characters")
+    private String description;
+    
+    @NotBlank(message = "Institution is required")
+    @Size(max = 100, message = "Institution must have a maximum of 100 characters")
+    private String institution;
+    
+    private String accountNumber;
+    private String agency;
+    private String note;
 } 

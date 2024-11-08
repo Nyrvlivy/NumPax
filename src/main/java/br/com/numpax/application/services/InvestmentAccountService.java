@@ -7,19 +7,25 @@ import java.util.List;
 
 public interface InvestmentAccountService {
 
-    InvestmentAccountResponseDTO createAccount(InvestmentAccountRequestDTO dto, String userId);
+    InvestmentAccountResponseDTO createAccount(InvestmentAccountRequestDTO dto);
 
     InvestmentAccountResponseDTO getAccountById(String accountId);
 
     InvestmentAccountResponseDTO updateAccount(String accountId, InvestmentAccountRequestDTO dto);
 
-    void deactivateAccount(String accountId);
-
     void deleteAccount(String accountId);
+
+    void deactivateAccount(String accountId);
 
     List<InvestmentAccountResponseDTO> listAllAccounts();
 
     List<InvestmentAccountResponseDTO> listAllActiveAccounts();
 
     List<InvestmentAccountResponseDTO> listAllInactiveAccounts();
+
+    List<InvestmentAccountResponseDTO> findAccountsByInstitution(String institution);
+
+    InvestmentAccountResponseDTO findByAccountNumber(String accountNumber);
+
+    InvestmentAccountResponseDTO findByAgencyAndAccountNumber(String agency, String accountNumber);
 }
