@@ -6,6 +6,14 @@ import br.com.numpax.infrastructure.entities.Account;
 import br.com.numpax.infrastructure.entities.CheckingAccount;
 
 public class CheckingAccountMapper {
+    private static final CheckingAccountMapper INSTANCE = new CheckingAccountMapper();
+    
+    private CheckingAccountMapper() {} // Private constructor for singleton
+    
+    public static CheckingAccountMapper getInstance() {
+        return INSTANCE;
+    }
+
     public CheckingAccount toEntity(CheckingAccountDTO dto) {
         CheckingAccount account = new CheckingAccount(
             dto.getName(),

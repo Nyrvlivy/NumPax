@@ -8,6 +8,14 @@ import br.com.numpax.infrastructure.entities.SavingsAccount;
 import java.math.BigDecimal;
 
 public class SavingsAccountMapper {
+    private static final SavingsAccountMapper INSTANCE = new SavingsAccountMapper();
+    
+    private SavingsAccountMapper() {} // Private constructor for singleton
+    
+    public static SavingsAccountMapper getInstance() {
+        return INSTANCE;
+    }
+
     public SavingsAccount toEntity(SavingsAccountDTO dto) {
         SavingsAccount account = new SavingsAccount(
             dto.getName(),
