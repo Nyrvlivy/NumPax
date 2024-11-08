@@ -9,7 +9,7 @@ DROP TABLE InvestmentAccounts CASCADE CONSTRAINTS;
 DROP TABLE GoalAccounts CASCADE CONSTRAINTS;
 DROP TABLE SavingsAccounts CASCADE CONSTRAINTS;
 DROP TABLE CheckingAccounts CASCADE CONSTRAINTS;
-DROP TABLE RegularAccounts CASCADE CONSTRAINTS;
+DROP TABLE Accounts CASCADE CONSTRAINTS;
 DROP TABLE Accounts CASCADE CONSTRAINTS;
 DROP TABLE Categories CASCADE CONSTRAINTS;
 DROP TABLE Users CASCADE CONSTRAINTS;
@@ -27,6 +27,7 @@ CREATE TABLE Users (
 );
 
 -- Create Accounts table
+
 CREATE TABLE Accounts (
                           account_id      VARCHAR2(36) PRIMARY KEY,
                           name            VARCHAR2(100) NOT NULL,
@@ -38,14 +39,6 @@ CREATE TABLE Accounts (
                           created_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
                           updated_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
                           CONSTRAINT fk_accounts_user_id FOREIGN KEY (user_id) REFERENCES Users(user_id)
-);
-
--- Create RegularAccounts table
-CREATE TABLE RegularAccounts (
-                                 account_id      VARCHAR2(36) PRIMARY KEY,
-                                 account_type    VARCHAR2(50) NOT NULL,
-                                 CONSTRAINT fk_regular_accounts_account_id FOREIGN KEY (account_id) REFERENCES Accounts(account_id),
-                                 CONSTRAINT chk_account_type CHECK (account_type IN ('CHECKING', 'SAVINGS', 'INVESTMENT', 'GOAL'))
 );
 
 -- Create RelatedAccounts table
@@ -70,7 +63,7 @@ CREATE TABLE CheckingAccounts (
                                   bank_code       VARCHAR2(4),
                                   agency          VARCHAR2(4),
                                   account_number  VARCHAR2(12),
-                                  CONSTRAINT fk_checking_accounts_account_id FOREIGN KEY (account_id) REFERENCES RegularAccounts(account_id)
+                                  CONSTRAINT fk_checking_accounts_account_id FOREIGN KEY (account_id) REFERENCES Accounts(account_id)
 );
 
 -- Create SavingsAccounts table
@@ -83,10 +76,10 @@ CREATE TABLE SavingsAccounts (
                                  number_of_fixed_investments NUMBER(14,2),
                                  total_maturity_amount       NUMBER(14,2),
                                  total_deposit_amount        NUMBER(14,2),
-                                 CONSTRAINT fk_savings_accounts_account_id FOREIGN KEY (account_id) REFERENCES RegularAccounts(account_id)
+                                 CONSTRAINT fk_savings_accounts_account_id FOREIGN KEY (account_id) REFERENCES Accounts(account_id)
 );
 
--- Create InvestmentAccounts table
+-- Create InvestmentAccounts table 
 CREATE TABLE InvestmentAccounts (
                                     account_id              VARCHAR2(36) PRIMARY KEY,
                                     total_invested_amount   NUMBER(14,2),
@@ -101,7 +94,7 @@ CREATE TABLE InvestmentAccounts (
                                     total_dividend_yield    NUMBER(14,2),
                                     risk_level_type         VARCHAR2(50),
                                     investment_subtype      VARCHAR2(50),
-                                    CONSTRAINT fk_investment_accounts_account_id FOREIGN KEY (account_id) REFERENCES RegularAccounts(account_id),
+                                    CONSTRAINT fk_investment_accounts_account_id FOREIGN KEY (account_id) REFERENCES Accounts(account_id),
                                     CONSTRAINT chk_risk_level_type CHECK (risk_level_type IN ('VERY_LOW', 'LOW', 'MEDIUM', 'HIGH', 'VERY_HIGH')),
                                     CONSTRAINT chk_investment_subtype CHECK (investment_subtype IN ('FIXED_INVESTMENT', 'VARIABLE_INVESTMENT', 'STOCKS', 'BONDS', 'ETF', 'FII', 'CRYPTO', 'FOREX', 'OTHER'))
 );
@@ -146,7 +139,7 @@ CREATE TABLE GoalAccounts (
                               target_date             DATE,
                               start_date              DATE,
                               end_date                DATE,
-                              CONSTRAINT fk_goal_accounts_account_id FOREIGN KEY (account_id) REFERENCES RegularAccounts(account_id),
+                              CONSTRAINT fk_goal_accounts_account_id FOREIGN KEY (account_id) REFERENCES Accounts(account_id),
                               CONSTRAINT fk_goal_accounts_category_id FOREIGN KEY (category_id) REFERENCES Categories(category_id)
 );
 
@@ -221,12 +214,3 @@ CREATE TABLE Fees (
                       transaction_id  VARCHAR2(36) NOT NULL,
                       fee_type        VARCHAR2(50) NOT NULL,
                       fee_amount      NUMBER(14,2) NOT NULL,
-                      CONSTRAINT fk_fees_transaction_id FOREIGN KEY (transaction_id) REFERENCES Transactions(transaction_id),
-                      CONSTRAINT chk_fee_type CHECK (fee_type IN ('BROKER', 'OTHER'))
-);
-
--- Create indexes
-CREATE INDEX idx_accounts_user_id ON Accounts(user_id);
-CREATE INDEX idx_transactions_account_id ON Transactions(account_id);
-CREATE INDEX idx_transactions_category_id ON Transactions(category_id);
-CREATE INDEX idx_goal_accounts_category_id ON GoalAccounts(category_id);
