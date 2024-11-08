@@ -50,45 +50,42 @@ public class Main {
         System.out.println("\n3. Criando contas para o Jardineiro...");
 
         // Conta Poupança
-        AccountDTO savingsAccount = new AccountDTO(
-            null,
-            "Poupança do Jardim",
-            "Conta poupança para emergências",
-            BigDecimal.valueOf(5000.00),
-            AccountType.SAVINGS,
-            true,
-            LocalDateTime.now(),
-            LocalDateTime.now(),
-            jardineiroCreated.getId()
-        );
+        SavingsAccountDTO savingsAccount = SavingsAccountDTO.builder()
+            .name("Poupança do Jardim")
+            .description("Conta poupança para emergências")
+            .balance(BigDecimal.valueOf(5000.00))
+            .accountType(AccountType.SAVINGS)
+            .isActive(true)
+            .createdAt(LocalDateTime.now())
+            .updatedAt(LocalDateTime.now())
+            .userId(jardineiroCreated.getId())
+            .build();
         AccountDTO createdSavings = accountService.createAccount(savingsAccount, jardineiroCreated.getId());
 
         // Conta Investimento
-        AccountDTO investmentAccount = new AccountDTO(
-            null,
-            "Investimentos Jardim",
-            "Conta para investimentos diversos",
-            BigDecimal.valueOf(10000.00),
-            AccountType.INVESTMENT,
-            true,
-            LocalDateTime.now(),
-            LocalDateTime.now(),
-            jardineiroCreated.getId()
-        );
+        InvestmentAccountDTO investmentAccount = InvestmentAccountDTO.builder()
+            .name("Investimentos Jardim")
+            .description("Conta para investimentos diversos")
+            .balance(BigDecimal.valueOf(10000.00))
+            .accountType(AccountType.INVESTMENT)
+            .isActive(true)
+            .createdAt(LocalDateTime.now())
+            .updatedAt(LocalDateTime.now())
+            .userId(jardineiroCreated.getId())
+            .build();
         AccountDTO createdInvestment = accountService.createAccount(investmentAccount, jardineiroCreated.getId());
 
         // Conta Meta
-        AccountDTO goalAccount = new AccountDTO(
-            null,
-            "Meta Trator Novo",
-            "Economia para comprar um trator",
-            BigDecimal.valueOf(2000.00),
-            AccountType.GOAL,
-            true,
-            LocalDateTime.now(),
-            LocalDateTime.now(),
-            jardineiroCreated.getId()
-        );
+        GoalAccountDTO goalAccount = GoalAccountDTO.builder()
+            .name("Meta Trator Novo")
+            .description("Economia para comprar um trator")
+            .balance(BigDecimal.valueOf(2000.00))
+            .accountType(AccountType.GOAL)
+            .isActive(true)
+            .createdAt(LocalDateTime.now())
+            .updatedAt(LocalDateTime.now())
+            .userId(jardineiroCreated.getId())
+            .build();
         AccountDTO createdGoal = accountService.createAccount(goalAccount, jardineiroCreated.getId());
 
         // 4. Criar transações

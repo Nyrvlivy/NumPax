@@ -36,17 +36,20 @@ public class UserServiceImpl implements UserService {
 
     private void createDefaultAccount(User user) {
         AccountService accountService = new AccountServiceImpl();
-        AccountDTO defaultAccountDTO = new AccountDTO(
-            null,
-            "Conta Corrente",
-            "Conta corrente padrão",
-            BigDecimal.ZERO,
-            AccountType.CHECKING,
-            true,
-            LocalDateTime.now(),
-            LocalDateTime.now(),
-            user.getId()
-        );
+        CheckingAccountDTO defaultAccountDTO = CheckingAccountDTO.builder()
+            .name("Conta Corrente")
+            .description("Conta corrente padrão")
+            .balance(BigDecimal.ZERO)
+            .accountType(AccountType.CHECKING)
+            .isActive(true)
+            .createdAt(LocalDateTime.now())
+            .updatedAt(LocalDateTime.now())
+            .userId(user.getId())
+            .bank("Banco Default")
+            .agency("0001")
+            .accountNumber("00000-0")
+            .build();
+
         accountService.createAccount(defaultAccountDTO, user.getId());
     }
 

@@ -47,4 +47,9 @@ public abstract class AccountDTO {
             id, name, description, balance, accountType, isActive, createdAt, updatedAt, userId
         );
     }
+
+    public AccountType getAccountType() { return accountType; }
+    public LocalDateTime getCreatedAt() { return createdAt; }
+    public LocalDateTime getUpdatedAt() { return updatedAt; }
+    public Boolean getIsActive() { return isActive; }
 }

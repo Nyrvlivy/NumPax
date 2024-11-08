@@ -532,4 +532,64 @@ public class AccountDAOImpl implements AccountDAO {
         
         return account;
     }
+
+    private Account createAccountInstance(ResultSet rs) throws SQLException {
+        AccountType type = AccountType.valueOf(rs.getString("account_type"));
+        String name = rs.getString("name");
+        String description = rs.getString("description");
+        String userId = rs.getString("user_id");
+
+        return switch (type) {
+            case CHECKING -> new CheckingAccount(
+                name,
+                description, 
+                type,
+                userId,
+                rs.getString("bank_code"),
+                rs.getString("agency"),
+                rs.getString("account_number")
+            );
+            
+            case SAVINGS -> new SavingsAccount(
+                name,
+                description,
+                userId,
+                rs.getTimestamp("nearest_deadline") != null ? 
+                    rs.getTimestamp("nearest_deadline").toLocalDateTime() : null,
+                rs.getTimestamp("furthest_deadline") != null ? 
+                    rs.getTimestamp("furthest_deadline").toLocalDateTime() : null,
+                rs.getTimestamp("latest_deadline") != null ? 
+                    rs.getTimestamp("latest_deadline").toLocalDateTime() : null,
+                rs.getBigDecimal("average_tax_rate"),
+                rs.getBigDecimal("number_of_fixed_investments"),
+                rs.getBigDecimal("total_maturity_amount"),
+                rs.getBigDecimal("total_deposit_amount")
+            );
+            
+            case INVESTMENT -> new InvestmentAccount(
+                name,
+                description,
+                userId,
+                InvestmentSubtype.valueOf(rs.getString("investment_subtype"))
+            );
+            
+            case GOAL -> new GoalAccount(
+                name,
+                description,
+                type,
+                userId,
+                rs.getDouble("target_value"),
+                rs.getDouble("target_tax_rate"),
+                rs.getDouble("monthly_tax_rate"),
+                rs.getDouble("monthly_estimate"),
+                rs.getDouble("monthly_achievement"),
+                new CategoryDAOImpl().findById(rs.getString("category_id")).orElse(null),
+                rs.getDate("target_date").toLocalDate(),
+                rs.getDate("start_date").toLocalDate(),
+                rs.getDate("end_date").toLocalDate()
+            );
+            
+            default -> throw new IllegalArgumentException("Unknown account type: " + type);
+        };
+    }
 }
