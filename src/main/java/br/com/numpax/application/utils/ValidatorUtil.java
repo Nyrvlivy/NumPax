@@ -23,7 +23,7 @@ public class ValidatorUtil {
                     .append(violation.getMessage())
                     .append("\n");
             }
-            throw new IllegalArgumentException("Erros de validação:\n" + sb.toString());
+            throw new IllegalArgumentException("Erros de validação:\n" + sb);
         }
     }
 }

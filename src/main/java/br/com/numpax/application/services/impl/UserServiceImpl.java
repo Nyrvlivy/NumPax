@@ -105,7 +105,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void deactivateUser(String userId) {
+    public void deleteUser(String userId) {
         User user = userRepository.findById(userId)
             .orElseThrow(() -> new UserNotFoundException("Usuário não encontrado"));
 
@@ -113,15 +113,6 @@ public class UserServiceImpl implements UserService {
         user.setUpdatedAt(LocalDateTime.now());
 
         userRepository.update(user);
-    }
-
-    @Override
-    public void deleteUser(String userId) {
-        // Verificar se o usuário existe
-        if (!userRepository.findById(userId).isPresent()) {
-            throw new UserNotFoundException("Usuário não encontrado");
-        }
-        userRepository.delete(userId);
     }
 
     @Override

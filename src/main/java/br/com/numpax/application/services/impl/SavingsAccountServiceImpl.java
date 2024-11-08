@@ -4,6 +4,7 @@ import br.com.numpax.API.V1.dto.request.SavingsAccountRequestDTO;
 import br.com.numpax.API.V1.dto.response.SavingsAccountResponseDTO;
 import br.com.numpax.API.V1.exceptions.AccountNotFoundException;
 import br.com.numpax.API.V1.mappers.SavingsAccountMapper;
+import br.com.numpax.application.enums.AccountType;
 import br.com.numpax.application.services.SavingsAccountService;
 import br.com.numpax.application.services.UserService;
 import br.com.numpax.application.utils.ValidatorUtil;

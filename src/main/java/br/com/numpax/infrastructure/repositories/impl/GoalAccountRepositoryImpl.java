@@ -49,13 +49,12 @@ public class GoalAccountRepositoryImpl implements GoalAccountRepository {
                 "monthly_achievement, " +
                 "category_id, " +
                 "target_date, " +
-                "start_date, " +
-                "end_date) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                "start_date) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, account.getAccountId());
             statement.setBigDecimal(2, account.getTargetValue());
-            statement.setBigDecimal(3, account.getAmountValue());
+            statement.setBigDecimal(3, account.getAmountValue() != null ? account.getAmountValue() : BigDecimal.ZERO);
             statement.setBigDecimal(4, account.getTargetTaxRate());
             statement.setBigDecimal(5, account.getMonthlyTaxRate());
             statement.setBigDecimal(6, account.getMonthlyEstimate());
@@ -63,7 +62,6 @@ public class GoalAccountRepositoryImpl implements GoalAccountRepository {
             statement.setString(8, account.getCategory().getId());
             statement.setTimestamp(9, Timestamp.valueOf(account.getTargetDate().atStartOfDay()));
             statement.setTimestamp(10, Timestamp.valueOf(account.getStartDate().atStartOfDay()));
-            statement.setTimestamp(11, Timestamp.valueOf(account.getEndDate().atStartOfDay()));
             statement.executeUpdate();
 
         } catch (SQLException e) {

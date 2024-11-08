@@ -30,7 +30,7 @@ public class InvestmentAccountServiceImpl implements InvestmentAccountService {
 
     @Override
     public InvestmentAccountResponseDTO createAccount(InvestmentAccountRequestDTO dto, String userId) {
-        // Validação do DTO
+
         ValidatorUtil.validate(dto);
 
         User user = userService.findUserById(userId);
@@ -73,18 +73,18 @@ public class InvestmentAccountServiceImpl implements InvestmentAccountService {
         InvestmentAccount account = accountOptional.get();
         account.setName(dto.getName());
         account.setDescription(dto.getDescription());
-        account.setTotalInvestedAmount(dto.getTotalInvestedAmount());
-        account.setTotalProfit(dto.getTotalProfit());
-        account.setTotalCurrentAmount(dto.getTotalCurrentAmount());
-        account.setTotalWithdrawnAmount(dto.getTotalWithdrawnAmount());
-        account.setNumberOfWithdrawals(dto.getNumberOfWithdrawals());
-        account.setNumberOfEntries(dto.getNumberOfEntries());
-        account.setNumberOfAssets(dto.getNumberOfAssets());
-        account.setAveragePurchasePrice(dto.getAveragePurchasePrice());
-        account.setTotalGainLoss(dto.getTotalGainLoss());
-        account.setTotalDividendYield(dto.getTotalDividendYield());
-        account.setRiskLevelType(dto.getRiskLevelType());
-        account.setInvestmentSubtype(dto.getInvestmentSubtype());
+//        account.setTotalInvestedAmount(dto.getTotalInvestedAmount());
+//        account.setTotalProfit(dto.getTotalProfit());
+//        account.setTotalCurrentAmount(dto.getTotalCurrentAmount());
+//        account.setTotalWithdrawnAmount(dto.getTotalWithdrawnAmount());
+//        account.setNumberOfWithdrawals(dto.getNumberOfWithdrawals());
+//        account.setNumberOfEntries(dto.getNumberOfEntries());
+//        account.setNumberOfAssets(dto.getNumberOfAssets());
+//        account.setAveragePurchasePrice(dto.getAveragePurchasePrice());
+//        account.setTotalGainLoss(dto.getTotalGainLoss());
+//        account.setTotalDividendYield(dto.getTotalDividendYield());
+//        account.setRiskLevelType(dto.getRiskLevelType());
+//        account.setInvestmentSubtype(dto.getInvestmentSubtype());
         account.setUpdatedAt(LocalDateTime.now());
 
         repository.update(account);

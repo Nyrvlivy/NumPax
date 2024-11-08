@@ -58,18 +58,18 @@ public class InvestmentAccountRepositoryImpl implements InvestmentAccountReposit
                 "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, account.getAccountId());
-            stmt.setBigDecimal(2, account.getTotalInvestedAmount());
-            stmt.setBigDecimal(3, account.getTotalProfit());
-            stmt.setBigDecimal(4, account.getTotalCurrentAmount());
-            stmt.setBigDecimal(5, account.getTotalWithdrawnAmount());
-            stmt.setInt(6, account.getNumberOfWithdrawals());
-            stmt.setInt(7, account.getNumberOfEntries());
-            stmt.setInt(8, account.getNumberOfAssets());
-            stmt.setBigDecimal(9, account.getAveragePurchasePrice());
-            stmt.setBigDecimal(10, account.getTotalGainLoss());
-            stmt.setBigDecimal(11, account.getTotalDividendYield());
-            stmt.setString(12, account.getRiskLevelType().toString());
-            stmt.setString(13, account.getInvestmentSubtype().toString());
+            stmt.setBigDecimal(2, account.getTotalInvestedAmount() != null ? account.getTotalInvestedAmount() : BigDecimal.ZERO);
+            stmt.setBigDecimal(3, account.getTotalProfit() != null ? account.getTotalProfit() : BigDecimal.ZERO);
+            stmt.setBigDecimal(4, account.getTotalCurrentAmount() != null ? account.getTotalCurrentAmount() : BigDecimal.ZERO);
+            stmt.setBigDecimal(5, account.getTotalWithdrawnAmount() != null ? account.getTotalWithdrawnAmount() : BigDecimal.ZERO);
+            stmt.setInt(6, account.getNumberOfWithdrawals() != null ? account.getNumberOfWithdrawals() : 0);
+            stmt.setInt(7, account.getNumberOfEntries() != null ? account.getNumberOfEntries() : 0);
+            stmt.setInt(8, account.getNumberOfAssets() != null ? account.getNumberOfAssets() : 0);
+            stmt.setBigDecimal(9, account.getAveragePurchasePrice() != null ? account.getAveragePurchasePrice() : BigDecimal.ZERO);
+            stmt.setBigDecimal(10, account.getTotalGainLoss() != null ? account.getTotalGainLoss() : BigDecimal.ZERO);
+            stmt.setBigDecimal(11, account.getTotalDividendYield() != null ? account.getTotalDividendYield() : BigDecimal.ZERO);
+            stmt.setString(12, account.getRiskLevelType() != null ? account.getRiskLevelType().toString() : RiskLevelType.LOW.toString());
+            stmt.setString(13, account.getInvestmentSubtype() != null ? account.getInvestmentSubtype().toString() : InvestmentSubtype.FIXED_INVESTMENT.toString());
             stmt.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException("Erro ao criar conta de investimento", e);

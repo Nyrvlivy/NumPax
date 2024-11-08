@@ -40,7 +40,10 @@ public class CheckingAccountServiceImpl implements CheckingAccountService {
         CheckingAccount account = CheckingAccountMapper.toEntity(dto, user);
 
         // Set additional fields
-        account.setAccountId(UUID.randomUUID().toString());
+        String accountId = UUID.randomUUID().toString();
+        System.out.println(accountId);
+
+        account.setAccountId(accountId);
         account.setBalance(BigDecimal.ZERO);
         account.setIsActive(true);
         account.setCreatedAt(LocalDateTime.now());

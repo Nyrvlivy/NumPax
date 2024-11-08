@@ -13,25 +13,19 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 public class InvestmentAccountRequestDTO extends AccountRequestDTO {
-    @NotNull(message = "Total invested amount is required")
-    @PositiveOrZero(message = "Total invested amount must be zero or positive")
-    private BigDecimal totalInvestedAmount;
 
-    private BigDecimal totalProfit;
-    private BigDecimal totalCurrentAmount;
-    private BigDecimal totalWithdrawnAmount;
-    private Integer numberOfWithdrawals;
-    private Integer numberOfEntries;
-    private Integer numberOfAssets;
-    private BigDecimal averagePurchasePrice;
-    private BigDecimal totalGainLoss;
-    private BigDecimal totalDividendYield;
-
-    @NotNull(message = "Risk level type is required")
-    private RiskLevelType riskLevelType;
-
-    @NotNull(message = "Investment subtype is required")
-    private InvestmentSubtype investmentSubtype;
+//    private BigDecimal totalInvestedAmount;
+//    private BigDecimal totalProfit;
+//    private BigDecimal totalCurrentAmount;
+//    private BigDecimal totalWithdrawnAmount;
+//    private Integer numberOfWithdrawals;
+//    private Integer numberOfEntries;
+//    private Integer numberOfAssets;
+//    private BigDecimal averagePurchasePrice;
+//    private BigDecimal totalGainLoss;
+//    private BigDecimal totalDividendYield;
+//    private RiskLevelType riskLevelType;
+//    private InvestmentSubtype investmentSubtype;
 
     public InvestmentAccountRequestDTO() {
         this.setAccountType(AccountType.INVESTMENT);

@@ -18,8 +18,6 @@ public interface UserService {
 
     UserResponseDTO updateUser(String userId, UserUpdateRequestDTO dto);
 
-    void deactivateUser(String userId);
-
     void deleteUser(String userId);
 
     List<UserResponseDTO> listAllUsers();

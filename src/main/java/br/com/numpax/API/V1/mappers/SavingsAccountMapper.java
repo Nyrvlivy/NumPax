@@ -2,6 +2,7 @@ package br.com.numpax.API.V1.mappers;
 
 import br.com.numpax.API.V1.dto.request.SavingsAccountRequestDTO;
 import br.com.numpax.API.V1.dto.response.SavingsAccountResponseDTO;
+import br.com.numpax.application.enums.AccountType;
 import br.com.numpax.application.utils.ValidatorUtil;
 import br.com.numpax.infrastructure.entities.SavingsAccount;
 import br.com.numpax.infrastructure.entities.User;
@@ -23,6 +24,7 @@ public class SavingsAccountMapper {
         account.setNumberOfFixedInvestments(dto.getNumberOfFixedInvestments());
         account.setTotalMaturityAmount(dto.getTotalMaturityAmount());
         account.setTotalDepositAmount(dto.getTotalDepositAmount());
+        account.setAccountType(AccountType.SAVINGS);
         account.setUserId(user);
 
         return account;

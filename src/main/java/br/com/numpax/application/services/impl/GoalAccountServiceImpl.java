@@ -35,7 +35,9 @@ public class GoalAccountServiceImpl implements GoalAccountService {
 
     @Override
     public GoalAccountResponseDTO createAccount(GoalAccountRequestDTO dto, String userId) {
-        // Validação do DTO
+
+        System.out.println(dto.getEndDate());
+
         ValidatorUtil.validate(dto);
 
         User user = userService.findUserById(userId);

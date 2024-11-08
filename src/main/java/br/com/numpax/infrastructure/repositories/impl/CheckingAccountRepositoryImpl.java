@@ -24,6 +24,7 @@ public class CheckingAccountRepositoryImpl implements CheckingAccountRepository 
         // Inserir na tabela Accounts primeiro
         String accountSql = "INSERT INTO Accounts (account_id, name, description, balance, account_type, is_active, user_id, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement accountStmt = connection.prepareStatement(accountSql)) {
+            System.out.println("Account: " + account.getAccountId());
             accountStmt.setString(1, account.getAccountId());
             accountStmt.setString(2, account.getName());
             accountStmt.setString(3, account.getDescription());
@@ -41,6 +42,7 @@ public class CheckingAccountRepositoryImpl implements CheckingAccountRepository 
         // Inserir na tabela CheckingAccounts
         String sql = "INSERT INTO CheckingAccounts (account_id, bank_code, agency, account_number) VALUES (?, ?, ?, ?)";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            System.out.println("Checking Account: " + account.getAccountId());
             stmt.setString(1, account.getAccountId());
             stmt.setString(2, account.getBankCode());
             stmt.setString(3, account.getAgency());

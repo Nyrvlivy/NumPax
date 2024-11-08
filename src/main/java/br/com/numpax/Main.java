@@ -61,7 +61,7 @@ public class Main {
             checkingAccountRequest.setAccountType(AccountType.CHECKING);
             checkingAccountRequest.setBankCode("001");
             checkingAccountRequest.setAgency("1234");
-            checkingAccountRequest.setAccountNumber("567876790-17");
+            checkingAccountRequest.setAccountNumber("263748573627");
 
             CheckingAccountResponseDTO checkingAccountResponse = checkingAccountService.createAccount(checkingAccountRequest, userId);
             System.out.println("Conta corrente criada: " + checkingAccountResponse);
@@ -85,12 +85,12 @@ public class Main {
             InvestmentAccountRequestDTO investmentAccountRequest = new InvestmentAccountRequestDTO();
             investmentAccountRequest.setName("Investimentos");
             investmentAccountRequest.setDescription("Conta para investimentos em ações");
-            // Defina outros campos necessários
 
             InvestmentAccountResponseDTO investmentAccountResponse = investmentAccountService.createAccount(investmentAccountRequest, userId);
             System.out.println("Conta de investimento criada: " + investmentAccountResponse);
 
             // Criar uma conta de meta
+
             // Obter uma categoria
             CategoryResponseDTO categoryResponse = categoryService.listAllCategories().stream().findFirst().orElse(null);
             if (categoryResponse == null) {
@@ -108,7 +108,6 @@ public class Main {
                 goalAccountRequest.setCategoryId(categoryResponse.getId());
                 goalAccountRequest.setTargetDate(LocalDate.now().plusYears(2));
                 goalAccountRequest.setStartDate(LocalDate.now());
-                goalAccountRequest.setEndDate(LocalDate.now().plusYears(2));
 
                 GoalAccountResponseDTO goalAccountResponse = goalAccountService.createAccount(goalAccountRequest, userId);
                 System.out.println("Conta de meta criada: " + goalAccountResponse);
