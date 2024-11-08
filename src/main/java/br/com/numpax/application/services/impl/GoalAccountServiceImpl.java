@@ -25,7 +25,7 @@ public class GoalAccountServiceImpl implements GoalAccountService {
 
     private final GoalAccountRepository repository;
     private final UserService userService;
-    private final CategoryService categoryService; // Adicionado aqui
+    private final CategoryService categoryService;
 
     public GoalAccountServiceImpl(GoalAccountRepository repository, UserService userService, CategoryService categoryService) {
         this.repository = repository;
@@ -107,7 +107,7 @@ public class GoalAccountServiceImpl implements GoalAccountService {
             throw new AccountNotFoundException("Conta não encontrada: " + accountId);
         }
         GoalAccount account = accountOptional.get();
-        account.setIsActive(false); // Certifique-se de que o método seja setActive
+        account.setIsActive(false);
         account.setUpdatedAt(LocalDateTime.now());
         repository.update(account);
     }
