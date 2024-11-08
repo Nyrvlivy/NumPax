@@ -23,37 +23,53 @@ public class FixedInvestmentRepositoryImpl implements FixedInvestmentRepository 
 
     @Override
     public void create(FixedInvestment investment) {
-        String sql = "INSERT INTO FixedInvestments (fixed_investment_id, name, description, investment_type, " +
-                    "investment_account_id, investment_amount, tax_rate, investment_date, maturity_date, " +
-                    "expected_return, current_amount, profit_amount, broker, institution, note, " +
-                    "is_redeemed, redemption_date, redemption_amount, is_active, created_at, updated_at) " +
-                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        // Primeiro insere na tabela Transactions
+        String transactionSql = "INSERT INTO Transactions (transaction_id, code, name, description, amount, " +
+                               "category_id, account_id, nature_of_transaction, receiver, sender, " +
+                               "transaction_date, note, created_at, updated_at) " +
+                               "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setString(1, investment.getFixedInvestmentId());
-            stmt.setString(2, investment.getName());
-            stmt.setString(3, investment.getDescription());
-            stmt.setString(4, investment.getInvestmentType().name());
-            stmt.setString(5, investment.getInvestmentAccount().getAccountId());
-            stmt.setBigDecimal(6, investment.getInvestmentAmount());
-            stmt.setBigDecimal(7, investment.getTaxRate());
-            stmt.setDate(8, Date.valueOf(investment.getInvestmentDate()));
-            stmt.setDate(9, Date.valueOf(investment.getMaturityDate()));
-            stmt.setBigDecimal(10, investment.getExpectedReturn());
-            stmt.setBigDecimal(11, investment.getCurrentAmount());
-            stmt.setBigDecimal(12, investment.getProfitAmount());
-            stmt.setString(13, investment.getBroker());
-            stmt.setString(14, investment.getInstitution());
-            stmt.setString(15, investment.getNote());
-            stmt.setInt(16, investment.isRedeemed() ? 1 : 0);
-            stmt.setDate(17, investment.getRedemptionDate() != null ? 
-                    Date.valueOf(investment.getRedemptionDate()) : null);
-            stmt.setBigDecimal(18, investment.getRedemptionAmount());
-            stmt.setInt(19, investment.isActive() ? 1 : 0);
-            stmt.setTimestamp(20, Timestamp.valueOf(investment.getCreatedAt()));
-            stmt.setTimestamp(21, Timestamp.valueOf(investment.getUpdatedAt()));
+        // Depois insere na tabela FixedInvestments
+        String investmentSql = "INSERT INTO FixedInvestments (transaction_id, fixed_investment_type, " +
+                              "investment_date, expiration_date, institution, redeem_value, redeem_date, " +
+                              "liquidity_period, net_gain_loss) " +
+                              "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-            stmt.executeUpdate();
+        try {
+            // Insert Transaction
+            try (PreparedStatement stmt = connection.prepareStatement(transactionSql)) {
+                stmt.setString(1, investment.getTransactionId());
+                stmt.setString(2, investment.getCode());
+                stmt.setString(3, investment.getName());
+                stmt.setString(4, investment.getDescription());
+                stmt.setBigDecimal(5, investment.getAmount());
+                stmt.setString(6, investment.getCategoryId());
+                stmt.setString(7, investment.getAccountId());
+                stmt.setString(8, investment.getNatureOfTransaction().name());
+                stmt.setString(9, investment.getReceiver());
+                stmt.setString(10, investment.getSender());
+                stmt.setDate(11, Date.valueOf(investment.getTransactionDate()));
+                stmt.setString(12, investment.getNote());
+                stmt.setTimestamp(13, Timestamp.valueOf(investment.getCreatedAt()));
+                stmt.setTimestamp(14, Timestamp.valueOf(investment.getUpdatedAt()));
+                stmt.executeUpdate();
+            }
+
+            // Insert FixedInvestment
+            try (PreparedStatement stmt = connection.prepareStatement(investmentSql)) {
+                stmt.setString(1, investment.getTransactionId());
+                stmt.setString(2, investment.getFixedInvestmentType().name());
+                stmt.setDate(3, Date.valueOf(investment.getInvestmentDate()));
+                stmt.setDate(4, investment.getExpirationDate() != null ? 
+                    Date.valueOf(investment.getExpirationDate()) : null);
+                stmt.setString(5, investment.getInstitution());
+                stmt.setBigDecimal(6, investment.getRedeemValue());
+                stmt.setDate(7, investment.getRedeemDate() != null ? 
+                    Date.valueOf(investment.getRedeemDate()) : null);
+                stmt.setInt(8, investment.getLiquidityPeriod());
+                stmt.setBigDecimal(9, investment.getNetGainLoss());
+                stmt.executeUpdate();
+            }
         } catch (SQLException e) {
             throw new RuntimeException("Error creating fixed investment", e);
         }
@@ -81,37 +97,49 @@ public class FixedInvestmentRepositoryImpl implements FixedInvestmentRepository 
 
     @Override
     public void update(FixedInvestment investment) {
-        String sql = "UPDATE FixedInvestments SET name = ?, description = ?, investment_type = ?, " +
-                    "investment_account_id = ?, investment_amount = ?, tax_rate = ?, investment_date = ?, " +
-                    "maturity_date = ?, expected_return = ?, current_amount = ?, profit_amount = ?, " +
-                    "broker = ?, institution = ?, note = ?, is_redeemed = ?, redemption_date = ?, " +
-                    "redemption_amount = ?, is_active = ?, updated_at = ? " +
-                    "WHERE fixed_investment_id = ?";
+        String transactionSql = "UPDATE Transactions SET code = ?, name = ?, description = ?, " +
+                               "amount = ?, category_id = ?, account_id = ?, nature_of_transaction = ?, " +
+                               "receiver = ?, sender = ?, transaction_date = ?, note = ?, updated_at = ? " +
+                               "WHERE transaction_id = ?";
 
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setString(1, investment.getName());
-            stmt.setString(2, investment.getDescription());
-            stmt.setString(3, investment.getInvestmentType().name());
-            stmt.setString(4, investment.getInvestmentAccount().getAccountId());
-            stmt.setBigDecimal(5, investment.getInvestmentAmount());
-            stmt.setBigDecimal(6, investment.getTaxRate());
-            stmt.setDate(7, Date.valueOf(investment.getInvestmentDate()));
-            stmt.setDate(8, Date.valueOf(investment.getMaturityDate()));
-            stmt.setBigDecimal(9, investment.getExpectedReturn());
-            stmt.setBigDecimal(10, investment.getCurrentAmount());
-            stmt.setBigDecimal(11, investment.getProfitAmount());
-            stmt.setString(12, investment.getBroker());
-            stmt.setString(13, investment.getInstitution());
-            stmt.setString(14, investment.getNote());
-            stmt.setInt(15, investment.isRedeemed() ? 1 : 0);
-            stmt.setDate(16, investment.getRedemptionDate() != null ? 
-                    Date.valueOf(investment.getRedemptionDate()) : null);
-            stmt.setBigDecimal(17, investment.getRedemptionAmount());
-            stmt.setInt(18, investment.isActive() ? 1 : 0);
-            stmt.setTimestamp(19, Timestamp.valueOf(investment.getUpdatedAt()));
-            stmt.setString(20, investment.getFixedInvestmentId());
+        String investmentSql = "UPDATE FixedInvestments SET fixed_investment_type = ?, investment_date = ?, " +
+                              "expiration_date = ?, institution = ?, redeem_value = ?, redeem_date = ?, " +
+                              "liquidity_period = ?, net_gain_loss = ? WHERE transaction_id = ?";
 
-            stmt.executeUpdate();
+        try {
+            // Update Transaction
+            try (PreparedStatement stmt = connection.prepareStatement(transactionSql)) {
+                stmt.setString(1, investment.getCode());
+                stmt.setString(2, investment.getName());
+                stmt.setString(3, investment.getDescription());
+                stmt.setBigDecimal(4, investment.getAmount());
+                stmt.setString(5, investment.getCategoryId());
+                stmt.setString(6, investment.getAccountId());
+                stmt.setString(7, investment.getNatureOfTransaction().name());
+                stmt.setString(8, investment.getReceiver());
+                stmt.setString(9, investment.getSender());
+                stmt.setDate(10, Date.valueOf(investment.getTransactionDate()));
+                stmt.setString(11, investment.getNote());
+                stmt.setTimestamp(12, Timestamp.valueOf(investment.getUpdatedAt()));
+                stmt.setString(13, investment.getTransactionId());
+                stmt.executeUpdate();
+            }
+
+            // Update FixedInvestment
+            try (PreparedStatement stmt = connection.prepareStatement(investmentSql)) {
+                stmt.setString(1, investment.getFixedInvestmentType().name());
+                stmt.setDate(2, Date.valueOf(investment.getInvestmentDate()));
+                stmt.setDate(3, investment.getExpirationDate() != null ? 
+                    Date.valueOf(investment.getExpirationDate()) : null);
+                stmt.setString(4, investment.getInstitution());
+                stmt.setBigDecimal(5, investment.getRedeemValue());
+                stmt.setDate(6, investment.getRedeemDate() != null ? 
+                    Date.valueOf(investment.getRedeemDate()) : null);
+                stmt.setInt(7, investment.getLiquidityPeriod());
+                stmt.setBigDecimal(8, investment.getNetGainLoss());
+                stmt.setString(9, investment.getTransactionId());
+                stmt.executeUpdate();
+            }
         } catch (SQLException e) {
             throw new RuntimeException("Error updating fixed investment", e);
         }
@@ -191,17 +219,19 @@ public class FixedInvestmentRepositoryImpl implements FixedInvestmentRepository 
 
     @Override
     public List<FixedInvestment> findActiveInvestments() {
-        String sql = "SELECT fi.*, ia.* FROM FixedInvestments fi " +
-                    "JOIN InvestmentAccounts ia ON fi.investment_account_id = ia.account_id " +
-                    "WHERE fi.is_redeemed = 0 AND fi.is_active = 1";
+        String sql = "SELECT fi.*, t.* FROM FixedInvestments fi " +
+                    "JOIN Transactions t ON fi.transaction_id = t.transaction_id " +
+                    "WHERE fi.redeem_date IS NULL " +
+                    "AND (fi.expiration_date IS NULL OR fi.expiration_date > CURRENT_DATE)";
         return executeQuery(sql);
     }
 
     @Override
     public List<FixedInvestment> findMaturedInvestments() {
-        String sql = "SELECT fi.*, ia.* FROM FixedInvestments fi " +
-                    "JOIN InvestmentAccounts ia ON fi.investment_account_id = ia.account_id " +
-                    "WHERE fi.maturity_date <= CURRENT_DATE AND fi.is_redeemed = 0";
+        String sql = "SELECT fi.*, t.* FROM FixedInvestments fi " +
+                    "JOIN Transactions t ON fi.transaction_id = t.transaction_id " +
+                    "WHERE fi.redeem_date IS NULL " +
+                    "AND fi.expiration_date <= CURRENT_DATE";
         return executeQuery(sql);
     }
 
@@ -240,39 +270,34 @@ public class FixedInvestmentRepositoryImpl implements FixedInvestmentRepository 
 
     private FixedInvestment extractFixedInvestmentFromResultSet(ResultSet rs) throws SQLException {
         FixedInvestment investment = new FixedInvestment();
-        investment.setFixedInvestmentId(rs.getString("fixed_investment_id"));
+        
+        // Transaction fields
+        investment.setTransactionId(rs.getString("transaction_id"));
+        investment.setCode(rs.getString("code"));
         investment.setName(rs.getString("name"));
         investment.setDescription(rs.getString("description"));
-        investment.setInvestmentType(FixedInvestmentType.valueOf(rs.getString("investment_type")));
-        
-        InvestmentAccount account = new InvestmentAccount();
-        // Preencher propriedades da conta de investimento
-        account.setAccountId(rs.getString("account_id"));
-        account.setName(rs.getString("account_name"));
-        // ... outras propriedades da conta
-        investment.setInvestmentAccount(account);
-        
-        investment.setInvestmentAmount(rs.getBigDecimal("investment_amount"));
-        investment.setTaxRate(rs.getBigDecimal("tax_rate"));
-        investment.setInvestmentDate(rs.getDate("investment_date").toLocalDate());
-        investment.setMaturityDate(rs.getDate("maturity_date").toLocalDate());
-        investment.setExpectedReturn(rs.getBigDecimal("expected_return"));
-        investment.setCurrentAmount(rs.getBigDecimal("current_amount"));
-        investment.setProfitAmount(rs.getBigDecimal("profit_amount"));
-        investment.setBroker(rs.getString("broker"));
-        investment.setInstitution(rs.getString("institution"));
+        investment.setAmount(rs.getBigDecimal("amount"));
+        investment.setCategoryId(rs.getString("category_id"));
+        investment.setAccountId(rs.getString("account_id"));
+        investment.setNatureOfTransaction(NatureOfTransaction.valueOf(rs.getString("nature_of_transaction")));
+        investment.setReceiver(rs.getString("receiver"));
+        investment.setSender(rs.getString("sender"));
+        investment.setTransactionDate(rs.getDate("transaction_date").toLocalDate());
         investment.setNote(rs.getString("note"));
-        investment.setRedeemed(rs.getInt("is_redeemed") == 1);
-        
-        Date redemptionDate = rs.getDate("redemption_date");
-        if (redemptionDate != null) {
-            investment.setRedemptionDate(redemptionDate.toLocalDate());
-        }
-        
-        investment.setRedemptionAmount(rs.getBigDecimal("redemption_amount"));
-        investment.setActive(rs.getInt("is_active") == 1);
         investment.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime());
         investment.setUpdatedAt(rs.getTimestamp("updated_at").toLocalDateTime());
+        
+        // FixedInvestment fields
+        investment.setFixedInvestmentType(FixedInvestmentType.valueOf(rs.getString("fixed_investment_type")));
+        investment.setInvestmentDate(rs.getDate("investment_date").toLocalDate());
+        investment.setExpirationDate(rs.getDate("expiration_date") != null ? 
+            rs.getDate("expiration_date").toLocalDate() : null);
+        investment.setInstitution(rs.getString("institution"));
+        investment.setRedeemValue(rs.getBigDecimal("redeem_value"));
+        investment.setRedeemDate(rs.getDate("redeem_date") != null ? 
+            rs.getDate("redeem_date").toLocalDate() : null);
+        investment.setLiquidityPeriod(rs.getInt("liquidity_period"));
+        investment.setNetGainLoss(rs.getBigDecimal("net_gain_loss"));
         
         return investment;
     }

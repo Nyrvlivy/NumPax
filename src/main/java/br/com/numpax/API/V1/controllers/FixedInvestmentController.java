@@ -2,6 +2,7 @@ package br.com.numpax.API.V1.controllers;
 
 import br.com.numpax.API.V1.dto.request.FixedInvestmentRequestDTO;
 import br.com.numpax.API.V1.dto.request.FixedInvestmentUpdateRequestDTO;
+import br.com.numpax.API.V1.dto.request.FixedInvestmentRedeemRequestDTO;
 import br.com.numpax.API.V1.dto.response.FixedInvestmentResponseDTO;
 import br.com.numpax.application.services.FixedInvestmentService;
 import jakarta.validation.Valid;
@@ -51,12 +52,11 @@ public class FixedInvestmentController {
     @Path("/{investmentId}/redeem")
     public Response redeemInvestment(
             @PathParam("investmentId") String investmentId,
-            @QueryParam("redemptionDate") String redemptionDate,
-            @QueryParam("redemptionAmount") double redemptionAmount) {
+            @Valid FixedInvestmentRedeemRequestDTO dto) {
         fixedInvestmentService.redeemInvestment(
             investmentId,
-            LocalDate.parse(redemptionDate),
-            redemptionAmount
+            dto.getRedeemDate(),
+            dto.getRedeemValue()
         );
         return Response.noContent().build();
     }
