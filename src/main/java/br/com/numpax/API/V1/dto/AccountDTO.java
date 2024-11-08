@@ -5,7 +5,7 @@ import br.com.numpax.application.enums.AccountType;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-public class AccountDTO {
+public abstract class AccountDTO {
     private String id;
     private String name;
     private String description;
@@ -16,7 +16,7 @@ public class AccountDTO {
     private LocalDateTime updatedAt;
     private String userId;
 
-    public AccountDTO(String id, String name, String description, BigDecimal balance, AccountType accountType, Boolean isActive, LocalDateTime createdAt, LocalDateTime updatedAt, String userId) {
+    protected AccountDTO(String id, String name, String description, BigDecimal balance, AccountType accountType, Boolean isActive, LocalDateTime createdAt, LocalDateTime updatedAt, String userId) {
         this.id = id;
         this.name = name;
         this.description = description;
