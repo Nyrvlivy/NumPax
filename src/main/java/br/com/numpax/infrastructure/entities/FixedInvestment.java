@@ -3,11 +3,15 @@ package br.com.numpax.infrastructure.entities;
 import br.com.numpax.application.enums.FixedInvestmentType;
 import br.com.numpax.application.enums.NatureOfTransaction;
 import br.com.numpax.application.enums.RepeatableType;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+@Getter
+@Setter
 public class FixedInvestment extends Transaction {
     private FixedInvestmentType fixedInvestmentType;
     private LocalDate investmentDate;

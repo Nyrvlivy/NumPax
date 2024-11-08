@@ -45,7 +45,7 @@ public class UserDAOImpl implements UserDAO {
             stmt.setString(3, user.getEmail());
             stmt.setString(4, user.getHashedPassword());
             stmt.setDate(5, Date.valueOf(user.getBirthdate()));
-            stmt.setBoolean(6, user.getIsActive());
+            stmt.setBoolean(6, user.isActive());
             stmt.setTimestamp(7, Timestamp.valueOf(user.getCreatedAt()));
             stmt.setTimestamp(8, Timestamp.valueOf(user.getUpdatedAt()));
             stmt.executeUpdate();
@@ -79,7 +79,7 @@ public class UserDAOImpl implements UserDAO {
             stmt.setString(2, user.getEmail());
             stmt.setString(3, user.getHashedPassword());
             stmt.setDate(4, Date.valueOf(user.getBirthdate()));
-            stmt.setBoolean(5, user.getIsActive());
+            stmt.setBoolean(5, user.isActive());
             stmt.setTimestamp(6, Timestamp.valueOf(LocalDateTime.now()));
             stmt.setString(7, user.getId());
             stmt.executeUpdate();

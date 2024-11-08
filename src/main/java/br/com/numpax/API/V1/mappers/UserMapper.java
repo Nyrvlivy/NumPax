@@ -37,7 +37,7 @@ public class UserMapper {
             user.getName(),
             user.getEmail(),
             user.getBirthdate(),
-            user.getIsActive(),
+            user.isActive(),
             user.getCreatedAt(),
             user.getUpdatedAt()
         );

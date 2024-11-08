@@ -1,11 +1,15 @@
 package br.com.numpax.API.V1.dto;
 
 import br.com.numpax.application.enums.AccountType;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+@Getter
+@Setter
 @SuperBuilder
 public abstract class AccountDTO {
     private String id;
@@ -47,9 +51,4 @@ public abstract class AccountDTO {
             id, name, description, balance, accountType, isActive, createdAt, updatedAt, userId
         );
     }
-
-    public AccountType getAccountType() { return accountType; }
-    public LocalDateTime getCreatedAt() { return createdAt; }
-    public LocalDateTime getUpdatedAt() { return updatedAt; }
-    public Boolean getIsActive() { return isActive; }
 }

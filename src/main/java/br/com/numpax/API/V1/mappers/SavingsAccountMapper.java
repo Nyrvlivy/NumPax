@@ -32,7 +32,7 @@ public class SavingsAccountMapper {
         );
 
         setCommonFields(account, dto);
-        account.setNumberOfFixedInvestments(BigDecimal.valueOf(dto.getNumberOfFixedInvestments()));
+        account.setNumberOfFixedInvestments(dto.getNumberOfFixedInvestments());
         account.setTotalMaturityAmount(dto.getTotalMaturityAmount());
         account.setTotalDepositAmount(dto.getTotalDepositAmount());
 

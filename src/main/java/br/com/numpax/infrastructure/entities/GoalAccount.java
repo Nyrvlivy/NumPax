@@ -1,127 +1,45 @@
 package br.com.numpax.infrastructure.entities;
 
 import br.com.numpax.application.enums.AccountType;
+import lombok.Getter;
+import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+@Getter
+@Setter
 public class GoalAccount extends Account {
-    private Double targetValue;
-    private Double amountValue;
-    private Double targetTaxRate;
-    private Double monthlyTaxRate;
-    private Double monthlyEstimate;
-    private Double monthlyAchievement;
+    private BigDecimal targetValue;
+    private BigDecimal amountValue;
+    private BigDecimal targetTaxRate;
+    private BigDecimal monthlyTaxRate;
+    private BigDecimal monthlyEstimate;
+    private BigDecimal monthlyAchievement;
     private Category category;
     private LocalDate targetDate;
     private LocalDate startDate;
     private LocalDate endDate;
 
-    public GoalAccount(String name, String description, AccountType accountType, String userId, Double targetValue, Double targetTaxRate, Double monthlyTaxRate, Double monthlyEstimate, Double monthlyAchievement, Category category, LocalDate targetDate, LocalDate startDate, LocalDate endDate) {
-        super(name, description, accountType, userId);
-        this.targetValue = targetValue;
-        this.amountValue = 0.0;
-        this.targetTaxRate = targetTaxRate;
-        this.monthlyTaxRate = monthlyTaxRate;
-        this.monthlyEstimate = monthlyEstimate;
-        this.monthlyAchievement = monthlyAchievement;
+    public GoalAccount() {
+    }
+
+    public GoalAccount(String accountId, String name, String description, BigDecimal balance,
+                       User userId, boolean isActive, LocalDateTime createdAt, LocalDateTime updatedAt,
+                       BigDecimal targetValue, BigDecimal amountValue, BigDecimal targetTaxRate,
+                       BigDecimal monthlyTaxRate, BigDecimal monthlyEstimate, BigDecimal monthlyAchievement,
+                       Category category, LocalDate targetDate, LocalDate startDate, LocalDate endDate) {
+        super(accountId, name, description, balance, AccountType.GOAL, isActive, userId, createdAt, updatedAt);
+        this.targetValue = targetValue != null ? targetValue : BigDecimal.ZERO;
+        this.amountValue = amountValue != null ? amountValue : BigDecimal.ZERO;
+        this.targetTaxRate = targetTaxRate != null ? targetTaxRate : BigDecimal.ZERO;
+        this.monthlyTaxRate = monthlyTaxRate != null ? monthlyTaxRate : BigDecimal.ZERO;
+        this.monthlyEstimate = monthlyEstimate != null ? monthlyEstimate : BigDecimal.ZERO;
+        this.monthlyAchievement = monthlyAchievement != null ? monthlyAchievement : BigDecimal.ZERO;
         this.category = category;
         this.targetDate = targetDate;
         this.startDate = startDate;
         this.endDate = endDate;
-    }
-
-    public Double getTargetValue() {
-        return targetValue;
-    }
-
-    public void setTargetValue(Double targetValue) {
-        this.targetValue = targetValue;
-        this.setUpdatedAt(LocalDateTime.now());
-    }
-
-    public Double getAmountValue() {
-        return amountValue;
-    }
-
-    public void setAmountValue(Double amountValue) {
-        this.amountValue = amountValue;
-        this.setUpdatedAt(LocalDateTime.now());
-    }
-
-    public Double getTargetTaxRate() {
-        return targetTaxRate;
-    }
-
-    public void setTargetTaxRate(Double targetTaxRate) {
-        this.targetTaxRate = targetTaxRate;
-        this.setUpdatedAt(LocalDateTime.now());
-    }
-
-    public Double getMonthlyTaxRate() {
-        return monthlyTaxRate;
-    }
-
-    public void setMonthlyTaxRate(Double monthlyTaxRate) {
-        this.monthlyTaxRate = monthlyTaxRate;
-        this.setUpdatedAt(LocalDateTime.now());
-    }
-
-    public Double getMonthlyEstimate() {
-        return monthlyEstimate;
-    }
-
-    public void setMonthlyEstimate(Double monthlyEstimate) {
-        this.monthlyEstimate = monthlyEstimate;
-        this.setUpdatedAt(LocalDateTime.now());
-    }
-
-    public Double getMonthlyAchievement() {
-        return monthlyAchievement;
-    }
-
-    public void setMonthlyAchievement(Double monthlyAchievement) {
-        this.monthlyAchievement = monthlyAchievement;
-        this.setUpdatedAt(LocalDateTime.now());
-    }
-
-    public Category getCategory() {
-        return category;
-    }
-
-    public void setCategory(Category category) {
-        this.category = category;
-        this.setUpdatedAt(LocalDateTime.now());
-    }
-
-    public LocalDate getTargetDate() {
-        return targetDate;
-    }
-
-    public void setTargetDate(LocalDate targetDate) {
-        this.targetDate = targetDate;
-        this.setUpdatedAt(LocalDateTime.now());
-    }
-
-    public LocalDate getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(LocalDate startDate) {
-        this.startDate = startDate;
-        this.setUpdatedAt(LocalDateTime.now());
-    }
-
-    public LocalDate getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(LocalDate endDate) {
-        this.endDate = endDate;
-        this.setUpdatedAt(LocalDateTime.now());
-    }
-
-    public void viewGoalProgress() {
-        System.out.println("Progresso do objetivo: " + amountValue + " de " + targetValue);
     }
 }

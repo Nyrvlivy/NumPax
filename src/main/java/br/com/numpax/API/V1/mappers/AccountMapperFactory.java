@@ -1,9 +1,8 @@
 package br.com.numpax.API.V1.mappers;
 
 import br.com.numpax.API.V1.dto.*;
-import br.com.numpax.infrastructure.entities.*;
-import br.com.numpax.application.enums.AccountType;
 import br.com.numpax.API.V1.exceptions.InvalidAccountTypeException;
+import br.com.numpax.infrastructure.entities.*;
 
 public class AccountMapperFactory {
     private static final AccountMapperFactory INSTANCE = new AccountMapperFactory();

@@ -8,8 +8,12 @@ import br.com.numpax.application.enums.AccountType;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
-@Data
+@Getter
+@Setter
 @EqualsAndHashCode(callSuper = true)
 public class InvestmentAccountDTO extends AccountDTO {
     private String broker;
@@ -19,16 +23,16 @@ public class InvestmentAccountDTO extends AccountDTO {
     private BigDecimal currentYield;
     private LocalDateTime lastUpdate;
     private List<String> investmentTypes;
-    
+
     @Builder
     public InvestmentAccountDTO(String id, String name, String description, BigDecimal balance,
-                              Boolean isActive, LocalDateTime createdAt, LocalDateTime updatedAt,
-                              String userId, String broker, String accountNumber, 
-                              BigDecimal totalInvested, BigDecimal profitability,
-                              BigDecimal currentYield, LocalDateTime lastUpdate,
-                              List<String> investmentTypes) {
+                                Boolean isActive, LocalDateTime createdAt, LocalDateTime updatedAt,
+                                String userId, String broker, String accountNumber,
+                                BigDecimal totalInvested, BigDecimal profitability,
+                                BigDecimal currentYield, LocalDateTime lastUpdate,
+                                List<String> investmentTypes) {
         super(id, name, description, balance, AccountType.INVESTMENT, isActive,
-              createdAt, updatedAt, userId);
+            createdAt, updatedAt, userId);
         this.broker = broker;
         this.accountNumber = accountNumber;
         this.totalInvested = totalInvested;
@@ -37,4 +41,4 @@ public class InvestmentAccountDTO extends AccountDTO {
         this.lastUpdate = lastUpdate;
         this.investmentTypes = investmentTypes;
     }
-} 
+}

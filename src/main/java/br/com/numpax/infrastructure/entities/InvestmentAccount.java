@@ -2,146 +2,53 @@ package br.com.numpax.infrastructure.entities;
 
 import br.com.numpax.application.enums.AccountType;
 import br.com.numpax.application.enums.InvestmentSubtype;
+import br.com.numpax.application.enums.RiskLevelType;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
+@Getter
+@Setter
 public class InvestmentAccount extends Account {
-    private InvestmentSubtype investmentSubtype;
     private BigDecimal totalInvestedAmount;
     private BigDecimal totalProfit;
     private BigDecimal totalCurrentAmount;
     private BigDecimal totalWithdrawnAmount;
-    private int numberOfWithdrawals;
-    private int numberOfEntries;
-    private int numberOfAssets;
+    private BigDecimal numberOfWithdrawals;
+    private BigDecimal numberOfEntries;
+    private BigDecimal numberOfAssets;
     private BigDecimal averagePurchasePrice;
     private BigDecimal totalGainLoss;
     private BigDecimal totalDividendYield;
-    private String riskLevelType;
+    private RiskLevelType riskLevelType;
+    private InvestmentSubtype investmentSubtype;
 
-    public InvestmentAccount(String name, String description, String userId, InvestmentSubtype investmentSubtype) {
-        super(name, description, AccountType.INVESTMENT, userId);
-        this.investmentSubtype = investmentSubtype;
-        this.totalInvestedAmount = BigDecimal.ZERO;
-        this.totalProfit = BigDecimal.ZERO;
-        this.totalCurrentAmount = BigDecimal.ZERO;
-        this.totalWithdrawnAmount = BigDecimal.ZERO;
-        this.numberOfWithdrawals = 0;
-        this.numberOfEntries = 0;
-        this.numberOfAssets = 0;
-        this.averagePurchasePrice = BigDecimal.ZERO;
-        this.totalGainLoss = BigDecimal.ZERO;
-        this.totalDividendYield = BigDecimal.ZERO;
-        this.riskLevelType = "LOW";
+    public InvestmentAccount() {
     }
 
-    public InvestmentSubtype getInvestmentSubtype() {
-        return investmentSubtype;
-    }
-
-    public void setInvestmentSubtype(InvestmentSubtype investmentSubtype) {
-        this.investmentSubtype = investmentSubtype;
-        this.setUpdatedAt(LocalDateTime.now());
-    }
-
-    public BigDecimal getTotalInvestedAmount() {
-        return totalInvestedAmount;
-    }
-
-    public void setTotalInvestedAmount(BigDecimal totalInvestedAmount) {
-        this.totalInvestedAmount = totalInvestedAmount;
-        this.setUpdatedAt(LocalDateTime.now());
-    }
-
-    public BigDecimal getTotalProfit() {
-        return totalProfit;
-    }
-
-    public void setTotalProfit(BigDecimal totalProfit) {
-        this.totalProfit = totalProfit;
-        this.setUpdatedAt(LocalDateTime.now());
-    }
-
-    public BigDecimal getTotalCurrentAmount() {
-        return totalCurrentAmount;
-    }
-
-    public void setTotalCurrentAmount(BigDecimal totalCurrentAmount) {
-        this.totalCurrentAmount = totalCurrentAmount;
-        this.setUpdatedAt(LocalDateTime.now());
-    }
-
-    public BigDecimal getTotalWithdrawnAmount() {
-        return totalWithdrawnAmount;
-    }
-
-    public void setTotalWithdrawnAmount(BigDecimal totalWithdrawnAmount) {
-        this.totalWithdrawnAmount = totalWithdrawnAmount;
-        this.setUpdatedAt(LocalDateTime.now());
-    }
-
-    public int getNumberOfWithdrawals() {
-        return numberOfWithdrawals;
-    }
-
-    public void setNumberOfWithdrawals(int numberOfWithdrawals) {
-        this.numberOfWithdrawals = numberOfWithdrawals;
-        this.setUpdatedAt(LocalDateTime.now());
-    }
-
-    public int getNumberOfEntries() {
-        return numberOfEntries;
-    }
-
-    public void setNumberOfEntries(int numberOfEntries) {
-        this.numberOfEntries = numberOfEntries;
-        this.setUpdatedAt(LocalDateTime.now());
-    }
-
-    public int getNumberOfAssets() {
-        return numberOfAssets;
-    }
-
-    public void setNumberOfAssets(int numberOfAssets) {
-        this.numberOfAssets = numberOfAssets;
-        this.setUpdatedAt(LocalDateTime.now());
-    }
-
-    public BigDecimal getAveragePurchasePrice() {
-        return averagePurchasePrice;
-    }
-
-    public void setAveragePurchasePrice(BigDecimal averagePurchasePrice) {
-        this.averagePurchasePrice = averagePurchasePrice;
-        this.setUpdatedAt(LocalDateTime.now());
-    }
-
-    public BigDecimal getTotalGainLoss() {
-        return totalGainLoss;
-    }
-
-    public void setTotalGainLoss(BigDecimal totalGainLoss) {
-        this.totalGainLoss = totalGainLoss;
-        this.setUpdatedAt(LocalDateTime.now());
-    }
-
-    public BigDecimal getTotalDividendYield() {
-        return totalDividendYield;
-    }
-
-    public void setTotalDividendYield(BigDecimal totalDividendYield) {
-        this.totalDividendYield = totalDividendYield;
-        this.setUpdatedAt(LocalDateTime.now());
-    }
-
-    public String getRiskLevelType() {
-        return riskLevelType;
-    }
-
-    public void setRiskLevelType(String riskLevelType) {
-        this.riskLevelType = riskLevelType;
-        this.setUpdatedAt(LocalDateTime.now());
+    public InvestmentAccount(String accountId, String name, String description, BigDecimal balance,
+                             User userId, boolean isActive, LocalDateTime createdAt, LocalDateTime updatedAt,
+                             BigDecimal totalInvestedAmount, BigDecimal totalProfit, BigDecimal totalCurrentAmount,
+                             BigDecimal totalWithdrawnAmount, BigDecimal numberOfWithdrawals,
+                             BigDecimal numberOfEntries, BigDecimal numberOfAssets, BigDecimal averagePurchasePrice,
+                             BigDecimal totalGainLoss, BigDecimal totalDividendYield,
+                             List<String> riskLevelType, List<String> investmentSubtype) {
+        super(accountId, name, description, balance, AccountType.INVESTMENT, isActive, userId, createdAt, updatedAt);
+        this.totalInvestedAmount = totalInvestedAmount != null ? totalInvestedAmount : BigDecimal.ZERO;
+        this.totalProfit = totalProfit != null ? totalProfit : BigDecimal.ZERO;
+        this.totalCurrentAmount = totalCurrentAmount != null ? totalCurrentAmount : BigDecimal.ZERO;
+        this.totalWithdrawnAmount = totalWithdrawnAmount != null ? totalWithdrawnAmount : BigDecimal.ZERO;
+        this.numberOfWithdrawals = numberOfWithdrawals != null ? numberOfWithdrawals : BigDecimal.ZERO;
+        this.numberOfEntries = numberOfEntries != null ? numberOfEntries : BigDecimal.ZERO;
+        this.numberOfAssets = numberOfAssets != null ? numberOfAssets : BigDecimal.ZERO;
+        this.averagePurchasePrice = averagePurchasePrice != null ? averagePurchasePrice : BigDecimal.ZERO;
+        this.totalGainLoss = totalGainLoss != null ? totalGainLoss : BigDecimal.ZERO;
+        this.totalDividendYield = totalDividendYield != null ? totalDividendYield : BigDecimal.ZERO;
+        this.riskLevelType = riskLevelType != null ? RiskLevelType.valueOf(riskLevelType.getFirst()) : null;
+        this.investmentSubtype = investmentSubtype != null ? InvestmentSubtype.valueOf(investmentSubtype.getFirst()) : null;
     }
 
 }

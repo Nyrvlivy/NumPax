@@ -3,11 +3,15 @@ package br.com.numpax.infrastructure.entities;
 import br.com.numpax.application.enums.NatureOfTransaction;
 import br.com.numpax.application.enums.RepeatableType;
 import br.com.numpax.application.enums.VariableInvestmentType;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+@Getter
+@Setter
 public class VariableInvestment extends Transaction {
     private VariableInvestmentType variableInvestmentType;
     private String broker;

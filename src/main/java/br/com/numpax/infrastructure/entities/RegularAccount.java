@@ -2,13 +2,20 @@ package br.com.numpax.infrastructure.entities;
 
 import br.com.numpax.application.enums.AccountType;
 import br.com.numpax.API.V1.exceptions.InsufficientFundsException;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+@Getter
+@Setter
 public class RegularAccount extends Account {
 
-    public RegularAccount(String name, String description, AccountType accountType, String userId) {
+    public RegularAccount() {
+    }
+
+    public RegularAccount(String name, String description, AccountType accountType, User userId) {
         super(name, description, accountType, userId);
     }
 

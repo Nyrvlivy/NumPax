@@ -1,45 +1,36 @@
 package br.com.numpax.infrastructure.entities;
 
 import br.com.numpax.application.enums.AccountType;
+import lombok.Getter;
+import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-public class CheckingAccount extends RegularAccount {
+@Getter
+@Setter
+public class CheckingAccount extends Account {
     private String bankName;
     private String agency;
     private String accountNumber;
 
-    public CheckingAccount(String name, String description, AccountType accountType, String userId, String bankName, String agency, String accountNumber) {
+    public CheckingAccount() {
+    }
+
+    public CheckingAccount(String id, String name, String description, BigDecimal balance, boolean active, User userId,
+                           LocalDateTime createdAt, LocalDateTime updatedAt, String bankName, String agency,
+                           String accountNumber) {
+        super(id, name, description, balance, AccountType.CHECKING, active, userId, createdAt, updatedAt);
+        this.bankName = bankName;
+        this.agency = agency;
+        this.accountNumber = accountNumber;
+    }
+
+    public CheckingAccount(String name, String description, AccountType accountType, User userId,
+                           String bankName, String agency, String accountNumber) {
         super(name, description, accountType, userId);
         this.bankName = bankName;
         this.agency = agency;
         this.accountNumber = accountNumber;
-    }
-
-    public String getBankName() {
-        return bankName;
-    }
-
-    public void setBankName(String bankName) {
-        this.bankName = bankName;
-        this.setUpdatedAt(LocalDateTime.now());
-    }
-
-    public String getAgency() {
-        return agency;
-    }
-
-    public void setAgency(String agency) {
-        this.agency = agency;
-        this.setUpdatedAt(LocalDateTime.now());
-    }
-
-    public String getAccountNumber() {
-        return accountNumber;
-    }
-
-    public void setAccountNumber(String accountNumber) {
-        this.accountNumber = accountNumber;
-        this.setUpdatedAt(LocalDateTime.now());
     }
 }

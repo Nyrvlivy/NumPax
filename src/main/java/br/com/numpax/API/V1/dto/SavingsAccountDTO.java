@@ -5,10 +5,13 @@ import java.time.LocalDateTime;
 
 import br.com.numpax.application.enums.AccountType;
 import lombok.Builder;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
-@Data
+@Getter
+@Setter
 @EqualsAndHashCode(callSuper = true)
 public class SavingsAccountDTO extends AccountDTO {
     private LocalDateTime nearestDeadline;
@@ -18,14 +21,14 @@ public class SavingsAccountDTO extends AccountDTO {
     private Integer numberOfFixedInvestments;
     private BigDecimal totalMaturityAmount;
     private BigDecimal totalDepositAmount;
-    
+
     @Builder
     public SavingsAccountDTO(String id, String name, String description, BigDecimal balance,
-                           Boolean isActive, LocalDateTime createdAt, LocalDateTime updatedAt,
-                           String userId, LocalDateTime nearestDeadline, LocalDateTime furthestDeadline,
-                           LocalDateTime latestDeadline, BigDecimal averageTaxRate,
-                           Integer numberOfFixedInvestments, BigDecimal totalMaturityAmount,
-                           BigDecimal totalDepositAmount) {
+                             Boolean isActive, LocalDateTime createdAt, LocalDateTime updatedAt,
+                             String userId, LocalDateTime nearestDeadline, LocalDateTime furthestDeadline,
+                             LocalDateTime latestDeadline, BigDecimal averageTaxRate,
+                             Integer numberOfFixedInvestments, BigDecimal totalMaturityAmount,
+                             BigDecimal totalDepositAmount) {
         super(id, name, description, balance, AccountType.SAVINGS, isActive, createdAt, updatedAt, userId);
         this.nearestDeadline = nearestDeadline;
         this.furthestDeadline = furthestDeadline;
@@ -35,4 +38,4 @@ public class SavingsAccountDTO extends AccountDTO {
         this.totalMaturityAmount = totalMaturityAmount;
         this.totalDepositAmount = totalDepositAmount;
     }
-} 
+}

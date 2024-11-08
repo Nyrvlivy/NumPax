@@ -1,6 +1,6 @@
 package br.com.numpax.application.services.impl;
 
-import br.com.numpax.API.V1.dto.AccountDTO;
+import br.com.numpax.API.V1.dto.CheckingAccountDTO;
 import br.com.numpax.API.V1.dto.DetailedUserDTO;
 import br.com.numpax.API.V1.dto.UserDTO;
 import br.com.numpax.API.V1.mappers.UserMapper;
@@ -45,7 +45,7 @@ public class UserServiceImpl implements UserService {
             .createdAt(LocalDateTime.now())
             .updatedAt(LocalDateTime.now())
             .userId(user.getId())
-            .bank("Banco Default")
+            .bankCode("Banco Default")
             .agency("0001")
             .accountNumber("00000-0")
             .build();
