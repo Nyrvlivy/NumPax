@@ -40,18 +40,10 @@ public class VariableInvestment extends Transaction {
         this.otherFees = otherFees;
     }
 
-    public VariableInvestmentType getVariableInvestmentType() {
-        return variableInvestmentType;
-    }
-
     public void setVariableInvestmentType(VariableInvestmentType variableInvestmentType) {
         this.variableInvestmentType = variableInvestmentType;
         this.setUpdatedAt(LocalDateTime.now());
 
-    }
-
-    public String getBroker() {
-        return broker;
     }
 
     public void setBroker(String broker) {
@@ -59,20 +51,8 @@ public class VariableInvestment extends Transaction {
         this.setUpdatedAt(LocalDateTime.now());
     }
 
-    public LocalDate getPurchaseDate() {
-        return purchaseDate;
-    }
-
     public void setPurchaseDate(LocalDate purchaseDate) {
         this.purchaseDate = purchaseDate;
-    }
-
-    public String getAssetCode() {
-        return assetCode;
-    }
-
-    public BigDecimal getQuantity() {
-        return quantity;
     }
 
     public void setQuantity(BigDecimal quantity) {
@@ -81,18 +61,10 @@ public class VariableInvestment extends Transaction {
 
     }
 
-    public BigDecimal getUnitPrice() {
-        return unitPrice;
-    }
-
     public void setUnitPrice(BigDecimal unitPrice) {
         this.unitPrice = unitPrice;
         this.setUpdatedAt(LocalDateTime.now());
 
-    }
-
-    public LocalDate getSaleDate() {
-        return saleDate;
     }
 
     public void setSaleDate(LocalDate saleDate) {
@@ -101,26 +73,14 @@ public class VariableInvestment extends Transaction {
 
     }
 
-    public BigDecimal getSalePrice() {
-        return salePrice;
-    }
-
     public void setSalePrice(BigDecimal salePrice) {
         this.salePrice = salePrice;
         this.setUpdatedAt(LocalDateTime.now());
     }
 
-    public BigDecimal[] getBrokerFees() {
-        return brokerFees;
-    }
-
     public void setBrokerFees(BigDecimal[] brokerFees) {
         this.brokerFees = brokerFees;
         this.setUpdatedAt(LocalDateTime.now());
-    }
-
-    public BigDecimal[] getOtherFees() {
-        return otherFees;
     }
 
     public void setOtherFees(BigDecimal[] otherFees) {
@@ -164,10 +124,6 @@ public class VariableInvestment extends Transaction {
 
     public BigDecimal getNetGainLoss() {
         return getTotalGainLoss().subtract(getTotalFees());
-    }
-
-    public LocalDate getExpirationDate() {
-        return expirationDate;
     }
 
     public void setExpirationDate(LocalDate expirationDate) {

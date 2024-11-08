@@ -1,18 +1,16 @@
-package br.com.numpax.application.dto.request;
+package br.com.numpax.API.V1.dto.response;
 
 import java.math.BigDecimal;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.PositiveOrZero;
+
+import br.com.numpax.application.enums.InvestmentSubtype;
+import br.com.numpax.application.enums.RiskLevelType;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class CreateInvestmentAccountRequestDTO extends CreateAccountRequestDTO {
-    @NotNull(message = "Total invested amount is required")
-    @PositiveOrZero(message = "Total invested amount must be zero or positive")
+public class InvestmentAccountResponseDTO extends AccountResponseDTO {
     private BigDecimal totalInvestedAmount;
-    
     private BigDecimal totalProfit;
     private BigDecimal totalCurrentAmount;
     private BigDecimal totalWithdrawnAmount;
@@ -22,10 +20,6 @@ public class CreateInvestmentAccountRequestDTO extends CreateAccountRequestDTO {
     private BigDecimal averagePurchasePrice;
     private BigDecimal totalGainLoss;
     private BigDecimal totalDividendYield;
-    
-    @NotNull(message = "Risk level type is required")
     private RiskLevelType riskLevelType;
-    
-    @NotNull(message = "Investment subtype is required")
     private InvestmentSubtype investmentSubtype;
 } 

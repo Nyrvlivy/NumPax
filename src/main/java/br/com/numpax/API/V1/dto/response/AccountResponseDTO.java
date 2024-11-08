@@ -1,7 +1,9 @@
-package br.com.numpax.application.dto.response;
+package br.com.numpax.API.V1.dto.response;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+
+import br.com.numpax.application.enums.AccountType;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,4 +19,4 @@ public class AccountResponseDTO {
     private String userId;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-} 
+}

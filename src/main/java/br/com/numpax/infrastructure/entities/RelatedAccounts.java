@@ -30,15 +30,4 @@ public class RelatedAccounts extends Account {
         this.setUpdatedAt(LocalDateTime.now());
     }
 
-    public BigDecimal getTotalBalance() {
-        return totalBalance;
-    }
-
-    public int getTotalAccounts() {
-        return totalAccounts;
-    }
-
-    public List<Account> getRelatedAccounts() {
-        return relatedAccounts;
-    }
 }

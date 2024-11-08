@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 public class CheckingAccount extends Account {
-    private String bankName;
+    private String bankCode;
     private String agency;
     private String accountNumber;
 
@@ -18,18 +18,18 @@ public class CheckingAccount extends Account {
     }
 
     public CheckingAccount(String id, String name, String description, BigDecimal balance, boolean active, User userId,
-                           LocalDateTime createdAt, LocalDateTime updatedAt, String bankName, String agency,
+                           LocalDateTime createdAt, LocalDateTime updatedAt, String bankCode, String agency,
                            String accountNumber) {
         super(id, name, description, balance, AccountType.CHECKING, active, userId, createdAt, updatedAt);
-        this.bankName = bankName;
+        this.bankCode = bankCode;
         this.agency = agency;
         this.accountNumber = accountNumber;
     }
 
     public CheckingAccount(String name, String description, AccountType accountType, User userId,
-                           String bankName, String agency, String accountNumber) {
+                           String bankCode, String agency, String accountNumber) {
         super(name, description, accountType, userId);
-        this.bankName = bankName;
+        this.bankCode = bankCode;
         this.agency = agency;
         this.accountNumber = accountNumber;
     }

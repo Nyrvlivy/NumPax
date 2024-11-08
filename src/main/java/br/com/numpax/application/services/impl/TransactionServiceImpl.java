@@ -1,11 +1,11 @@
 package br.com.numpax.application.services.impl;
 
+import br.com.numpax.application.services.TransactionService;
 import br.com.numpax.infrastructure.dao.TransactionDAO;
 import br.com.numpax.infrastructure.dao.impl.TransactionDAOImpl;
 import br.com.numpax.infrastructure.entities.Transaction;
 import br.com.numpax.infrastructure.entities.Account;
 import br.com.numpax.API.V1.exceptions.ResourceNotFoundException;
-import br.com.numpax.application.services.TransactionService;
 
 import java.time.LocalDate;
 import java.util.List;

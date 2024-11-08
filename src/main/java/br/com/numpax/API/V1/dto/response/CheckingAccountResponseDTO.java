@@ -1,4 +1,4 @@
-package br.com.numpax.application.dto.response;
+package br.com.numpax.API.V1.dto.response;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -9,4 +9,4 @@ public class CheckingAccountResponseDTO extends AccountResponseDTO {
     private String bankCode;
     private String agency;
     private String accountNumber;
-} 
+}

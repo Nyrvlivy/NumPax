@@ -17,9 +17,9 @@ public class InvestmentAccount extends Account {
     private BigDecimal totalProfit;
     private BigDecimal totalCurrentAmount;
     private BigDecimal totalWithdrawnAmount;
-    private BigDecimal numberOfWithdrawals;
-    private BigDecimal numberOfEntries;
-    private BigDecimal numberOfAssets;
+    private Integer numberOfWithdrawals;
+    private Integer numberOfEntries;
+    private Integer numberOfAssets;
     private BigDecimal averagePurchasePrice;
     private BigDecimal totalGainLoss;
     private BigDecimal totalDividendYield;
@@ -32,8 +32,8 @@ public class InvestmentAccount extends Account {
     public InvestmentAccount(String accountId, String name, String description, BigDecimal balance,
                              User userId, boolean isActive, LocalDateTime createdAt, LocalDateTime updatedAt,
                              BigDecimal totalInvestedAmount, BigDecimal totalProfit, BigDecimal totalCurrentAmount,
-                             BigDecimal totalWithdrawnAmount, BigDecimal numberOfWithdrawals,
-                             BigDecimal numberOfEntries, BigDecimal numberOfAssets, BigDecimal averagePurchasePrice,
+                             BigDecimal totalWithdrawnAmount, Integer numberOfWithdrawals,
+                             Integer numberOfEntries, Integer numberOfAssets, BigDecimal averagePurchasePrice,
                              BigDecimal totalGainLoss, BigDecimal totalDividendYield,
                              List<String> riskLevelType, List<String> investmentSubtype) {
         super(accountId, name, description, balance, AccountType.INVESTMENT, isActive, userId, createdAt, updatedAt);
@@ -41,9 +41,9 @@ public class InvestmentAccount extends Account {
         this.totalProfit = totalProfit != null ? totalProfit : BigDecimal.ZERO;
         this.totalCurrentAmount = totalCurrentAmount != null ? totalCurrentAmount : BigDecimal.ZERO;
         this.totalWithdrawnAmount = totalWithdrawnAmount != null ? totalWithdrawnAmount : BigDecimal.ZERO;
-        this.numberOfWithdrawals = numberOfWithdrawals != null ? numberOfWithdrawals : BigDecimal.ZERO;
-        this.numberOfEntries = numberOfEntries != null ? numberOfEntries : BigDecimal.ZERO;
-        this.numberOfAssets = numberOfAssets != null ? numberOfAssets : BigDecimal.ZERO;
+        this.numberOfWithdrawals = numberOfWithdrawals != null ? numberOfWithdrawals : 0;
+        this.numberOfEntries = numberOfEntries != null ? numberOfEntries : 0;
+        this.numberOfAssets = numberOfAssets != null ? numberOfAssets : 0;
         this.averagePurchasePrice = averagePurchasePrice != null ? averagePurchasePrice : BigDecimal.ZERO;
         this.totalGainLoss = totalGainLoss != null ? totalGainLoss : BigDecimal.ZERO;
         this.totalDividendYield = totalDividendYield != null ? totalDividendYield : BigDecimal.ZERO;

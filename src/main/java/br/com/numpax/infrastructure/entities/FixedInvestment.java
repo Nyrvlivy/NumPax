@@ -38,18 +38,10 @@ public class FixedInvestment extends Transaction {
 
     }
 
-    public FixedInvestmentType getFixedInvestmentType() {
-        return fixedInvestmentType;
-    }
-
     public void setFixedInvestmentType(FixedInvestmentType fixedInvestmentType) {
         this.fixedInvestmentType = fixedInvestmentType;
         this.setUpdatedAt(LocalDateTime.now());
 
-    }
-
-    public LocalDate getInvestmentDate() {
-        return investmentDate;
     }
 
     public void setInvestmentDate(LocalDate investmentDate) {
@@ -58,18 +50,10 @@ public class FixedInvestment extends Transaction {
 
     }
 
-    public LocalDate getExpirationDate() {
-        return expirationDate;
-    }
-
     public void setExpirationDate(LocalDate expirationDate) {
         this.expirationDate = expirationDate;
         this.setUpdatedAt(LocalDateTime.now());
 
-    }
-
-    public String getInstitution() {
-        return institution;
     }
 
     public void setInstitution(String institution) {
@@ -78,16 +62,8 @@ public class FixedInvestment extends Transaction {
 
     }
 
-    public Double[] getTaxRates() {
-        return TaxRates;
-    }
-
     public void setTaxRates(Double[] taxRates) {
         TaxRates = taxRates;
-    }
-
-    public Double getRedeemValue() {
-        return redeemValue;
     }
 
     public void setRedeemValue(Double redeemValue) {
@@ -96,28 +72,16 @@ public class FixedInvestment extends Transaction {
 
     }
 
-    public LocalDate getRedeemDate() {
-        return redeemDate;
-    }
-
     public void setRedeemDate(LocalDate redeemDate) {
         this.redeemDate = redeemDate;
         this.setUpdatedAt(LocalDateTime.now());
 
     }
 
-    public Integer getLiquidityPeriod() {
-        return liquidityPeriod;
-    }
-
     public void setLiquidityPeriod(Integer liquidityPeriod) {
         this.liquidityPeriod = liquidityPeriod;
         this.setUpdatedAt(LocalDateTime.now());
 
-    }
-
-    public Double getNetGainLoss() {
-        return netGainLoss;
     }
 
     public void setNetGainLoss(Double netGainLoss) {
