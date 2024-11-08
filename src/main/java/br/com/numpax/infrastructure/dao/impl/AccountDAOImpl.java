@@ -377,17 +377,25 @@ public class AccountDAOImpl implements AccountDAO {
     }
 
     private Account mapResultSetToAccount(ResultSet rs) throws SQLException {
-        return new Account(
-            rs.getString("account_id"),
-            rs.getString("name"),
-            rs.getString("description"),
-            rs.getBigDecimal("balance"),
-            AccountType.valueOf(rs.getString("account_type")),
-            rs.getInt("is_active") == 1,
-            rs.getTimestamp("created_at").toLocalDateTime(),
-            rs.getTimestamp("updated_at").toLocalDateTime(),
-            rs.getString("user_id")
-        );
+        AccountType accountType = AccountType.valueOf(rs.getString("account_type"));
+        Account account = switch (accountType) {
+            case CHECKING -> new CheckingAccount("", "", accountType, "", "", "", "");
+            case SAVINGS -> new SavingsAccount("", "", "", null, null, null,
+                BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO);
+            case INVESTMENT -> new InvestmentAccount("", "", "", InvestmentSubtype.OTHER);
+            default -> throw new IllegalArgumentException("Tipo de conta não suportado: " + accountType);
+        };
+
+        account.setId(rs.getString("account_id"));
+        account.setName(rs.getString("name"));
+        account.setDescription(rs.getString("description"));
+        account.setBalance(rs.getBigDecimal("balance"));
+        account.setActive(rs.getInt("is_active") == 1);
+        account.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime());
+        account.setUpdatedAt(rs.getTimestamp("updated_at").toLocalDateTime());
+        account.setUserId(rs.getString("user_id"));
+        
+        return account;
     }
 
     private CheckingAccount mapResultSetToCheckingAccount(ResultSet rs, Account baseAccount) throws SQLException {
@@ -516,68 +524,19 @@ public class AccountDAOImpl implements AccountDAO {
 
     private Account mapResultSetToBaseAccount(ResultSet rs) throws SQLException {
         AccountType accountType = AccountType.valueOf(rs.getString("account_type"));
-        String name = rs.getString("name");
-        String description = rs.getString("description");
-        String userId = rs.getString("user_id");
-        
-        Account account;
-        
-        switch (accountType) {
-            case CHECKING:
-                account = new CheckingAccount(
-                    name,
-                    description,
-                    accountType,
-                    userId,
-                    "", // bank code
-                    "", // agency
-                    ""  // account number
-                );
-                break;
-                
-            case SAVINGS:
-                account = new SavingsAccount(
-                    name,
-                    description,
-                    userId,
-                    null, // nearest deadline
-                    null, // furthest deadline
-                    null, // latest deadline
-                    BigDecimal.ZERO, // average tax rate
-                    BigDecimal.ZERO, // number of fixed investments
-                    BigDecimal.ZERO, // total maturity amount
-                    BigDecimal.ZERO  // total deposit amount
-                );
-                break;
-                
-            case INVESTMENT:
-                account = new InvestmentAccount(
-                    name,
-                    description,
-                    userId,
-                    InvestmentSubtype.OTHER // default subtype
-                );
-                break;
-                
-            case GOAL:
-                account = new GoalAccount(
-                    name,
-                    description,
-                    userId,
-                    BigDecimal.ZERO // target amount
-                );
-                break;
-                
-            default:
-                throw new IllegalArgumentException("Tipo de conta não suportado: " + accountType);
-        }
+        Account account = switch (accountType) {
+            case CHECKING -> new CheckingAccount("", "", accountType, "", "", "", "");
+            case SAVINGS -> new SavingsAccount("", "", "", null, null, null,
+                BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO);
+            case INVESTMENT -> new InvestmentAccount("", "", "", InvestmentSubtype.OTHER);
+            default -> throw new IllegalArgumentException("Tipo de conta não suportado: " + accountType);
+        };
 
-        // Preencher os dados base da conta
-        account.setId(rs.getString("account_id"));
         account.setBalance(rs.getBigDecimal("balance"));
         account.setActive(rs.getInt("is_active") == 1);
         account.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime());
         account.setUpdatedAt(rs.getTimestamp("updated_at").toLocalDateTime());
+        account.setUserId(rs.getString("user_id"));
         
         return account;
     }
