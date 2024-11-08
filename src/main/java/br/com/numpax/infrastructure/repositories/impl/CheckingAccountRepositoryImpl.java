@@ -21,6 +21,24 @@ public class CheckingAccountRepositoryImpl implements CheckingAccountRepository 
 
     @Override
     public void create(CheckingAccount account) {
+        // Inserir na tabela Accounts primeiro
+        String accountSql = "INSERT INTO Accounts (account_id, name, description, balance, account_type, is_active, user_id, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        try (PreparedStatement accountStmt = connection.prepareStatement(accountSql)) {
+            accountStmt.setString(1, account.getAccountId());
+            accountStmt.setString(2, account.getName());
+            accountStmt.setString(3, account.getDescription());
+            accountStmt.setBigDecimal(4, BigDecimal.ZERO);
+            accountStmt.setString(5, account.getAccountType().toString());
+            accountStmt.setInt(6, account.isActive() ? 1 : 0);
+            accountStmt.setString(7, account.getUserId().getUserId());
+            accountStmt.setTimestamp(8, Timestamp.valueOf(LocalDateTime.now()));
+            accountStmt.setTimestamp(9, Timestamp.valueOf(LocalDateTime.now()));
+            accountStmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException("Erro ao criar conta na tabela Accounts", e);
+        }
+
+        // Inserir na tabela CheckingAccounts
         String sql = "INSERT INTO CheckingAccounts (account_id, bank_code, agency, account_number) VALUES (?, ?, ?, ?)";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, account.getAccountId());
@@ -28,26 +46,11 @@ public class CheckingAccountRepositoryImpl implements CheckingAccountRepository 
             stmt.setString(3, account.getAgency());
             stmt.setString(4, account.getAccountNumber());
             stmt.executeUpdate();
-
-            // Inserir na tabela Accounts
-            String accountSql = "INSERT INTO Accounts (account_id, name, description, balance, account_type, is_active, user_id, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-            try (PreparedStatement accountStmt = connection.prepareStatement(accountSql)) {
-                accountStmt.setString(1, account.getAccountId());
-                accountStmt.setString(2, account.getName());
-                accountStmt.setString(3, account.getDescription());
-                accountStmt.setBigDecimal(4, BigDecimal.ZERO);
-                accountStmt.setString(5, account.getAccountType().toString());
-                accountStmt.setInt(6, account.isActive() ? 1 : 0);
-                accountStmt.setString(7, account.getUserId().getUserId());
-                accountStmt.setTimestamp(8, Timestamp.valueOf(LocalDateTime.now()));
-                accountStmt.setTimestamp(9, Timestamp.valueOf(LocalDateTime.now()));
-                accountStmt.executeUpdate();
-            }
-
         } catch (SQLException e) {
-            throw new RuntimeException("Erro ao criar conta corrente", e);
+            throw new RuntimeException("Erro ao criar conta na tabela CheckingAccounts", e);
         }
     }
+
 
     @Override
     public Optional<CheckingAccount> findById(String accountId) {
