@@ -12,35 +12,40 @@ import br.com.numpax.API.V1.mappers.SavingsAccountMapper;
 import br.com.numpax.API.V1.mappers.InvestmentAccountMapper;
 import br.com.numpax.API.V1.mappers.GoalAccountMapper;
 import br.com.numpax.API.V1.mappers.RelatedAccountMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
-@Component
 public class AccountMapperFactory {
-    @Autowired private CheckingAccountMapper checkingAccountMapper;
-    @Autowired private SavingsAccountMapper savingsAccountMapper;
-    @Autowired private InvestmentAccountMapper investmentAccountMapper;
-    @Autowired private GoalAccountMapper goalAccountMapper;
-    @Autowired private RelatedAccountMapper relatedAccountMapper;
+    private static final AccountMapperFactory INSTANCE = new AccountMapperFactory();
+    
+    private AccountMapperFactory() {}
+    
+    public static AccountMapperFactory getInstance() {
+        return INSTANCE;
+    }
 
     public Account toEntity(AccountDTO dto) {
+        if (dto == null) {
+            return null;
+        }
+
         return switch (dto.getAccountType()) {
-            case CHECKING -> checkingAccountMapper.toEntity((CheckingAccountDTO) dto);
-            case SAVINGS -> savingsAccountMapper.toEntity((SavingsAccountDTO) dto);
-            case INVESTMENT -> investmentAccountMapper.toEntity((InvestmentAccountDTO) dto);
-            case GOAL -> goalAccountMapper.toEntity((GoalAccountDTO) dto);
-            case RELATED -> relatedAccountMapper.toEntity((RelatedAccountDTO) dto);
+            case CHECKING -> CheckingAccountMapper.getInstance().toEntity((CheckingAccountDTO) dto);
+            case SAVINGS -> SavingsAccountMapper.getInstance().toEntity((SavingsAccountDTO) dto);
+            case INVESTMENT -> InvestmentAccountMapper.getInstance().toEntity((InvestmentAccountDTO) dto);
+            case GOAL -> GoalAccountMapper.getInstance().toEntity((GoalAccountDTO) dto);
             default -> throw new IllegalArgumentException("Unsupported account type: " + dto.getAccountType());
         };
     }
 
     public AccountDTO toDTO(Account entity) {
+        if (entity == null) {
+            return null;
+        }
+
         return switch (entity.getAccountType()) {
-            case CHECKING -> checkingAccountMapper.toDTO((CheckingAccount) entity);
-            case SAVINGS -> savingsAccountMapper.toDTO((SavingsAccount) entity);
-            case INVESTMENT -> investmentAccountMapper.toDTO((InvestmentAccount) entity);
-            case GOAL -> goalAccountMapper.toDTO((GoalAccount) entity);
-            case RELATED -> relatedAccountMapper.toDTO((RelatedAccount) entity);
+            case CHECKING -> CheckingAccountMapper.getInstance().toDTO((CheckingAccount) entity);
+            case SAVINGS -> SavingsAccountMapper.getInstance().toDTO((SavingsAccount) entity);
+            case INVESTMENT -> InvestmentAccountMapper.getInstance().toDTO((InvestmentAccount) entity);
+            case GOAL -> GoalAccountMapper.getInstance().toDTO((GoalAccount) entity);
             default -> throw new IllegalArgumentException("Unsupported account type: " + entity.getAccountType());
         };
     }
