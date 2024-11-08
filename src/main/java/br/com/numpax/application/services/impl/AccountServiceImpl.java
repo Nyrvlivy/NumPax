@@ -1,7 +1,7 @@
 package br.com.numpax.application.services.impl;
 
 import br.com.numpax.API.V1.dto.AccountDTO;
-import br.com.numpax.API.V1.mappers.AccountMapper;
+import br.com.numpax.API.V1.mappers.AccountMapperFactory;
 import br.com.numpax.application.services.AccountService;
 import br.com.numpax.infrastructure.dao.AccountDAO;
 import br.com.numpax.infrastructure.dao.impl.AccountDAOImpl;
@@ -13,14 +13,15 @@ import java.util.stream.Collectors;
 public class AccountServiceImpl implements AccountService {
 
     private final AccountDAO accountDAO = new AccountDAOImpl();
+    private final AccountMapperFactory accountMapper = AccountMapperFactory.getInstance();
 
     @Override
     public AccountDTO createAccount(AccountDTO accountDTO, String userId) {
-        Account account = AccountMapper.toEntity(accountDTO);
+        Account account = accountMapper.toEntity(accountDTO);
         account.setUserId(userId);
         accountDAO.saveOrUpdate(account);
 
-        return AccountMapper.toDTO(account);
+        return accountMapper.toDTO(account);
     }
 
     @Override
@@ -28,14 +29,14 @@ public class AccountServiceImpl implements AccountService {
         Account account = accountDAO.findById(id)
             .orElseThrow(() -> new RuntimeException("Conta não encontrada com o ID: " + id));
 
-        return AccountMapper.toDTO(account);
+        return accountMapper.toDTO(account);
     }
 
     @Override
     public List<AccountDTO> getAccountsByUserId(String userId) {
         List<Account> accounts = accountDAO.findByUserId(userId);
         return accounts.stream()
-            .map(AccountMapper::toDTO)
+            .map(accountMapper::toDTO)
             .collect(Collectors.toList());
     }
 
@@ -43,7 +44,7 @@ public class AccountServiceImpl implements AccountService {
     public List<AccountDTO> getAllAccounts() {
         List<Account> accounts = accountDAO.findAll();
         return accounts.stream()
-            .map(AccountMapper::toDTO)
+            .map(accountMapper::toDTO)
             .collect(Collectors.toList());
     }
 
@@ -56,7 +57,7 @@ public class AccountServiceImpl implements AccountService {
     public List<AccountDTO> getAllActiveAccounts() {
         List<Account> accounts = accountDAO.findAllActive();
         return accounts.stream()
-            .map(AccountMapper::toDTO)
+            .map(accountMapper::toDTO)
             .collect(Collectors.toList());
     }
 
@@ -64,7 +65,7 @@ public class AccountServiceImpl implements AccountService {
     public List<AccountDTO> getAllInactiveAccounts() {
         List<Account> accounts = accountDAO.findAllInactive();
         return accounts.stream()
-            .map(AccountMapper::toDTO)
+            .map(accountMapper::toDTO)
             .collect(Collectors.toList());
     }
 }
