@@ -18,7 +18,8 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public void create(User user) {
-        String sql = "INSERT INTO Users (user_id, name, email, password, birthdate, is_active, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO Users (user_id, name, email, password, birthdate, is_active, created_at, updated_at) " +
+                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, user.getUserId());
             stmt.setString(2, user.getName());
@@ -74,7 +75,8 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public void update(User user) {
-        String sql = "UPDATE Users SET name = ?, email = ?, password = ?, birthdate = ?, is_active = ?, updated_at = ? WHERE user_id = ?";
+        String sql = "UPDATE Users SET name = ?, email = ?, password = ?, birthdate = ?, is_active = ?, updated_at = ? " +
+                     "WHERE user_id = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, user.getName());
             stmt.setString(2, user.getEmail());
@@ -162,7 +164,7 @@ public class UserRepositoryImpl implements UserRepository {
         if (birthdate != null) {
             user.setBirthdate(birthdate.toLocalDate());
         }
-        user.setIsActive(rs.getInt("is_active") == 1); // Updated method name
+        user.setIsActive(rs.getInt("is_active") == 1);
         user.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime());
         user.setUpdatedAt(rs.getTimestamp("updated_at").toLocalDateTime());
         return user;

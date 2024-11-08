@@ -13,18 +13,16 @@ import java.time.LocalDate;
 @Setter
 public class UserUpdateRequestDTO {
 
-    @NotBlank(message = "Name value is required.")
-    @Size(max = 100, message = "Name value must have a maximum of 100 characters.")
+    @Size(max = 100, message = "Name must not exceed 100 characters")
     private String name;
 
-    @NotBlank(message = "Email value is required.")
-    @Email(message = "Email value must be a valid email.")
-    @Size(max = 320, message = "Email value must have a maximum of 320 characters.")
+    @Email(message = "Invalid email format")
+    @Size(max = 320, message = "Email must not exceed 320 characters")
     private String email;
 
-    @Size(min = 8, max = 255, message = "Password value must have between 8 and 255 characters.")
+    @Size(min = 6, max = 256, message = "Password must be between 6 and 256 characters")
     private String password;
 
-    @PastOrPresent(message = "Birthdate cannot be a future date.")
+    @PastOrPresent(message = "Birthdate cannot be a future date")
     private LocalDate birthdate;
 }

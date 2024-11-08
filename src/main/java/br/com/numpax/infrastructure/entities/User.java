@@ -32,18 +32,4 @@ public class User {
         this.createdAt = LocalDateTime.now();
         this.updatedAt = LocalDateTime.now();
     }
-
-    public User(String userId, String name, String email, String password, LocalDate birthdate, boolean isActive, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        this.userId = userId;
-        this.name = name;
-        this.email = email;
-        this.password = password;
-        this.birthdate = birthdate;
-        this.isActive = isActive;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-    }
-
-    public void setIsActive(boolean isActive) {
-    }
 }
