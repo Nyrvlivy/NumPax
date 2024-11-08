@@ -25,4 +25,6 @@ public interface UserService {
     List<UserResponseDTO> listAllActiveUsers();
 
     List<UserResponseDTO> listAllInactiveUsers();
+
+    User authenticateUser(String email, String password);
 }

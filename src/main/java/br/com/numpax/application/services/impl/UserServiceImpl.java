@@ -142,4 +142,20 @@ public class UserServiceImpl implements UserService {
             .orElseThrow(() -> new UserNotFoundException("Usuário não encontrado"));
     }
 
+    @Override
+    public User authenticateUser(String email, String password) {
+        User user = userRepository.findByEmail(email)
+            .orElseThrow(() -> new AuthenticationException("Invalid email or password"));
+
+        if (!user.isActive()) {
+            throw new AuthenticationException("User account is inactive");
+        }
+
+        if (!BCrypt.checkpw(password, user.getPassword())) {
+            throw new AuthenticationException("Invalid email or password");
+        }
+
+        return user;
+    }
+
 }

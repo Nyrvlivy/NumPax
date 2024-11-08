@@ -1,41 +1,32 @@
 package br.com.numpax.infrastructure.config.auth;
 
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
+import java.security.Key;
 import java.util.Date;
 
 public class JwtUtil {
-
-    private static final String SECRET_KEY = "SuaChaveSecreta"; // Use uma chave segura em produção
-    private static final long EXPIRATION_TIME = 86400000L; // 1 dia em milissegundos
+    private static final Key SECRET_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+    private static final long EXPIRATION_TIME = 86400000; // 24 hours
 
     public static String generateToken(String userId) {
-        Date now = new Date();
-        Date expiryDate = new Date(now.getTime() + EXPIRATION_TIME);
-
         return Jwts.builder()
             .setSubject(userId)
-            .setIssuedAt(now)
-            .setExpiration(expiryDate)
-            .signWith(SignatureAlgorithm.HS512, SECRET_KEY)
+            .setIssuedAt(new Date())
+            .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
+            .signWith(SECRET_KEY)
             .compact();
     }
 
-    public static String getUserIdFromJWT(String token) {
-        Claims claims = Jwts.parser()
+    public static String validateTokenAndGetUserId(String token) {
+        Claims claims = Jwts.parserBuilder()
             .setSigningKey(SECRET_KEY)
+            .build()
             .parseClaimsJws(token)
             .getBody();
-
+        
         return claims.getSubject();
-    }
-
-    public static boolean validateToken(String token) {
-        try {
-            Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token);
-            return true;
-        } catch (Exception ex) {
-            // Log exception
-        }
-        return false;
     }
 }
