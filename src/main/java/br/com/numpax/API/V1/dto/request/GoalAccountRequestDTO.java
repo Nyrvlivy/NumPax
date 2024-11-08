@@ -12,7 +12,7 @@ import java.time.LocalDate;
 
 @Getter
 @Setter
-public class CreateGoalAccountRequestDTO extends CreateAccountRequestDTO {
+public class GoalAccountRequestDTO extends AccountRequestDTO {
     @NotNull(message = "Target value is required")
     @Positive(message = "Target value must be positive")
     private BigDecimal targetValue;
@@ -33,7 +33,7 @@ public class CreateGoalAccountRequestDTO extends CreateAccountRequestDTO {
     private LocalDate startDate;
     private LocalDate endDate;
 
-    public CreateGoalAccountRequestDTO() {
+    public GoalAccountRequestDTO() {
         this.setAccountType(AccountType.GOAL);
     }
 }

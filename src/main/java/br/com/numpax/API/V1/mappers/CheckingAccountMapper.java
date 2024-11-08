@@ -1,6 +1,6 @@
 package br.com.numpax.API.V1.mappers;
 
-import br.com.numpax.API.V1.dto.request.CreateCheckingAccountRequestDTO;
+import br.com.numpax.API.V1.dto.request.CheckingAccountRequestDTO;
 import br.com.numpax.API.V1.dto.response.CheckingAccountResponseDTO;
 import br.com.numpax.application.utils.ValidatorUtil;
 import br.com.numpax.infrastructure.entities.CheckingAccount;
@@ -12,7 +12,7 @@ import java.util.UUID;
 
 public class CheckingAccountMapper {
 
-    public static CheckingAccount toEntity(CreateCheckingAccountRequestDTO dto, User user) {
+    public static CheckingAccount toEntity(CheckingAccountRequestDTO dto, User user) {
 
         ValidatorUtil.validate(dto);
 
@@ -22,7 +22,7 @@ public class CheckingAccountMapper {
         account.setDescription(dto.getDescription());
         account.setBalance(BigDecimal.ZERO);
         account.setAccountType(dto.getAccountType());
-        account.setActive(true);
+        account.setIsActive(true);
         account.setUserId(user);
         account.setCreatedAt(LocalDateTime.now());
         account.setUpdatedAt(LocalDateTime.now());

@@ -1,15 +1,24 @@
 package br.com.numpax.application.services;
 
-import java.util.List;
-import java.util.Optional;
-
+import br.com.numpax.API.V1.dto.request.CategoryRequestDTO;
+import br.com.numpax.API.V1.dto.response.CategoryResponseDTO;
 import br.com.numpax.infrastructure.entities.Category;
 
+import java.util.List;
+
 public interface CategoryService {
-    Category createCategory(Category category);
-    Optional<Category> getCategoryById(String id);
-    List<Category> getAllCategories();
-    Category updateCategory(String id, Category category);
-    void deleteCategory(String id);
-    List<Category> getActiveCategories();
+
+    CategoryResponseDTO createCategory(CategoryRequestDTO dto);
+
+    CategoryResponseDTO getCategoryById(String categoryId);
+
+    CategoryResponseDTO updateCategory(String categoryId, CategoryRequestDTO dto);
+
+    void deleteCategory(String categoryId);
+
+    List<CategoryResponseDTO> listAllCategories();
+
+    void createDefaultCategories();
+
+    Category findCategoryById(String categoryId);
 }

@@ -33,4 +33,5 @@ public class CheckingAccount extends Account {
         this.agency = agency;
         this.accountNumber = accountNumber;
     }
+
 }

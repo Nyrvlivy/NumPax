@@ -1,15 +1,15 @@
 package br.com.numpax.API.V1.dto.request;
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-
 import br.com.numpax.application.enums.AccountType;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
-public class CreateSavingsAccountRequestDTO extends CreateAccountRequestDTO {
+public class SavingsAccountRequestDTO extends AccountRequestDTO {
     private LocalDateTime nearestDeadline;
     private LocalDateTime furthestDeadline;
     private LocalDateTime latestDeadline;
@@ -18,7 +18,8 @@ public class CreateSavingsAccountRequestDTO extends CreateAccountRequestDTO {
     private BigDecimal totalMaturityAmount;
     private BigDecimal totalDepositAmount;
 
-    public CreateSavingsAccountRequestDTO() {
+    public SavingsAccountRequestDTO() {
         this.setAccountType(AccountType.SAVINGS);
     }
-} 
+
+}

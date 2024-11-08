@@ -43,4 +43,7 @@ public class User {
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
+
+    public void setIsActive(boolean isActive) {
+    }
 }

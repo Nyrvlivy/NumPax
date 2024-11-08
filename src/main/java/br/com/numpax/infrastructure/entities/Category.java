@@ -48,4 +48,11 @@ public class Category {
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
+
+    public void setIsDefault(boolean aDefault) {
+    }
+
+    public void setIsActive(boolean b) {
+
+    }
 }

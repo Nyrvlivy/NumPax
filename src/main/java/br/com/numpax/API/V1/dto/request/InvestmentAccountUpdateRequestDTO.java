@@ -1,4 +1,4 @@
-package br.com.numpax.API.V1.dto.response;
+package br.com.numpax.API.V1.dto.request;
 
 import br.com.numpax.application.enums.InvestmentSubtype;
 import br.com.numpax.application.enums.RiskLevelType;
@@ -9,7 +9,10 @@ import java.math.BigDecimal;
 
 @Getter
 @Setter
-public class InvestmentAccountResponseDTO extends AccountResponseDTO {
+public class InvestmentAccountUpdateRequestDTO {
+
+    private String name;
+    private String description;
     private BigDecimal totalInvestedAmount;
     private BigDecimal totalProfit;
     private BigDecimal totalCurrentAmount;
@@ -22,4 +25,4 @@ public class InvestmentAccountResponseDTO extends AccountResponseDTO {
     private BigDecimal totalDividendYield;
     private RiskLevelType riskLevelType;
     private InvestmentSubtype investmentSubtype;
-} 
+}

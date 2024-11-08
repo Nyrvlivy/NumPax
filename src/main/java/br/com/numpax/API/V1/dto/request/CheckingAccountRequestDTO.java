@@ -8,7 +8,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class CreateCheckingAccountRequestDTO extends CreateAccountRequestDTO {
+public class CheckingAccountRequestDTO extends AccountRequestDTO {
 
     @NotBlank(message = "Bank code value is required.")
     @Pattern(regexp = "\\d{1,4}", message = "Bank code value must have between 1 and 4 digits.")
@@ -22,7 +22,7 @@ public class CreateCheckingAccountRequestDTO extends CreateAccountRequestDTO {
     @Pattern(regexp = "\\d{1,12}", message = "Account number value must have between 1 and 12 digits.")
     private String accountNumber;
 
-    public CreateCheckingAccountRequestDTO() {
+    public CheckingAccountRequestDTO() {
         this.setAccountType(AccountType.CHECKING);
     }
 }

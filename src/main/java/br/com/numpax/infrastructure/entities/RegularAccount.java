@@ -1,7 +1,7 @@
 package br.com.numpax.infrastructure.entities;
 
-import br.com.numpax.application.enums.AccountType;
 import br.com.numpax.API.V1.exceptions.InsufficientFundsException;
+import br.com.numpax.application.enums.AccountType;
 import lombok.Getter;
 import lombok.Setter;
 

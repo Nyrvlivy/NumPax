@@ -40,4 +40,7 @@ public class Account {
     public Account(String name, String description, AccountType accountType, User userId) {
         this(null, name, description, BigDecimal.ZERO, accountType, true, userId, null, null);
     }
+
+    public void setIsActive(boolean isActive) {
+    }
 }

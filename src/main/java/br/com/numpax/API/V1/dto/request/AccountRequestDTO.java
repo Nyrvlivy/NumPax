@@ -9,7 +9,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class CreateAccountRequestDTO {
+public class AccountRequestDTO {
 
     @NotBlank(message = "Name value is required.")
     @Size(max = 100, message = "Name value must have a maximum of 100 characters.")

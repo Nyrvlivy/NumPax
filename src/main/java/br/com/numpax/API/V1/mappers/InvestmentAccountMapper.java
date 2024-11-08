@@ -1,7 +1,7 @@
 package br.com.numpax.API.V1.mappers;
 
 
-import br.com.numpax.API.V1.dto.request.CreateInvestmentAccountRequestDTO;
+import br.com.numpax.API.V1.dto.request.InvestmentAccountRequestDTO;
 import br.com.numpax.API.V1.dto.response.InvestmentAccountResponseDTO;
 import br.com.numpax.application.utils.ValidatorUtil;
 import br.com.numpax.infrastructure.entities.InvestmentAccount;
@@ -13,7 +13,7 @@ import java.util.UUID;
 
 public class InvestmentAccountMapper {
 
-    public static InvestmentAccount toEntity(CreateInvestmentAccountRequestDTO dto, User user) {
+    public static InvestmentAccount toEntity(InvestmentAccountRequestDTO dto, User user) {
         // Validação do DTO
         ValidatorUtil.validate(dto);
 
@@ -24,7 +24,7 @@ public class InvestmentAccountMapper {
         account.setDescription(dto.getDescription());
         account.setBalance(BigDecimal.ZERO);
         account.setAccountType(dto.getAccountType());
-        account.setActive(true);
+        account.setIsActive(true);
         account.setUserId(user);
         account.setCreatedAt(LocalDateTime.now());
         account.setUpdatedAt(LocalDateTime.now());

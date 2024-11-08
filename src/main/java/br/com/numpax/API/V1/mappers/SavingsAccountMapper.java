@@ -1,6 +1,6 @@
 package br.com.numpax.API.V1.mappers;
 
-import br.com.numpax.API.V1.dto.request.CreateSavingsAccountRequestDTO;
+import br.com.numpax.API.V1.dto.request.SavingsAccountRequestDTO;
 import br.com.numpax.API.V1.dto.response.SavingsAccountResponseDTO;
 import br.com.numpax.application.utils.ValidatorUtil;
 import br.com.numpax.infrastructure.entities.SavingsAccount;
@@ -12,23 +12,10 @@ import java.util.UUID;
 
 public class SavingsAccountMapper {
 
-    public static SavingsAccount toEntity(CreateSavingsAccountRequestDTO dto, User user) {
-        // Validação do DTO
-        ValidatorUtil.validate(dto);
-
-        // Mapeamento para entidade
+    public static SavingsAccount toEntity(SavingsAccountRequestDTO dto, User user) {
         SavingsAccount account = new SavingsAccount();
-        account.setAccountId(UUID.randomUUID().toString());
         account.setName(dto.getName());
         account.setDescription(dto.getDescription());
-        account.setBalance(BigDecimal.ZERO);
-        account.setAccountType(dto.getAccountType());
-        account.setActive(true);
-        account.setUserId(user);
-        account.setCreatedAt(LocalDateTime.now());
-        account.setUpdatedAt(LocalDateTime.now());
-
-        // Campos específicos da SavingsAccount
         account.setNearestDeadline(dto.getNearestDeadline());
         account.setFurthestDeadline(dto.getFurthestDeadline());
         account.setLatestDeadline(dto.getLatestDeadline());
@@ -36,6 +23,7 @@ public class SavingsAccountMapper {
         account.setNumberOfFixedInvestments(dto.getNumberOfFixedInvestments());
         account.setTotalMaturityAmount(dto.getTotalMaturityAmount());
         account.setTotalDepositAmount(dto.getTotalDepositAmount());
+        account.setUserId(user);
 
         return account;
     }

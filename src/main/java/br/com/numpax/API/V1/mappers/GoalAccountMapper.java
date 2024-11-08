@@ -1,6 +1,6 @@
 package br.com.numpax.API.V1.mappers;
 
-import br.com.numpax.API.V1.dto.request.CreateGoalAccountRequestDTO;
+import br.com.numpax.API.V1.dto.request.GoalAccountRequestDTO;
 import br.com.numpax.API.V1.dto.response.GoalAccountResponseDTO;
 import br.com.numpax.application.utils.ValidatorUtil;
 import br.com.numpax.infrastructure.entities.Category;
@@ -13,7 +13,7 @@ import java.util.UUID;
 
 public class GoalAccountMapper {
 
-    public static GoalAccount toEntity(CreateGoalAccountRequestDTO dto, User user, Category category) {
+    public static GoalAccount toEntity(GoalAccountRequestDTO dto, User user, Category category) {
         // Validação do DTO
         ValidatorUtil.validate(dto);
 
@@ -24,7 +24,7 @@ public class GoalAccountMapper {
         account.setDescription(dto.getDescription());
         account.setBalance(BigDecimal.ZERO);
         account.setAccountType(dto.getAccountType());
-        account.setActive(true);
+        account.setIsActive(true);
         account.setUserId(user);
         account.setCreatedAt(LocalDateTime.now());
         account.setUpdatedAt(LocalDateTime.now());

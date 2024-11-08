@@ -1,9 +1,10 @@
 package br.com.numpax.API.V1.dto.response;
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
