@@ -4,9 +4,7 @@ import br.com.numpax.API.V1.dto.CheckingAccountDTO;
 import br.com.numpax.API.V1.entities.CheckingAccount;
 import br.com.numpax.API.V1.entities.Account;
 import br.com.numpax.API.V1.entities.AccountDTO;
-import org.springframework.stereotype.Component;
 
-@Component
 public class CheckingAccountMapper {
     public CheckingAccount toEntity(CheckingAccountDTO dto) {
         CheckingAccount account = new CheckingAccount(

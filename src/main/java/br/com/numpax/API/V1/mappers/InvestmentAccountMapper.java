@@ -4,11 +4,21 @@ import br.com.numpax.API.V1.dto.InvestmentAccountDTO;
 import br.com.numpax.API.V1.entities.InvestmentAccount;
 import br.com.numpax.API.V1.entities.Account;
 import br.com.numpax.API.V1.entities.AccountDTO;
-import org.springframework.stereotype.Component;
 
-@Component
 public class InvestmentAccountMapper {
+    private static final InvestmentAccountMapper INSTANCE = new InvestmentAccountMapper();
+    
+    private InvestmentAccountMapper() {} // Construtor privado para singleton
+    
+    public static InvestmentAccountMapper getInstance() {
+        return INSTANCE;
+    }
+
     public InvestmentAccount toEntity(InvestmentAccountDTO dto) {
+        if (dto == null) {
+            return null;
+        }
+
         InvestmentAccount account = new InvestmentAccount(
             dto.getName(),
             dto.getDescription(),
@@ -29,23 +39,27 @@ public class InvestmentAccountMapper {
     }
     
     public InvestmentAccountDTO toDTO(InvestmentAccount entity) {
-        return InvestmentAccountDTO.builder()
-            .id(entity.getId())
-            .name(entity.getName())
-            .description(entity.getDescription())
-            .balance(entity.getBalance())
-            .isActive(entity.isActive())
-            .createdAt(entity.getCreatedAt())
-            .updatedAt(entity.getUpdatedAt())
-            .userId(entity.getUserId())
-            .broker(entity.getBroker())
-            .accountNumber(entity.getAccountNumber())
-            .totalInvested(entity.getTotalInvested())
-            .profitability(entity.getProfitability())
-            .currentYield(entity.getCurrentYield())
-            .lastUpdate(entity.getLastUpdate())
-            .investmentTypes(entity.getInvestmentTypes())
-            .build();
+        if (entity == null) {
+            return null;
+        }
+
+        return new InvestmentAccountDTO(
+            entity.getId(),
+            entity.getName(),
+            entity.getDescription(),
+            entity.getBalance(),
+            entity.isActive(),
+            entity.getCreatedAt(),
+            entity.getUpdatedAt(),
+            entity.getUserId(),
+            entity.getBroker(),
+            entity.getAccountNumber(),
+            entity.getTotalInvested(),
+            entity.getProfitability(),
+            entity.getCurrentYield(),
+            entity.getLastUpdate(),
+            entity.getInvestmentTypes()
+        );
     }
     
     private void setCommonFields(Account account, AccountDTO dto) {

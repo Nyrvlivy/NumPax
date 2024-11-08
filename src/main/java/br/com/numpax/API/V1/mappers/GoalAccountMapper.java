@@ -3,11 +3,21 @@ package br.com.numpax.API.V1.mappers;
 import br.com.numpax.API.V1.dto.GoalAccountDTO;
 import br.com.numpax.API.V1.entities.Account;
 import br.com.numpax.API.V1.entities.GoalAccount;
-import org.springframework.stereotype.Component;
 
-@Component
 public class GoalAccountMapper {
+    private static final GoalAccountMapper INSTANCE = new GoalAccountMapper();
+    
+    private GoalAccountMapper() {} // Construtor privado para singleton
+    
+    public static GoalAccountMapper getInstance() {
+        return INSTANCE;
+    }
+
     public GoalAccount toEntity(GoalAccountDTO dto) {
+        if (dto == null) {
+            return null;
+        }
+
         GoalAccount account = new GoalAccount(
             dto.getName(),
             dto.getDescription(),
@@ -28,23 +38,27 @@ public class GoalAccountMapper {
     }
     
     public GoalAccountDTO toDTO(GoalAccount entity) {
-        return GoalAccountDTO.builder()
-            .id(entity.getId())
-            .name(entity.getName())
-            .description(entity.getDescription())
-            .balance(entity.getBalance())
-            .isActive(entity.isActive())
-            .createdAt(entity.getCreatedAt())
-            .updatedAt(entity.getUpdatedAt())
-            .userId(entity.getUserId())
-            .targetAmount(entity.getTargetAmount())
-            .targetDate(entity.getTargetDate())
-            .monthlyContribution(entity.getMonthlyContribution())
-            .progressPercentage(entity.getProgressPercentage())
-            .category(entity.getCategory())
-            .priority(entity.getPriority())
-            .isCompleted(entity.getIsCompleted())
-            .build();
+        if (entity == null) {
+            return null;
+        }
+
+        return new GoalAccountDTO(
+            entity.getId(),
+            entity.getName(),
+            entity.getDescription(),
+            entity.getBalance(),
+            entity.isActive(),
+            entity.getCreatedAt(),
+            entity.getUpdatedAt(),
+            entity.getUserId(),
+            entity.getTargetAmount(),
+            entity.getTargetDate(),
+            entity.getMonthlyContribution(),
+            entity.getProgressPercentage(),
+            entity.getCategory(),
+            entity.getPriority(),
+            entity.getIsCompleted()
+        );
     }
     
     private void setCommonFields(Account account, AccountDTO dto) {
