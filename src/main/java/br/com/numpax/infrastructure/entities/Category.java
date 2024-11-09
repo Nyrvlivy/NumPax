@@ -55,4 +55,8 @@ public class Category {
     public void setIsActive(boolean b) {
 
     }
+
+    public void setCategoryId(String categoryId) {
+        this.id = categoryId;
+    }
 }

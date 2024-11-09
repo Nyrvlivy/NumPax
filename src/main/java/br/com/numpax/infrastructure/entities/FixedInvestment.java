@@ -23,19 +23,21 @@ public class FixedInvestment extends Transaction {
     private Integer liquidityPeriod;
     private Double netGainLoss;
 
+    public FixedInvestment() {
+        super();
+    }
 
-    public FixedInvestment(String code, String name, String description, BigDecimal amount, Category category, RegularAccount regularAccount, NatureOfTransaction natureOfTransaction, String receiver, String sender, LocalDate transactionDate, boolean isRepeatable, RepeatableType repeatableType, String note, FixedInvestmentType fixedInvestmentType, LocalDate investmentDate, LocalDate expirationDate, String institution, Double[] taxRates, Double redeemValue, LocalDate redeemDate, Integer liquidityPeriod, Double netGainLoss) {
-        super(code, name, description, amount, category, regularAccount, natureOfTransaction, receiver, sender, transactionDate, repeatableType, note);
+    public FixedInvestment(String code, String name, String description, BigDecimal amount, Category category, Account account, NatureOfTransaction natureOfTransaction, String receiver, String sender, LocalDate transactionDate, RepeatableType repeatableType, String note, FixedInvestmentType fixedInvestmentType, LocalDate investmentDate, LocalDate expirationDate, String institution, Double[] taxRates, Double redeemValue, LocalDateTime redeemDate, Integer liquidityPeriod, Double netGainLoss) {
+        super(code, name, description, amount, category, account, natureOfTransaction, receiver, sender, transactionDate, repeatableType, note);
         this.fixedInvestmentType = fixedInvestmentType;
         this.investmentDate = investmentDate;
         this.expirationDate = expirationDate;
         this.institution = institution;
         this.TaxRates = taxRates;
         this.redeemValue = redeemValue;
-        this.redeemDate = redeemDate;
+        this.redeemDate = redeemDate.toLocalDate();
         this.liquidityPeriod = liquidityPeriod;
         this.netGainLoss = netGainLoss;
-
     }
 
     public void setFixedInvestmentType(FixedInvestmentType fixedInvestmentType) {
@@ -72,10 +74,9 @@ public class FixedInvestment extends Transaction {
 
     }
 
-    public void setRedeemDate(LocalDate redeemDate) {
-        this.redeemDate = redeemDate;
+    public void setRedeemDate(LocalDateTime redeemDate) {
+        this.redeemDate = redeemDate.toLocalDate();
         this.setUpdatedAt(LocalDateTime.now());
-
     }
 
     public void setLiquidityPeriod(Integer liquidityPeriod) {
