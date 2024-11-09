@@ -3,14 +3,20 @@ package br.com.numpax;
 import br.com.numpax.API.V1.dto.request.*;
 import br.com.numpax.API.V1.dto.response.*;
 import br.com.numpax.application.enums.AccountType;
+import br.com.numpax.application.enums.NatureOfTransaction;
+import br.com.numpax.application.services.FixedInvestmentService;
 import br.com.numpax.application.services.impl.*;
 import br.com.numpax.infrastructure.config.database.ConnectionManager;
 import br.com.numpax.infrastructure.repositories.impl.*;
+import br.com.numpax.infrastructure.repositories.TransactionRepository;
+import br.com.numpax.infrastructure.repositories.InvestmentAccountRepository;
+import br.com.numpax.infrastructure.repositories.CategoryRepository;
 
 import java.math.BigDecimal;
 import java.sql.Connection;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 public class Main {
@@ -29,6 +35,7 @@ public class Main {
             SavingsAccountRepositoryImpl savingsAccountRepository = new SavingsAccountRepositoryImpl(connection);
             InvestmentAccountRepositoryImpl investmentAccountRepository = new InvestmentAccountRepositoryImpl(connection);
             GoalAccountRepositoryImpl goalAccountRepository = new GoalAccountRepositoryImpl(connection);
+            TransactionRepositoryImpl transactionRepository = new TransactionRepositoryImpl(connection);
 
             // Inicializar serviços
             UserServiceImpl userService = new UserServiceImpl(userRepository, checkingAccountRepository);
@@ -88,6 +95,37 @@ public class Main {
 
             InvestmentAccountResponseDTO investmentAccountResponse = investmentAccountService.createAccount(investmentAccountRequest, userId);
             System.out.println("Conta de investimento criada: " + investmentAccountResponse);
+
+            // Obter uma categoria de investimento
+            List<CategoryResponseDTO> categories = categoryService.listAllCategories();
+            CategoryResponseDTO investmentCategory = categories.stream()
+                .filter(cat -> cat.getName().toLowerCase().contains("investimento"))
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("Categoria de investimento não encontrada"));
+
+            // Criar um investimento fixo
+            TransactionRequestDTO fixedInvestmentRequest = new TransactionRequestDTO();
+            fixedInvestmentRequest.setCode("CDB-001");
+            fixedInvestmentRequest.setName("CDB Banco XYZ");
+            fixedInvestmentRequest.setDescription("CDB pré-fixado 12% a.a.");
+            fixedInvestmentRequest.setAmount(new BigDecimal("10000.00"));
+            fixedInvestmentRequest.setAccountId(investmentAccountResponse.getAccountId());
+            fixedInvestmentRequest.setCategoryId(investmentCategory.getId());
+            fixedInvestmentRequest.setTransactionDate(LocalDate.now());
+            fixedInvestmentRequest.setNatureOfTransaction(NatureOfTransaction.INVESTMENT);
+            
+            FixedInvestmentService fixedInvestmentService = new FixedInvestmentServiceImpl(
+                transactionRepository, 
+                investmentAccountRepository
+            );
+            
+            TransactionResponseDTO fixedInvestmentResponse = fixedInvestmentService.createInvestment(fixedInvestmentRequest);
+            System.out.println("Investimento fixo criado: " + fixedInvestmentResponse);
+
+            // Simular resgate após 30 dias
+            Thread.sleep(2000); // Simula passagem de tempo
+            fixedInvestmentService.redeem(fixedInvestmentResponse.getTransactionId());
+            System.out.println("Investimento resgatado com sucesso!");
 
             // Criar uma conta de meta
 
