@@ -1,41 +1,52 @@
 package br.com.numpax.infrastructure.config.auth;
 
-import io.jsonwebtoken.*;
+import br.com.numpax.infrastructure.entities.User;
+import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
+
+import java.security.Key;
 import java.util.Date;
 
 public class JwtUtil {
 
-    private static final String SECRET_KEY = "SuaChaveSecreta"; // Use uma chave segura em produção
-    private static final long EXPIRATION_TIME = 86400000L; // 1 dia em milissegundos
+    private final Key key;
 
-    public static String generateToken(String userId) {
-        Date now = new Date();
-        Date expiryDate = new Date(now.getTime() + EXPIRATION_TIME);
+    public JwtUtil() {
+        String secret = "u#84E$lpMv&tJ8uZ2vDp^9Q3&*GnP0w^zRtVkC8Y!sH%j5bX*B";
+        key = Keys.hmacShaKeyFor(secret.getBytes());
+    }
 
+    public String generateToken(User user) {
+
+        long jwtExpirationMs = 86400000;
         return Jwts.builder()
-            .setSubject(userId)
-            .setIssuedAt(now)
-            .setExpiration(expiryDate)
-            .signWith(SignatureAlgorithm.HS512, SECRET_KEY)
+            .setSubject(user.getUserId())
+            .setIssuedAt(new Date())
+            .setExpiration(new Date(System.currentTimeMillis() + jwtExpirationMs))
+            .signWith(key, SignatureAlgorithm.HS256)
             .compact();
     }
 
-    public static String getUserIdFromJWT(String token) {
-        Claims claims = Jwts.parser()
-            .setSigningKey(SECRET_KEY)
+    public String getUserIdFromJwtToken(String token) {
+        return Jwts.parserBuilder()
+            .setSigningKey(key)
+            .build()
             .parseClaimsJws(token)
-            .getBody();
-
-        return claims.getSubject();
+            .getBody().getSubject();
     }
 
-    public static boolean validateToken(String token) {
+    public boolean validateJwtToken(String authToken) {
         try {
-            Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token);
+            Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(authToken);
             return true;
-        } catch (Exception ex) {
-            // Log exception
+        } catch (JwtException e) {
+
+            return false;
         }
-        return false;
     }
 }

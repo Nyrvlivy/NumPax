@@ -109,7 +109,7 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findById(userId)
             .orElseThrow(() -> new UserNotFoundException("Usuário não encontrado"));
 
-        user.setIsActive(false);
+        user.setActive(false);
         user.setUpdatedAt(LocalDateTime.now());
 
         userRepository.update(user);

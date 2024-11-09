@@ -15,6 +15,7 @@ public class User {
     private String email;
     private String password;
     private LocalDate birthdate;
+    @Setter
     private boolean isActive;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
@@ -44,6 +45,4 @@ public class User {
         this.updatedAt = updatedAt;
     }
 
-    public void setIsActive(boolean isActive) {
-    }
 }

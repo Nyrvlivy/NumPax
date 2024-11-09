@@ -1,51 +1,53 @@
 package br.com.numpax.infrastructure.config.auth;
 
-import br.com.numpax.application.services.UserService;
 import br.com.numpax.infrastructure.entities.User;
+import br.com.numpax.infrastructure.repositories.UserRepository;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
 public class JwtAuthenticationFilter implements Filter {
 
-    private UserService userService;
+    private final JwtUtil jwtUtil;
+    private final UserRepository userRepository;
 
-    public JwtAuthenticationFilter(UserService userService) {
-        this.userService = userService;
+    public JwtAuthenticationFilter(JwtUtil jwtUtil, UserRepository userRepository) {
+        this.jwtUtil = jwtUtil;
+        this.userRepository = userRepository;
     }
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-        // Inicialização, se necessário
     }
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        HttpServletRequest httpServletRequest = (HttpServletRequest) request;
 
-        String jwt = getJwtFromRequest(httpServletRequest);
+        HttpServletRequest httpRequest = (HttpServletRequest) request;
+        HttpServletResponse httpResponse = (HttpServletResponse) response;
 
-        if (jwt != null && JwtUtil.validateToken(jwt)) {
-            String userId = JwtUtil.getUserIdFromJWT(jwt);
-            User user = userService.findUserById(userId);
-            // Você pode armazenar o usuário na sessão ou contexto para uso posterior
-            httpServletRequest.setAttribute("authenticatedUser", user);
+        String authHeader = httpRequest.getHeader("Authorization");
+
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            String jwtToken = authHeader.substring(7);
+
+            if (jwtUtil.validateJwtToken(jwtToken)) {
+                String userId = jwtUtil.getUserIdFromJwtToken(jwtToken);
+                User user = userRepository.findById(userId).orElse(null);
+                if (user != null) {
+                    httpRequest.setAttribute("user", user);
+                    chain.doFilter(request, response);
+                    return;
+                }
+            }
         }
 
-        chain.doFilter(request, response);
+        httpResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid or missing token");
     }
 
     @Override
     public void destroy() {
-        // Limpeza, se necessário
-    }
-
-    private String getJwtFromRequest(HttpServletRequest request) {
-        String bearerToken = request.getHeader("Authorization");
-        if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
-            return bearerToken.substring(7);
-        }
-        return null;
     }
 }

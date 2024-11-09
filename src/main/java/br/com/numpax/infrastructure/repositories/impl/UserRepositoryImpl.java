@@ -162,7 +162,7 @@ public class UserRepositoryImpl implements UserRepository {
         if (birthdate != null) {
             user.setBirthdate(birthdate.toLocalDate());
         }
-        user.setIsActive(rs.getInt("is_active") == 1); // Updated method name
+        user.setActive(rs.getInt("is_active") == 1); // Updated method name
         user.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime());
         user.setUpdatedAt(rs.getTimestamp("updated_at").toLocalDateTime());
         return user;
