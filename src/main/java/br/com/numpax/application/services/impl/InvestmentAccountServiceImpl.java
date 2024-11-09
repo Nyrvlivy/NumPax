@@ -73,18 +73,21 @@ public class InvestmentAccountServiceImpl implements InvestmentAccountService {
         InvestmentAccount account = accountOptional.get();
         account.setName(dto.getName());
         account.setDescription(dto.getDescription());
-//        account.setTotalInvestedAmount(dto.getTotalInvestedAmount());
-//        account.setTotalProfit(dto.getTotalProfit());
-//        account.setTotalCurrentAmount(dto.getTotalCurrentAmount());
-//        account.setTotalWithdrawnAmount(dto.getTotalWithdrawnAmount());
-//        account.setNumberOfWithdrawals(dto.getNumberOfWithdrawals());
-//        account.setNumberOfEntries(dto.getNumberOfEntries());
-//        account.setNumberOfAssets(dto.getNumberOfAssets());
-//        account.setAveragePurchasePrice(dto.getAveragePurchasePrice());
-//        account.setTotalGainLoss(dto.getTotalGainLoss());
-//        account.setTotalDividendYield(dto.getTotalDividendYield());
-//        account.setRiskLevelType(dto.getRiskLevelType());
-//        account.setInvestmentSubtype(dto.getInvestmentSubtype());
+        
+        // Campos específicos da InvestmentAccount com validação null-safe
+        account.setTotalInvestedAmount(dto.getTotalInvestedAmount() != null ? dto.getTotalInvestedAmount() : account.getTotalInvestedAmount());
+        account.setTotalProfit(dto.getTotalProfit() != null ? dto.getTotalProfit() : account.getTotalProfit());
+        account.setTotalCurrentAmount(dto.getTotalCurrentAmount() != null ? dto.getTotalCurrentAmount() : account.getTotalCurrentAmount());
+        account.setTotalWithdrawnAmount(dto.getTotalWithdrawnAmount() != null ? dto.getTotalWithdrawnAmount() : account.getTotalWithdrawnAmount());
+        account.setNumberOfWithdrawals(dto.getNumberOfWithdrawals() != null ? dto.getNumberOfWithdrawals() : account.getNumberOfWithdrawals());
+        account.setNumberOfEntries(dto.getNumberOfEntries() != null ? dto.getNumberOfEntries() : account.getNumberOfEntries());
+        account.setNumberOfAssets(dto.getNumberOfAssets() != null ? dto.getNumberOfAssets() : account.getNumberOfAssets());
+        account.setAveragePurchasePrice(dto.getAveragePurchasePrice() != null ? dto.getAveragePurchasePrice() : account.getAveragePurchasePrice());
+        account.setTotalGainLoss(dto.getTotalGainLoss() != null ? dto.getTotalGainLoss() : account.getTotalGainLoss());
+        account.setTotalDividendYield(dto.getTotalDividendYield() != null ? dto.getTotalDividendYield() : account.getTotalDividendYield());
+        account.setRiskLevelType(dto.getRiskLevelType() != null ? dto.getRiskLevelType() : account.getRiskLevelType());
+        account.setInvestmentSubtype(dto.getInvestmentSubtype() != null ? dto.getInvestmentSubtype() : account.getInvestmentSubtype());
+        
         account.setUpdatedAt(LocalDateTime.now());
 
         repository.update(account);
@@ -98,9 +101,11 @@ public class InvestmentAccountServiceImpl implements InvestmentAccountService {
         if (accountOptional.isEmpty()) {
             throw new AccountNotFoundException("Conta não encontrada: " + accountId);
         }
+        
         InvestmentAccount account = accountOptional.get();
         account.setIsActive(false);
         account.setUpdatedAt(LocalDateTime.now());
+        
         repository.update(account);
     }
 
@@ -128,6 +133,23 @@ public class InvestmentAccountServiceImpl implements InvestmentAccountService {
     @Override
     public List<InvestmentAccountResponseDTO> listAllInactiveAccounts() {
         List<InvestmentAccount> accounts = repository.findAllInactive();
+        return accounts.stream()
+            .map(InvestmentAccountMapper::toResponseDTO)
+            .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<InvestmentAccountResponseDTO> findAllByUserId(String userId) {
+        // Validar se o usuário existe
+        User user = userService.findUserById(userId);
+        if (user == null) {
+            throw new AccountNotFoundException("Usuário não encontrado: " + userId);
+        }
+
+        // Buscar todas as contas do usuário
+        List<InvestmentAccount> accounts = repository.findByUserId(userId);
+        
+        // Converter para DTO e retornar
         return accounts.stream()
             .map(InvestmentAccountMapper::toResponseDTO)
             .collect(Collectors.toList());

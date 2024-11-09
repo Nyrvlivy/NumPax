@@ -22,4 +22,6 @@ public interface InvestmentAccountService {
     List<InvestmentAccountResponseDTO> listAllActiveAccounts();
 
     List<InvestmentAccountResponseDTO> listAllInactiveAccounts();
+
+    List<InvestmentAccountResponseDTO> findAllByUserId(String userId);
 }

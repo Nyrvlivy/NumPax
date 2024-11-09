@@ -276,6 +276,7 @@ public class InvestmentAccountRepositoryImpl implements InvestmentAccountReposit
                 "FROM Accounts a " +
                 "JOIN InvestmentAccounts i ON i.account_id = a.account_id " +
                 "WHERE a.is_active = 0";
+            
         try (Statement stmt = connection.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
             while (rs.next()) {
@@ -304,6 +305,50 @@ public class InvestmentAccountRepositoryImpl implements InvestmentAccountReposit
             }
         } catch (SQLException e) {
             throw new RuntimeException("Erro ao buscar contas de investimento inativas", e);
+        }
+        return accounts;
+    }
+
+    @Override
+    public List<InvestmentAccount> findByUserId(String userId) {
+        List<InvestmentAccount> accounts = new ArrayList<>();
+        String sql =
+            "SELECT * " +
+                "FROM Accounts a " +
+                "JOIN InvestmentAccounts i ON i.account_id = a.account_id " +
+                "WHERE a.user_id = ?";
+            
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setString(1, userId);
+            
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    InvestmentAccount account = new InvestmentAccount();
+                    account.setAccountId(rs.getString("account_id"));
+                    account.setName(rs.getString("name"));
+                    account.setDescription(rs.getString("description"));
+                    account.setBalance(rs.getBigDecimal("balance"));
+                    account.setAccountType(AccountType.valueOf(rs.getString("account_type")));
+                    account.setIsActive(rs.getInt("is_active") == 1);
+                    account.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime());
+                    account.setUpdatedAt(rs.getTimestamp("updated_at").toLocalDateTime());
+                    account.setTotalInvestedAmount(rs.getBigDecimal("total_invested_amount"));
+                    account.setTotalProfit(rs.getBigDecimal("total_profit"));
+                    account.setTotalCurrentAmount(rs.getBigDecimal("total_current_amount"));
+                    account.setTotalWithdrawnAmount(rs.getBigDecimal("total_withdrawn_amount"));
+                    account.setNumberOfWithdrawals(rs.getInt("number_of_withdrawals"));
+                    account.setNumberOfEntries(rs.getInt("number_of_entries"));
+                    account.setNumberOfAssets(rs.getInt("number_of_assets"));
+                    account.setAveragePurchasePrice(rs.getBigDecimal("average_purchase_price"));
+                    account.setTotalGainLoss(rs.getBigDecimal("total_gain_loss"));
+                    account.setTotalDividendYield(rs.getBigDecimal("total_dividend_yield"));
+                    account.setRiskLevelType(RiskLevelType.valueOf(rs.getString("risk_level_type")));
+                    account.setInvestmentSubtype(InvestmentSubtype.valueOf(rs.getString("investment_subtype")));
+                    accounts.add(account);
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Erro ao buscar contas de investimento do usuário", e);
         }
         return accounts;
     }

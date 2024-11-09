@@ -3,6 +3,8 @@ package br.com.numpax.API.V1.mappers;
 
 import br.com.numpax.API.V1.dto.request.InvestmentAccountRequestDTO;
 import br.com.numpax.API.V1.dto.response.InvestmentAccountResponseDTO;
+import br.com.numpax.application.enums.InvestmentSubtype;
+import br.com.numpax.application.enums.RiskLevelType;
 import br.com.numpax.application.utils.ValidatorUtil;
 import br.com.numpax.infrastructure.entities.InvestmentAccount;
 import br.com.numpax.infrastructure.entities.User;
@@ -29,19 +31,19 @@ public class InvestmentAccountMapper {
         account.setCreatedAt(LocalDateTime.now());
         account.setUpdatedAt(LocalDateTime.now());
 
-       // Campos específicos da InvestmentAccount
-       account.setTotalInvestedAmount(dto.getTotalInvestedAmount());
-       account.setTotalProfit(dto.getTotalProfit());
-       account.setTotalCurrentAmount(dto.getTotalCurrentAmount());
-       account.setTotalWithdrawnAmount(dto.getTotalWithdrawnAmount());
-       account.setNumberOfWithdrawals(dto.getNumberOfWithdrawals());
-       account.setNumberOfEntries(dto.getNumberOfEntries());
-       account.setNumberOfAssets(dto.getNumberOfAssets());
-       account.setAveragePurchasePrice(dto.getAveragePurchasePrice());
-       account.setTotalGainLoss(dto.getTotalGainLoss());
-       account.setTotalDividendYield(dto.getTotalDividendYield());
-       account.setRiskLevelType(dto.getRiskLevelType());
-       account.setInvestmentSubtype(dto.getInvestmentSubtype());
+        // Campos específicos da InvestmentAccount com valores padrão
+        account.setTotalInvestedAmount(dto.getTotalInvestedAmount() != null ? dto.getTotalInvestedAmount() : BigDecimal.ZERO);
+        account.setTotalProfit(dto.getTotalProfit() != null ? dto.getTotalProfit() : BigDecimal.ZERO);
+        account.setTotalCurrentAmount(dto.getTotalCurrentAmount() != null ? dto.getTotalCurrentAmount() : BigDecimal.ZERO);
+        account.setTotalWithdrawnAmount(dto.getTotalWithdrawnAmount() != null ? dto.getTotalWithdrawnAmount() : BigDecimal.ZERO);
+        account.setNumberOfWithdrawals(dto.getNumberOfWithdrawals() != null ? dto.getNumberOfWithdrawals() : 0);
+        account.setNumberOfEntries(dto.getNumberOfEntries() != null ? dto.getNumberOfEntries() : 0);
+        account.setNumberOfAssets(dto.getNumberOfAssets() != null ? dto.getNumberOfAssets() : 0);
+        account.setAveragePurchasePrice(dto.getAveragePurchasePrice() != null ? dto.getAveragePurchasePrice() : BigDecimal.ZERO);
+        account.setTotalGainLoss(dto.getTotalGainLoss() != null ? dto.getTotalGainLoss() : BigDecimal.ZERO);
+        account.setTotalDividendYield(dto.getTotalDividendYield() != null ? dto.getTotalDividendYield() : BigDecimal.ZERO);
+        account.setRiskLevelType(dto.getRiskLevelType() != null ? dto.getRiskLevelType() : RiskLevelType.LOW);
+        account.setInvestmentSubtype(dto.getInvestmentSubtype() != null ? dto.getInvestmentSubtype() : InvestmentSubtype.FIXED_INVESTMENT);
 
         return account;
     }
