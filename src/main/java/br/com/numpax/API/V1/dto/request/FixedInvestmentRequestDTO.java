@@ -23,23 +23,28 @@ public class FixedInvestmentRequestDTO {
     @Positive(message = "Amount must be positive")
     private BigDecimal amount;
     
-    @NotBlank(message = "Category ID is required")
+    @NotNull(message = "Category ID is required")
     private String categoryId;
     
-    @NotBlank(message = "Account ID is required")
+    @NotNull(message = "Account ID is required")
     private String accountId;
-    
-    @NotBlank(message = "Investment type is required")
-    private String fixedInvestmentType;
     
     @NotNull(message = "Investment date is required")
     private LocalDate investmentDate;
     
+    @NotNull(message = "Investment type is required")
+    private String fixedInvestmentType;
+    
+    @NotNull(message = "Expiration date is required")
     private LocalDate expirationDate;
     
+    @NotNull(message = "Institution is required")
     private String institution;
     
-    private String receiver;
-    private String sender;
+    @NotNull(message = "Interest rate is required")
+    @Positive(message = "Interest rate must be positive")
+    private BigDecimal interestRate;
+    
+    private Integer liquidityPeriod;
     private String note;
 } 

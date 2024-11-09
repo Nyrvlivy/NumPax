@@ -25,11 +25,9 @@ public class FixedInvestmentController {
     }
 
     @POST
-    public Response createInvestment(@Valid FixedInvestmentRequestDTO dto) {
-        FixedInvestmentResponseDTO response = fixedInvestmentService.createInvestment(dto);
-        return Response.status(Response.Status.CREATED)
-                .entity(response)
-                .build();
+    public Response createInvestment(@Valid FixedInvestmentRequestDTO dto, @HeaderParam("userId") String userId) {
+        FixedInvestmentResponseDTO response = fixedInvestmentService.createInvestment(dto, userId);
+        return Response.ok(response).build();
     }
 
     @GET

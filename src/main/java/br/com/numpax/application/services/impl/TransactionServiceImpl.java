@@ -15,6 +15,7 @@ import br.com.numpax.infrastructure.entities.Transaction;
 import br.com.numpax.infrastructure.repositories.AccountRepository;
 import br.com.numpax.infrastructure.repositories.CategoryRepository;
 import br.com.numpax.infrastructure.repositories.TransactionRepository;
+import br.com.numpax.infrastructure.transaction.TransactionManager;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -22,18 +23,25 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import javax.inject.Inject;
+
 public class TransactionServiceImpl implements TransactionService {
 
     private final TransactionRepository transactionRepository;
     private final AccountRepository accountRepository;
     private final CategoryRepository categoryRepository;
+    private final TransactionManager transactionManager;
 
-    public TransactionServiceImpl(TransactionRepository transactionRepository,
-                                AccountRepository accountRepository,
-                                CategoryRepository categoryRepository) {
+    @Inject
+    public TransactionServiceImpl(
+            TransactionRepository transactionRepository,
+            AccountRepository accountRepository,
+            CategoryRepository categoryRepository,
+            TransactionManager transactionManager) {
         this.transactionRepository = transactionRepository;
         this.accountRepository = accountRepository;
         this.categoryRepository = categoryRepository;
+        this.transactionManager = transactionManager;
     }
 
     @Override

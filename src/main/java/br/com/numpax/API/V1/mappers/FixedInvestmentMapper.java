@@ -12,27 +12,21 @@ public class FixedInvestmentMapper {
 
     public static FixedInvestment toEntity(FixedInvestmentRequestDTO dto) {
         FixedInvestment investment = new FixedInvestment();
-        investment.setTransactionId(UUID.randomUUID().toString());
         investment.setCode(dto.getCode());
         investment.setName(dto.getName());
         investment.setDescription(dto.getDescription());
         investment.setAmount(dto.getAmount());
         investment.setCategoryId(dto.getCategoryId());
         investment.setAccountId(dto.getAccountId());
-        investment.setNatureOfTransaction(NatureOfTransaction.INVESTMENT);
-        investment.setReceiver(dto.getReceiver());
-        investment.setSender(dto.getSender());
-        investment.setTransactionDate(dto.getInvestmentDate());
+        investment.setInvestmentDate(dto.getInvestmentDate());
+        investment.setFixedInvestmentType(FixedInvestmentType.valueOf(dto.getFixedInvestmentType()));
+        investment.setExpirationDate(dto.getExpirationDate());
+        investment.setInstitution(dto.getInstitution());
+        investment.setInterestRate(dto.getInterestRate());
+        investment.setLiquidityPeriod(dto.getLiquidityPeriod());
         investment.setNote(dto.getNote());
         investment.setCreatedAt(LocalDateTime.now());
         investment.setUpdatedAt(LocalDateTime.now());
-        
-        // FixedInvestment specific fields
-        investment.setFixedInvestmentType(FixedInvestmentType.valueOf(dto.getFixedInvestmentType()));
-        investment.setInvestmentDate(dto.getInvestmentDate());
-        investment.setExpirationDate(dto.getExpirationDate());
-        investment.setInstitution(dto.getInstitution());
-        
         return investment;
     }
 

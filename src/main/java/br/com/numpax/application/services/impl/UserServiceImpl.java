@@ -144,13 +144,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User authenticateUser(String email, String password) {
+        // Buscar usuário pelo email
         User user = userRepository.findByEmail(email)
             .orElseThrow(() -> new AuthenticationException("Invalid email or password"));
 
+        // Verificar se a conta está ativa
         if (!user.isActive()) {
             throw new AuthenticationException("User account is inactive");
         }
 
+        // Verificar a senha
         if (!BCrypt.checkpw(password, user.getPassword())) {
             throw new AuthenticationException("Invalid email or password");
         }

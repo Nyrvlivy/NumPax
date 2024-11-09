@@ -26,5 +26,12 @@ public interface UserService {
 
     List<UserResponseDTO> listAllInactiveUsers();
 
+    /**
+     * Autentica um usuário com email e senha
+     * @param email Email do usuário
+     * @param password Senha do usuário
+     * @return User objeto do usuário autenticado
+     * @throws AuthenticationException se as credenciais forem inválidas ou a conta estiver inativa
+     */
     User authenticateUser(String email, String password);
 }

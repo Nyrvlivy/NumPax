@@ -11,12 +11,11 @@ import java.time.LocalDate;
 @Getter
 @Setter
 public class FixedInvestmentRedeemRequestDTO {
-    
-    @NotNull(message = "Redemption date is required")
+    @NotNull(message = "Redeem date is required")
     private LocalDate redeemDate;
     
-    @NotNull(message = "Redemption amount is required")
-    @Positive(message = "Redemption amount must be positive")
+    @NotNull(message = "Redeem value is required")
+    @Positive(message = "Redeem value must be positive")
     private BigDecimal redeemValue;
     
     private String note;
