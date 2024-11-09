@@ -1,4 +1,4 @@
-//package br.com.numpax.API.V1.controllers;
+package br.com.numpax.API.V1.controllers;//package br.com.numpax.API.V1.controllers;
 //
 //import br.com.numpax.API.V1.dto.request.CategoryRequestDTO;
 //import br.com.numpax.API.V1.dto.response.CategoryResponseDTO;

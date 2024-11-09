@@ -54,17 +54,17 @@ public class SavingsAccountRepositoryImpl implements SavingsAccountRepository {
             if (account.getNearestDeadline() != null) {
                 stmt.setTimestamp(2, Timestamp.valueOf(account.getNearestDeadline()));
             } else {
-                stmt.setNull(2, java.sql.Types.TIMESTAMP);
+                stmt.setNull(2, Types.TIMESTAMP);
             }
             if (account.getFurthestDeadline() != null) {
                 stmt.setTimestamp(3, Timestamp.valueOf(account.getFurthestDeadline()));
             } else {
-                stmt.setNull(3, java.sql.Types.TIMESTAMP);
+                stmt.setNull(3, Types.TIMESTAMP);
             }
             if (account.getLatestDeadline() != null) {
                 stmt.setTimestamp(4, Timestamp.valueOf(account.getLatestDeadline()));
             } else {
-                stmt.setNull(4, java.sql.Types.TIMESTAMP);
+                stmt.setNull(4, Types.TIMESTAMP);
             }
             stmt.setBigDecimal(5, account.getAverageTaxRate() != null ? account.getAverageTaxRate() : BigDecimal.ZERO);
             stmt.setInt(6, account.getNumberOfFixedInvestments() != null ? account.getNumberOfFixedInvestments() : 0);

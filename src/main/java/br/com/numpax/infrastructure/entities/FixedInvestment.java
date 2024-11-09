@@ -1,4 +1,4 @@
-//package br.com.numpax.infrastructure.entities;
+package br.com.numpax.infrastructure.entities;//package br.com.numpax.infrastructure.entities;
 //
 //import br.com.numpax.application.enums.FixedInvestmentType;
 //import br.com.numpax.application.enums.NatureOfTransaction;
