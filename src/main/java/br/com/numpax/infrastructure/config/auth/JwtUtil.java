@@ -1,6 +1,10 @@
 package br.com.numpax.infrastructure.config.auth;
 
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.security.Keys;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 
 public class JwtUtil {
@@ -16,13 +20,14 @@ public class JwtUtil {
             .setSubject(userId)
             .setIssuedAt(now)
             .setExpiration(expiryDate)
-            .signWith(SignatureAlgorithm.HS512, SECRET_KEY)
+            .signWith(Keys.hmacShaKeyFor(SECRET_KEY.getBytes(StandardCharsets.UTF_8)))
             .compact();
     }
 
     public static String getUserIdFromJWT(String token) {
         Claims claims = Jwts.parser()
-            .setSigningKey(SECRET_KEY)
+            .setSigningKey(Keys.hmacShaKeyFor(SECRET_KEY.getBytes(StandardCharsets.UTF_8)))
+            .build()
             .parseClaimsJws(token)
             .getBody();
 
@@ -31,11 +36,14 @@ public class JwtUtil {
 
     public static boolean validateToken(String token) {
         try {
-            Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token);
+            Jwts.parser()
+                .setSigningKey(Keys.hmacShaKeyFor(SECRET_KEY.getBytes(StandardCharsets.UTF_8)))
+                .build()
+                .parseClaimsJws(token);
             return true;
-        } catch (Exception ex) {
-            // Log exception
+        } catch (JwtException ex) {
+            // Consider logging the specific exception
+            return false;
         }
-        return false;
     }
 }

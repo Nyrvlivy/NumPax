@@ -47,8 +47,8 @@ public class InvestmentAccount extends Account {
         this.averagePurchasePrice = averagePurchasePrice != null ? averagePurchasePrice : BigDecimal.ZERO;
         this.totalGainLoss = totalGainLoss != null ? totalGainLoss : BigDecimal.ZERO;
         this.totalDividendYield = totalDividendYield != null ? totalDividendYield : BigDecimal.ZERO;
-        this.riskLevelType = riskLevelType != null ? RiskLevelType.valueOf(riskLevelType.getFirst()) : null;
-        this.investmentSubtype = investmentSubtype != null ? InvestmentSubtype.valueOf(investmentSubtype.getFirst()) : null;
+        this.riskLevelType = riskLevelType != null && !riskLevelType.isEmpty() ? RiskLevelType.valueOf(riskLevelType.get(0)) : null;
+        this.investmentSubtype = investmentSubtype != null && !investmentSubtype.isEmpty() ? InvestmentSubtype.valueOf(investmentSubtype.get(0)) : null;
     }
 
 }

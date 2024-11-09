@@ -9,9 +9,9 @@ public class ConnectionManager {
     private static ConnectionManager instance;
     private Connection connection;
 
-    private static final String URL = "jdbc:oracle:thin:@//Titi:1521/XEPDB1"; // URL Exemplo
-    private static final String USER = "USER_NUMPAX_2"; // Usuário Exemplo
-    private static final String PASSWORD = "250302N"; // Senha Exemplo
+    private static final String URL = "jdbc:oracle:thin:@//DESKTOP-9L2D52S:1521/XEPDB1"; // URL Exemplo
+    private static final String USER = "NumPaxTeste"; // Usuário Exemplo
+    private static final String PASSWORD = "123"; // Senha Exemplo
 
     private ConnectionManager() {
         try {
