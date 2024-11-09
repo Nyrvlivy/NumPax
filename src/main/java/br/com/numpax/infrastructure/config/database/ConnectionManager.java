@@ -10,7 +10,7 @@ public class ConnectionManager {
     private Connection connection;
 
     private static final String URL = "jdbc:oracle:thin:@//Titi:1521/XEPDB1"; // URL Exemplo
-    private static final String USER = "USER_NUMPAX_2"; // Usuário Exemplo
+    private static final String USER = "USER_NUMPAX_3"; // Usuário Exemplo
     private static final String PASSWORD = "250302N"; // Senha Exemplo
 
     private ConnectionManager() {

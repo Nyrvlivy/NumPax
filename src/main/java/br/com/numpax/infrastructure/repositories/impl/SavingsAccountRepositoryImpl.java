@@ -21,7 +21,7 @@ public class SavingsAccountRepositoryImpl implements SavingsAccountRepository {
 
     @Override
     public void create(SavingsAccount account) {
-        // Inserir na tabela Accounts
+
         String accountSql = "INSERT INTO Accounts (account_id, name, description, balance, account_type, is_active, user_id, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement accountStmt = connection.prepareStatement(accountSql)) {
             accountStmt.setString(1, account.getAccountId());
@@ -51,18 +51,31 @@ public class SavingsAccountRepositoryImpl implements SavingsAccountRepository {
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, account.getAccountId());
-            stmt.setTimestamp(2, Timestamp.valueOf(account.getNearestDeadline()));
-            stmt.setTimestamp(3, Timestamp.valueOf(account.getFurthestDeadline()));
-            stmt.setTimestamp(4, Timestamp.valueOf(account.getLatestDeadline()));
-            stmt.setBigDecimal(5, account.getAverageTaxRate());
-            stmt.setInt(6, account.getNumberOfFixedInvestments());
-            stmt.setBigDecimal(7, account.getTotalMaturityAmount());
-            stmt.setBigDecimal(8, account.getTotalDepositAmount());
+            if (account.getNearestDeadline() != null) {
+                stmt.setTimestamp(2, Timestamp.valueOf(account.getNearestDeadline()));
+            } else {
+                stmt.setNull(2, java.sql.Types.TIMESTAMP);
+            }
+            if (account.getFurthestDeadline() != null) {
+                stmt.setTimestamp(3, Timestamp.valueOf(account.getFurthestDeadline()));
+            } else {
+                stmt.setNull(3, java.sql.Types.TIMESTAMP);
+            }
+            if (account.getLatestDeadline() != null) {
+                stmt.setTimestamp(4, Timestamp.valueOf(account.getLatestDeadline()));
+            } else {
+                stmt.setNull(4, java.sql.Types.TIMESTAMP);
+            }
+            stmt.setBigDecimal(5, account.getAverageTaxRate() != null ? account.getAverageTaxRate() : BigDecimal.ZERO);
+            stmt.setInt(6, account.getNumberOfFixedInvestments() != null ? account.getNumberOfFixedInvestments() : 0);
+            stmt.setBigDecimal(7, account.getTotalMaturityAmount() != null ? account.getTotalMaturityAmount() : BigDecimal.ZERO);
+            stmt.setBigDecimal(8, account.getTotalDepositAmount() != null ? account.getTotalDepositAmount() : BigDecimal.ZERO);
             stmt.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException("Erro ao criar conta poupança", e);
         }
     }
+
 
     @Override
     public Optional<SavingsAccount> findById(String accountId) {

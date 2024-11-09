@@ -3,6 +3,7 @@ package br.com.numpax.application.services.impl;
 import br.com.numpax.API.V1.dto.request.SavingsAccountRequestDTO;
 import br.com.numpax.API.V1.dto.response.SavingsAccountResponseDTO;
 import br.com.numpax.API.V1.exceptions.AccountNotFoundException;
+import br.com.numpax.API.V1.mappers.InvestmentAccountMapper;
 import br.com.numpax.API.V1.mappers.SavingsAccountMapper;
 import br.com.numpax.application.enums.AccountType;
 import br.com.numpax.application.services.SavingsAccountService;
@@ -35,12 +36,15 @@ public class SavingsAccountServiceImpl implements SavingsAccountService {
         ValidatorUtil.validate(dto);
 
         User user = userService.findUserById(userId);
+        if (user == null) {
+            throw new AccountNotFoundException("Usuário não encontrado" + userId);
+        }
 
         SavingsAccount account = SavingsAccountMapper.toEntity(dto, user);
-
         account.setAccountId(UUID.randomUUID().toString());
         account.setBalance(BigDecimal.ZERO);
         account.setIsActive(true);
+        account.setUserId(user);
         account.setCreatedAt(LocalDateTime.now());
         account.setUpdatedAt(LocalDateTime.now());
 
@@ -60,7 +64,7 @@ public class SavingsAccountServiceImpl implements SavingsAccountService {
 
     @Override
     public SavingsAccountResponseDTO updateAccount(String accountId, SavingsAccountRequestDTO dto) {
-        // Validação do DTO
+
         ValidatorUtil.validate(dto);
 
         Optional<SavingsAccount> accountOptional = repository.findById(accountId);
@@ -71,13 +75,13 @@ public class SavingsAccountServiceImpl implements SavingsAccountService {
         SavingsAccount account = accountOptional.get();
         account.setName(dto.getName());
         account.setDescription(dto.getDescription());
-        account.setNearestDeadline(dto.getNearestDeadline());
-        account.setFurthestDeadline(dto.getFurthestDeadline());
-        account.setLatestDeadline(dto.getLatestDeadline());
-        account.setAverageTaxRate(dto.getAverageTaxRate());
-        account.setNumberOfFixedInvestments(dto.getNumberOfFixedInvestments());
-        account.setTotalMaturityAmount(dto.getTotalMaturityAmount());
-        account.setTotalDepositAmount(dto.getTotalDepositAmount());
+//        account.setNearestDeadline(dto.getNearestDeadline());
+//        account.setFurthestDeadline(dto.getFurthestDeadline());
+//        account.setLatestDeadline(dto.getLatestDeadline());
+//        account.setAverageTaxRate(dto.getAverageTaxRate());
+//        account.setNumberOfFixedInvestments(dto.getNumberOfFixedInvestments());
+//        account.setTotalMaturityAmount(dto.getTotalMaturityAmount());
+//        account.setTotalDepositAmount(dto.getTotalDepositAmount());
         account.setUpdatedAt(LocalDateTime.now());
 
         repository.update(account);

@@ -23,7 +23,7 @@ public class InvestmentAccountRepositoryImpl implements InvestmentAccountReposit
 
     @Override
     public void create(InvestmentAccount account) {
-        // Inserir na tabela Accounts
+
         String accountSql = "INSERT INTO Accounts (account_id, name, description, balance, account_type, is_active, user_id, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement accountStmt = connection.prepareStatement(accountSql)) {
             accountStmt.setString(1, account.getAccountId());
@@ -69,7 +69,7 @@ public class InvestmentAccountRepositoryImpl implements InvestmentAccountReposit
             stmt.setBigDecimal(10, account.getTotalGainLoss() != null ? account.getTotalGainLoss() : BigDecimal.ZERO);
             stmt.setBigDecimal(11, account.getTotalDividendYield() != null ? account.getTotalDividendYield() : BigDecimal.ZERO);
             stmt.setString(12, account.getRiskLevelType() != null ? account.getRiskLevelType().toString() : RiskLevelType.LOW.toString());
-            stmt.setString(13, account.getInvestmentSubtype() != null ? account.getInvestmentSubtype().toString() : InvestmentSubtype.FIXED_INVESTMENT.toString());
+            stmt.setString(13, account.getInvestmentSubtype() != null ? account.getInvestmentSubtype().toString() : InvestmentSubtype.VARIABLE_INVESTMENT.toString());
             stmt.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException("Erro ao criar conta de investimento", e);

@@ -10,7 +10,6 @@ import br.com.numpax.infrastructure.repositories.impl.*;
 import java.math.BigDecimal;
 import java.sql.Connection;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 public class Main {
@@ -44,7 +43,7 @@ public class Main {
 
             // Criar um novo usuário
             UserRequestDTO userRequest = new UserRequestDTO();
-            userRequest.setName("Frederico Adriel");
+            userRequest.setName("Usuário Teste 1");
             userRequest.setEmail(generateRandomEmail());
             userRequest.setPassword("SenhaForte123!");
             userRequest.setBirthdate(LocalDate.of(1985, 8, 20));
@@ -70,13 +69,13 @@ public class Main {
             SavingsAccountRequestDTO savingsAccountRequest = new SavingsAccountRequestDTO();
             savingsAccountRequest.setName("Poupança");
             savingsAccountRequest.setDescription("Conta poupança para economias");
-            savingsAccountRequest.setNearestDeadline(LocalDateTime.now().plusMonths(6));
-            savingsAccountRequest.setFurthestDeadline(LocalDateTime.now().plusYears(5));
-            savingsAccountRequest.setLatestDeadline(LocalDateTime.now().plusYears(10));
-            savingsAccountRequest.setAverageTaxRate(new BigDecimal("0.05"));
-            savingsAccountRequest.setNumberOfFixedInvestments(2);
-            savingsAccountRequest.setTotalMaturityAmount(new BigDecimal("10000"));
-            savingsAccountRequest.setTotalDepositAmount(new BigDecimal("5000"));
+//            savingsAccountRequest.setNearestDeadline(LocalDateTime.now().plusMonths(6));
+//            savingsAccountRequest.setFurthestDeadline(LocalDateTime.now().plusYears(5));
+//            savingsaccountrequest.setlatestdeadline(localdatetime.now().plusyears(10));
+//            savingsAccountRequest.setAverageTaxRate(new BigDecimal("0.05"));
+//            savingsAccountRequest.setNumberOfFixedInvestments(2);
+//            savingsAccountRequest.setTotalMaturityAmount(new BigDecimal("10000"));
+//            savingsAccountRequest.setTotalDepositAmount(new BigDecimal("5000"));
 
             SavingsAccountResponseDTO savingsAccountResponse = savingsAccountService.createAccount(savingsAccountRequest, userId);
             System.out.println("Conta poupança criada: " + savingsAccountResponse);
@@ -115,8 +114,8 @@ public class Main {
 
             // Atualizar usuário
             UserUpdateRequestDTO userUpdateRequest = new UserUpdateRequestDTO();
-            userUpdateRequest.setName("Maria Silva Atualizada");
-            userUpdateRequest.setEmail(userResponse.getEmail()); // Mantém o mesmo email
+            userUpdateRequest.setName("Usuário Teste 1 Atualizado");
+            userUpdateRequest.setEmail(userResponse.getEmail());
             userUpdateRequest.setPassword("NovaSenhaForte123!");
             userUpdateRequest.setBirthdate(LocalDate.of(1985, 8, 20));
 
@@ -134,7 +133,6 @@ public class Main {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            // Fechar a conexão
             connectionManager.closeConnection();
         }
     }

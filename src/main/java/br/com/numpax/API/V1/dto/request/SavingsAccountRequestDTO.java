@@ -10,13 +10,13 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 public class SavingsAccountRequestDTO extends AccountRequestDTO {
-    private LocalDateTime nearestDeadline;
-    private LocalDateTime furthestDeadline;
-    private LocalDateTime latestDeadline;
-    private BigDecimal averageTaxRate;
-    private Integer numberOfFixedInvestments;
-    private BigDecimal totalMaturityAmount;
-    private BigDecimal totalDepositAmount;
+//    private LocalDateTime nearestDeadline;
+//    private LocalDateTime furthestDeadline;
+//    private LocalDateTime latestDeadline;
+//    private BigDecimal averageTaxRate;
+//    private Integer numberOfFixedInvestments;
+//    private BigDecimal totalMaturityAmount;
+//    private BigDecimal totalDepositAmount;
 
     public SavingsAccountRequestDTO() {
         this.setAccountType(AccountType.SAVINGS);

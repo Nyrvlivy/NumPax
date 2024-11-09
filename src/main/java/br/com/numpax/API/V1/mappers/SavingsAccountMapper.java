@@ -2,7 +2,6 @@ package br.com.numpax.API.V1.mappers;
 
 import br.com.numpax.API.V1.dto.request.SavingsAccountRequestDTO;
 import br.com.numpax.API.V1.dto.response.SavingsAccountResponseDTO;
-import br.com.numpax.application.enums.AccountType;
 import br.com.numpax.application.utils.ValidatorUtil;
 import br.com.numpax.infrastructure.entities.SavingsAccount;
 import br.com.numpax.infrastructure.entities.User;
@@ -14,18 +13,32 @@ import java.util.UUID;
 public class SavingsAccountMapper {
 
     public static SavingsAccount toEntity(SavingsAccountRequestDTO dto, User user) {
+
+        ValidatorUtil.validate(dto);
+
         SavingsAccount account = new SavingsAccount();
+        account.setAccountId(UUID.randomUUID().toString());
         account.setName(dto.getName());
         account.setDescription(dto.getDescription());
-        account.setNearestDeadline(dto.getNearestDeadline());
-        account.setFurthestDeadline(dto.getFurthestDeadline());
-        account.setLatestDeadline(dto.getLatestDeadline());
-        account.setAverageTaxRate(dto.getAverageTaxRate());
-        account.setNumberOfFixedInvestments(dto.getNumberOfFixedInvestments());
-        account.setTotalMaturityAmount(dto.getTotalMaturityAmount());
-        account.setTotalDepositAmount(dto.getTotalDepositAmount());
-        account.setAccountType(AccountType.SAVINGS);
+        account.setBalance(BigDecimal.ZERO);
+        account.setAccountType(dto.getAccountType());
+        account.setIsActive(true);
         account.setUserId(user);
+        account.setCreatedAt(LocalDateTime.now());
+        account.setUpdatedAt(LocalDateTime.now());
+
+//        SavingsAccount account = new SavingsAccount();
+//        account.setName(dto.getName());
+//        account.setDescription(dto.getDescription());
+//        account.setNearestDeadline(dto.getNearestDeadline());
+//        account.setFurthestDeadline(dto.getFurthestDeadline());
+//        account.setLatestDeadline(dto.getLatestDeadline());
+//        account.setAverageTaxRate(dto.getAverageTaxRate());
+//        account.setNumberOfFixedInvestments(dto.getNumberOfFixedInvestments());
+//        account.setTotalMaturityAmount(dto.getTotalMaturityAmount());
+//        account.setTotalDepositAmount(dto.getTotalDepositAmount());
+//        account.setAccountType(AccountType.SAVINGS);
+//        account.setUserId(user);
 
         return account;
     }

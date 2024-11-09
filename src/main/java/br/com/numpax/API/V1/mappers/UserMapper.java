@@ -16,7 +16,7 @@ public class UserMapper {
         user.setEmail(dto.getEmail());
         user.setPassword(hashPassword(dto.getPassword()));
         user.setBirthdate(dto.getBirthdate());
-        user.setIsActive(true);  // Cannot resolve method 'setIsActive' in 'User'
+        user.setIsActive(true);
         user.setCreatedAt(java.time.LocalDateTime.now());
         user.setUpdatedAt(java.time.LocalDateTime.now());
         return user;
