@@ -2,6 +2,7 @@ package br.com.numpax.API.V1.dto.response;
 
 import br.com.numpax.application.enums.NatureOfTransaction;
 import br.com.numpax.application.enums.RepeatableType;
+import br.com.numpax.application.enums.TransactionType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,6 +33,7 @@ public class TransactionResponseDTO {
     private boolean isEffective;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+    private TransactionType type;
     private AccountResponseDTO account;
     private CategoryResponseDTO category;
 } 

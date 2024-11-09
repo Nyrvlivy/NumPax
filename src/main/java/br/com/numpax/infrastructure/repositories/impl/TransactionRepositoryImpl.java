@@ -2,6 +2,7 @@ package br.com.numpax.infrastructure.repositories.impl;
 
 import br.com.numpax.application.enums.NatureOfTransaction;
 import br.com.numpax.application.enums.RepeatableType;
+import br.com.numpax.application.enums.TransactionType;
 import br.com.numpax.application.enums.AccountType;
 import br.com.numpax.application.enums.CategoryType;
 import br.com.numpax.infrastructure.entities.Transaction;
@@ -26,8 +27,8 @@ public class TransactionRepositoryImpl implements TransactionRepository {
         String sql = "INSERT INTO Transactions (transaction_id, code, name, description, amount, " +
                     "category_id, account_id, nature_of_transaction, receiver, sender, " +
                     "transaction_date, is_repeatable, repeatable_type, note, is_active, " +
-                    "is_effective, created_at, updated_at) " +
-                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                    "is_effective, created_at, updated_at, type) " +
+                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, transaction.getTransactionId());
@@ -49,6 +50,7 @@ public class TransactionRepositoryImpl implements TransactionRepository {
             stmt.setBoolean(16, transaction.isEffective());
             stmt.setTimestamp(17, Timestamp.valueOf(transaction.getCreatedAt()));
             stmt.setTimestamp(18, Timestamp.valueOf(transaction.getUpdatedAt()));
+            stmt.setString(19, transaction.getType().toString());
             
             stmt.executeUpdate();
         } catch (SQLException e) {
@@ -183,6 +185,7 @@ public class TransactionRepositoryImpl implements TransactionRepository {
         transaction.setEffective(rs.getBoolean("is_effective"));
         transaction.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime());
         transaction.setUpdatedAt(rs.getTimestamp("updated_at").toLocalDateTime());
+        transaction.setType(TransactionType.valueOf(rs.getString("type")));
 
         // Mapear Category
         Category category = new Category();

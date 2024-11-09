@@ -2,6 +2,7 @@ package br.com.numpax.infrastructure.entities;
 
 import br.com.numpax.application.enums.NatureOfTransaction;
 import br.com.numpax.application.enums.RepeatableType;
+import br.com.numpax.application.enums.TransactionType;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -32,6 +33,7 @@ public class Transaction {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private LocalDateTime effectiveDate;
+    private TransactionType type;
     
     // Relacionamentos
     private Account account;

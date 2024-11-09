@@ -2,6 +2,7 @@ package br.com.numpax.API.V1.dto.request;
 
 import br.com.numpax.application.enums.NatureOfTransaction;
 import br.com.numpax.application.enums.RepeatableType;
+import br.com.numpax.application.enums.TransactionType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -47,4 +48,7 @@ public class TransactionRequestDTO {
     
     @NotBlank(message = "O ID da categoria é obrigatório")
     private String categoryId;
+    
+    @NotNull(message = "O tipo da transação é obrigatório")
+    private TransactionType type;
 } 

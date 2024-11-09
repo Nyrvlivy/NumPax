@@ -11,6 +11,11 @@ import br.com.numpax.infrastructure.repositories.impl.*;
 import br.com.numpax.infrastructure.repositories.TransactionRepository;
 import br.com.numpax.infrastructure.repositories.InvestmentAccountRepository;
 import br.com.numpax.infrastructure.repositories.CategoryRepository;
+import br.com.numpax.application.services.AuthService;
+import br.com.numpax.application.services.TransactionService;
+import br.com.numpax.application.services.impl.TransactionServiceImpl;
+import br.com.numpax.application.enums.TransactionType;
+import br.com.numpax.infrastructure.repositories.impl.TransactionRepositoryImpl;
 
 import java.math.BigDecimal;
 import java.sql.Connection;
@@ -44,6 +49,15 @@ public class Main {
             SavingsAccountServiceImpl savingsAccountService = new SavingsAccountServiceImpl(savingsAccountRepository, userService);
             InvestmentAccountServiceImpl investmentAccountService = new InvestmentAccountServiceImpl(investmentAccountRepository, userService);
             GoalAccountServiceImpl goalAccountService = new GoalAccountServiceImpl(goalAccountRepository, userService, categoryService);
+            TransactionServiceImpl transactionService = new TransactionServiceImpl(
+                transactionRepository,
+                checkingAccountRepository,
+                savingsAccountRepository,
+                investmentAccountRepository,
+                goalAccountRepository,
+                categoryRepository
+            );
+            AuthService authService = new AuthServiceImpl(userRepository);
 
             // Criar categorias padrão
             categoryService.createDefaultCategories();
@@ -169,7 +183,81 @@ public class Main {
             userService.deleteUser(userId);
             System.out.println("Usuário deletado.");
 
+            // Teste de Login
+            System.out.println("\n=== Testando Autenticação ===");
+            
+            // Criar usuário para teste
+            UserRequestDTO loginTestUser = new UserRequestDTO();
+            loginTestUser.setName("Usuário Teste");
+            loginTestUser.setEmail("teste@email.com");
+            loginTestUser.setPassword("Senha@123");
+            loginTestUser.setBirthdate(LocalDate.of(1990, 1, 1));
+            
+            UserResponseDTO loginUserResponse = userService.createUser(loginTestUser);
+            System.out.println("Usuário de teste criado: " + loginUserResponse);
+
+            // Teste de login
+            LoginRequestDTO loginRequest = new LoginRequestDTO();
+            loginRequest.setEmail("teste@email.com");
+            loginRequest.setPassword("Senha@123");
+
+            AuthResponseDTO authResponse = authService.login(loginRequest);
+            System.out.println("Login realizado com sucesso!");
+            System.out.println("Access Token: " + authResponse.getAccessToken());
+            System.out.println("Refresh Token: " + authResponse.getRefreshToken());
+
+            // Teste de refresh token
+            AuthResponseDTO refreshResponse = authService.refreshToken(authResponse.getRefreshToken());
+            System.out.println("Tokens renovados com sucesso!");
+
+            // Teste de Transações
+            System.out.println("\n=== Testando Transações ===");
+
+            // Criar conta para teste
+            CheckingAccountRequestDTO testAccountRequest = new CheckingAccountRequestDTO();
+            testAccountRequest.setName("Conta Teste");
+            testAccountRequest.setDescription("Conta para teste de transação");
+            testAccountRequest.setAccountType(AccountType.CHECKING);
+            testAccountRequest.setBankCode("001");
+            testAccountRequest.setAgency("1234");
+            testAccountRequest.setAccountNumber("11111111");
+
+            CheckingAccountResponseDTO testAccount = checkingAccountService.createAccount(
+                testAccountRequest, 
+                loginUserResponse.getUserId()
+            );
+
+            // Criar transação
+            TransactionRequestDTO transactionRequest = new TransactionRequestDTO();
+            transactionRequest.setCode(UUID.randomUUID().toString());
+            transactionRequest.setName("Depósito Inicial");
+            transactionRequest.setDescription("Depósito inicial");
+            transactionRequest.setAmount(new BigDecimal("100.00"));
+            transactionRequest.setNatureOfTransaction(NatureOfTransaction.INCOME);
+            transactionRequest.setTransactionDate(LocalDate.now());
+            transactionRequest.setType(TransactionType.DEPOSIT);
+            transactionRequest.setAccountId(testAccount.getAccountId());
+            transactionRequest.setCategoryId(categoryService.findByName("Receitas Diversas").getId());
+
+            TransactionResponseDTO transactionResponse = transactionService.createTransaction(
+                transactionRequest
+            );
+            System.out.println("Transação criada: " + transactionResponse);
+
+            // Verificar saldo após transação
+            CheckingAccountResponseDTO updatedAccount = checkingAccountService.getAccountById(
+                testAccount.getAccountId()
+            );
+            System.out.println("Saldo atual: " + updatedAccount.getBalance());
+
+            // Limpar dados de teste
+            transactionService.delete(transactionResponse.getTransactionId());
+            checkingAccountService.deleteAccount(testAccount.getAccountId());
+            userService.deleteUser(loginUserResponse.getUserId());
+            System.out.println("Dados de teste removidos com sucesso!");
+
         } catch (Exception e) {
+            System.err.println("Erro durante os testes: " + e.getMessage());
             e.printStackTrace();
         } finally {
             // Fechar a conexão

@@ -38,6 +38,7 @@ public class TransactionMapper {
         transaction.setUpdatedAt(LocalDateTime.now());
         transaction.setAccount(account);
         transaction.setCategory(category);
+        transaction.setType(dto.getType());
         
         return transaction;
     }
@@ -60,6 +61,7 @@ public class TransactionMapper {
         dto.setEffective(transaction.isEffective());
         dto.setCreatedAt(transaction.getCreatedAt());
         dto.setUpdatedAt(transaction.getUpdatedAt());
+        dto.setType(transaction.getType());
         
         // Usando o mapper específico baseado no tipo da conta
         Account account = transaction.getAccount();

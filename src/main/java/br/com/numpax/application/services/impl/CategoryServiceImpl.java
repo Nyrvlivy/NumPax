@@ -97,4 +97,11 @@ public class CategoryServiceImpl implements CategoryService {
             .orElseThrow(() -> new CategoryNotFoundException("Categoria não encontrada"));
     }
 
+    @Override
+    public CategoryResponseDTO findByName(String name) {
+        Category category = repository.findByName(name)
+            .orElseThrow(() -> new CategoryNotFoundException("Categoria não encontrada: " + name));
+        return CategoryMapper.toResponseDTO(category);
+    }
+
 }

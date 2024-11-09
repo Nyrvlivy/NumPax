@@ -21,4 +21,6 @@ public interface CategoryService {
     void createDefaultCategories();
 
     Category findCategoryById(String categoryId);
+
+    CategoryResponseDTO findByName(String name);
 }

@@ -16,4 +16,6 @@ public interface CategoryRepository {
     void delete(String categoryId);
 
     List<Category> findAll();
+
+    Optional<Category> findByName(String name);
 }

@@ -26,10 +26,9 @@ public class JwtAuthenticationFilter implements Filter {
 
         String jwt = getJwtFromRequest(httpServletRequest);
 
-        if (jwt != null && JwtUtil.validateToken(jwt)) {
-            String userId = JwtUtil.getUserIdFromJWT(jwt);
+        if (jwt != null && JwtUtil.validateToken(jwt, false)) {
+            String userId = JwtUtil.getUserIdFromToken(jwt, false);
             User user = userService.findUserById(userId);
-            // Você pode armazenar o usuário na sessão ou contexto para uso posterior
             httpServletRequest.setAttribute("authenticatedUser", user);
         }
 

@@ -1,5 +1,6 @@
 package br.com.numpax.infrastructure.repositories.impl;
 
+import br.com.numpax.API.V1.exceptions.DatabaseException;
 import br.com.numpax.application.enums.CategoryType;
 import br.com.numpax.infrastructure.entities.Category;
 import br.com.numpax.infrastructure.repositories.CategoryRepository;
@@ -96,6 +97,34 @@ public class CategoryRepositoryImpl implements CategoryRepository {
             throw new RuntimeException("Erro ao listar categorias", e);
         }
         return categories;
+    }
+
+    @Override
+    public Optional<Category> findByName(String name) {
+        String sql = "SELECT * FROM Categories WHERE name = ? AND is_active = true";
+        
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setString(1, name);
+            ResultSet rs = stmt.executeQuery();
+            
+            if (rs.next()) {
+                Category category = new Category();
+                category.setCategoryId(rs.getString("category_id"));
+                category.setName(rs.getString("name"));
+                category.setDescription(rs.getString("description"));
+                category.setCategoryType(CategoryType.valueOf(rs.getString("category_type")));
+                category.setIsActive(rs.getBoolean("is_active"));
+                category.setIsDefault(rs.getBoolean("is_default"));
+                category.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime());
+                category.setUpdatedAt(rs.getTimestamp("updated_at").toLocalDateTime());
+                
+                return Optional.of(category);
+            }
+            
+            return Optional.empty();
+        } catch (SQLException e) {
+            throw new DatabaseException("Erro ao buscar categoria por nome: " + e.getMessage());
+        }
     }
 
     private Category extractCategoryFromResultSet(ResultSet rs) throws SQLException {

@@ -62,14 +62,21 @@ public class UserRepositoryImpl implements UserRepository {
             stmt.setString(1, email);
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
-                    User user = extractUserFromResultSet(rs);
+                    User user = new User();
+                    user.setUserId(rs.getString("user_id"));
+                    user.setName(rs.getString("name"));
+                    user.setEmail(rs.getString("email"));
+                    user.setPassword(rs.getString("password"));
+                    user.setIsActive(rs.getInt("is_active") == 1);
+                    user.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime());
+                    user.setUpdatedAt(rs.getTimestamp("updated_at").toLocalDateTime());
                     return Optional.of(user);
                 }
+                return Optional.empty();
             }
         } catch (SQLException e) {
             throw new RuntimeException("Erro ao buscar usuário por email", e);
         }
-        return Optional.empty();
     }
 
     @Override

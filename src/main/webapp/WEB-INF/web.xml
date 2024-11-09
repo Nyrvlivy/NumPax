@@ -1,0 +1,8 @@
+<filter>
+    <filter-name>jwtAuthenticationFilter</filter-name>
+    <filter-class>br.com.numpax.infrastructure.config.auth.JwtAuthenticationFilter</filter-class>
+</filter>
+<filter-mapping>
+    <filter-name>jwtAuthenticationFilter</filter-name>
+    <url-pattern>/api/v1/*</url-pattern>
+</filter-mapping> 
