@@ -21,9 +21,9 @@ import java.util.stream.Collectors;
 public class CheckingAccountServiceImpl implements CheckingAccountService {
 
     private final CheckingAccountRepository repository;
-    private final UserService userService; // Ainda não existe um UserService
+    private final UserService userService;
 
-    public CheckingAccountServiceImpl(CheckingAccountRepository repository, UserService userService) { // Ainda não existe um UserService
+    public CheckingAccountServiceImpl(CheckingAccountRepository repository, UserService userService) {
         this.repository = repository;
         this.userService = userService;
     }

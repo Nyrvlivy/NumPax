@@ -1,6 +1,7 @@
 package br.com.numpax.infrastructure.repositories.impl;
 
 import br.com.numpax.application.enums.AccountType;
+import br.com.numpax.infrastructure.entities.Category;
 import br.com.numpax.infrastructure.entities.GoalAccount;
 import br.com.numpax.infrastructure.repositories.GoalAccountRepository;
 
@@ -72,9 +73,13 @@ public class GoalAccountRepositoryImpl implements GoalAccountRepository {
     @Override
     public Optional<GoalAccount> findById(String accountId) {
         String sql =
-            "SELECT * " +
+            "SELECT a.account_id, a.name AS account_name, a.description AS account_description, a.balance, a.account_type, a.is_active, " +
+                "a.created_at, a.updated_at, s.target_value, s.amount_value, s.target_tax_rate, s.monthly_tax_rate, " +
+                "s.monthly_estimate, s.monthly_achievement, s.target_date, s.start_date, s.end_date, " +
+                "c.category_id, c.name AS category_name, c.description AS category_description " +
                 "FROM Accounts a " +
                 "JOIN GoalAccounts s ON a.account_id = s.account_id " +
+                "LEFT JOIN Categories c ON s.category_id = c.category_id " +
                 "WHERE a.account_id = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, accountId);
@@ -82,8 +87,8 @@ public class GoalAccountRepositoryImpl implements GoalAccountRepository {
                 if (rs.next()) {
                     GoalAccount account = new GoalAccount();
                     account.setAccountId(rs.getString("account_id"));
-                    account.setName(rs.getString("name"));
-                    account.setDescription(rs.getString("description"));
+                    account.setName(rs.getString("account_name"));
+                    account.setDescription(rs.getString("account_description"));
                     account.setBalance(rs.getBigDecimal("balance"));
                     account.setAccountType(AccountType.valueOf(rs.getString("account_type")));
                     account.setIsActive(rs.getInt("is_active") == 1);
@@ -95,10 +100,30 @@ public class GoalAccountRepositoryImpl implements GoalAccountRepository {
                     account.setMonthlyTaxRate(rs.getBigDecimal("monthly_tax_rate"));
                     account.setMonthlyEstimate(rs.getBigDecimal("monthly_estimate"));
                     account.setMonthlyAchievement(rs.getBigDecimal("monthly_achievement"));
-                    account.getCategory().setId(rs.getString("category_id"));
-                    account.setTargetDate(rs.getTimestamp("target_date").toLocalDateTime().toLocalDate());
-                    account.setStartDate(rs.getTimestamp("start_date").toLocalDateTime().toLocalDate());
-                    account.setEndDate(rs.getTimestamp("end_date").toLocalDateTime().toLocalDate());
+
+                    // Verificar se os campos de data não são null antes de converter
+                    Timestamp targetDateTimestamp = rs.getTimestamp("target_date");
+                    if (targetDateTimestamp != null) {
+                        account.setTargetDate(targetDateTimestamp.toLocalDateTime().toLocalDate());
+                    }
+
+                    Timestamp startDateTimestamp = rs.getTimestamp("start_date");
+                    if (startDateTimestamp != null) {
+                        account.setStartDate(startDateTimestamp.toLocalDateTime().toLocalDate());
+                    }
+
+                    Timestamp endDateTimestamp = rs.getTimestamp("end_date");
+                    if (endDateTimestamp != null) {
+                        account.setEndDate(endDateTimestamp.toLocalDateTime().toLocalDate());
+                    }
+
+                    // Carregar a categoria, se disponível
+                    Category category = new Category();
+                    category.setId(rs.getString("category_id"));
+                    category.setName(rs.getString("category_name"));
+                    category.setDescription(rs.getString("category_description"));
+                    account.setCategory(category);
+
                     return Optional.of(account);
                 }
             }
@@ -107,6 +132,8 @@ public class GoalAccountRepositoryImpl implements GoalAccountRepository {
         }
         return Optional.empty();
     }
+
+
 
     @Override
     public void update(GoalAccount account) {

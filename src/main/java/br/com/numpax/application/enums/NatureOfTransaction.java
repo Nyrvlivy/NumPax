@@ -1,9 +1,11 @@
 package br.com.numpax.application.enums;
 
 public enum NatureOfTransaction {
-    GOAL,
-    INVESTMENT,
+    GOAL_INCOME,
+    GOAL_EXPENSE,
+    INVESTMENTS,
     INCOME,
     EXPENSE,
-    TRANSFER
+    TRANSFER,
+    SAVINGS
 }

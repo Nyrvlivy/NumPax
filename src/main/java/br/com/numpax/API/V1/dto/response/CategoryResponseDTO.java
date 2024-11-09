@@ -9,7 +9,6 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 public class CategoryResponseDTO {
-
     private String id;
     private String name;
     private String description;
