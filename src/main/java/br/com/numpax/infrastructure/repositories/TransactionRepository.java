@@ -7,5 +7,8 @@ import java.util.List;
 
 public interface TransactionRepository {
     void create(Transaction transaction);
+
     List<ActiveTransactionDTO> findActiveTransactionsByUserId(String userId);
+
+    List<ActiveTransactionDTO> findActiveTransactionsByUserIdAndNature(String userId, String nature);
 }

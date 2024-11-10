@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Definir a URL do servlet usando contextPath
+    const contextPath = window.location.pathname.substring(0, window.location.pathname.indexOf("/", 1));
     const transactionsUrl = contextPath + '/transactions';
     const accountsUrl = contextPath + '/accounts'; // Ajuste conforme mapeamento
     const premiumUrl = contextPath + '/premium';
@@ -44,7 +45,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Carregar a página de transações por padrão
-    loadContent(transactionsUrl);
+    // loadContent(transactionsUrl); // Removido para evitar carregamento duplicado
 
     // Inicializar o modal de desenvolvimento
     var underDevelopmentModal = new bootstrap.Modal(document.getElementById('underDevelopmentModal'));
@@ -93,14 +94,20 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Simular o clique no link de transações para carregar o conteúdo inicial
-    document.querySelector('.sidebar a[href="#transacoes"]').click();
+    // document.querySelector('.sidebar a[href="#transacoes"]').click(); // Removido para evitar carregamento duplicado
 
     // Adicionar ouvinte de eventos ao botão de inscrição no modal de desenvolvimento
-    document.querySelector('#underDevelopmentModal .btn-primary').addEventListener('click', function() {
-        console.log('Subscribe button clicked');
-        // Adicione sua lógica de inscrição aqui
-        underDevelopmentModal.hide();
-    });
+    const underDevModal = document.getElementById('underDevelopmentModal');
+    if (underDevModal) {
+        const subscribeBtn = underDevModal.querySelector('.btn-primary');
+        if (subscribeBtn) {
+            subscribeBtn.addEventListener('click', function() {
+                console.log('Subscribe button clicked');
+                // Adicione sua lógica de inscrição aqui
+                underDevelopmentModal.hide();
+            });
+        }
+    }
 
     // Função para inicializar funções específicas da página
     function initializePageFunctions() {
@@ -130,6 +137,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Função para carregar modais via AJAX
     function loadModal(modalFile) {
+        const modalContainer = document.getElementById('modalContainer');
         fetch(modalFile)
             .then(response => response.text())
             .then(html => {
@@ -162,7 +170,7 @@ document.addEventListener('DOMContentLoaded', function() {
             modal.classList.remove('show');
             backdrop.classList.remove('show');
             setTimeout(() => {
-                modalContainer.innerHTML = ''; // Remove modal do DOM após a animação
+                modal.parentElement.removeChild(modal);
                 document.body.removeChild(backdrop);
             }, 300);
         }
@@ -174,16 +182,20 @@ document.addEventListener('DOMContentLoaded', function() {
         modal.addEventListener('click', (e) => e.stopPropagation());
 
         // Adicionar ouvinte de eventos ao botão de fechar
-        closeModalBtn.addEventListener('click', closeModal);
+        if (closeModalBtn) {
+            closeModalBtn.addEventListener('click', closeModal);
+        }
 
         // Adicionar ouvinte de eventos ao botão de salvar
-        saveBtn.addEventListener('click', function() {
-            // Adicione sua lógica de salvamento aqui
-            setTimeout(() => {
-                showSaveNotification();
-                closeModal();
-            }, 500);
-        });
+        if (saveBtn) {
+            saveBtn.addEventListener('click', function() {
+                // Adicione sua lógica de salvamento aqui
+                setTimeout(() => {
+                    showSaveNotification();
+                    closeModal();
+                }, 500);
+            });
+        }
 
         // Adicionar ouvinte de eventos ao botão de salvar e adicionar novo
         if (saveAndNewBtn) {
@@ -196,94 +208,7 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
 
-        // Funcionalidade de input de arquivos
-        const fileInput = modal.querySelector('#fileInput');
-        const attachFileBtn = modal.querySelector('#attachFileBtn');
-        if (fileInput && attachFileBtn) {
-            attachFileBtn.addEventListener('click', function() {
-                fileInput.click();
-            });
-
-            fileInput.addEventListener('change', function() {
-                if (this.files.length > 0) {
-                    const fileNames = Array.from(this.files).map(file => file.name).join(', ');
-                    attachFileBtn.innerHTML = `<i class="fas fa-paperclip me-2"></i>${fileNames}`;
-                } else {
-                    attachFileBtn.innerHTML = `<i class="fas fa-paperclip me-2"></i>Anexar Arquivo`;
-                }
-            });
-        }
-
-        // Funcionalidade de botões de data
-        modal.querySelectorAll('.btn-date').forEach(button => {
-            button.addEventListener('click', function() {
-                modal.querySelector('.btn-date.active').classList.remove('active');
-                this.classList.add('active');
-            });
-        });
-
-        // Funcionalidade de dropdown personalizado para categorias e contas
-        modal.querySelectorAll('.dropdown-field').forEach(dropdown => {
-            const chipElement = dropdown.querySelector('.category-chip, .wallet-chip');
-            const customDropdown = dropdown.querySelector('.custom-dropdown');
-
-            // Alternar visibilidade do dropdown ao clicar no chip
-            chipElement.addEventListener('click', function(e) {
-                e.stopPropagation();
-                const isActive = customDropdown.classList.contains('show');
-
-                // Fechar outros dropdowns abertos
-                modal.querySelectorAll('.custom-dropdown.show').forEach(openDropdown => {
-                    openDropdown.classList.remove('show');
-                });
-
-                if (!isActive) {
-                    customDropdown.classList.add('show');
-                }
-            });
-
-            // Lidar com a seleção de itens do dropdown
-            dropdown.querySelectorAll('.custom-dropdown-item').forEach(item => {
-                item.addEventListener('click', function(e) {
-                    e.stopPropagation();
-
-                    // Lidar com a opção "Criar novo destino" para "Para Onde Foi"
-                    if (this.id === 'addNewDestination') {
-                        // Solicitar ao usuário o novo destino
-                        const newDestination = prompt('Insira o nome do novo destino:');
-                        if (newDestination) {
-                            // Criar novo item no dropdown
-                            const newOption = document.createElement('div');
-                            newOption.classList.add('custom-dropdown-item');
-                            newOption.setAttribute('role', 'option');
-                            newOption.innerHTML = `<i class="fas fa-map-marker-alt me-2" aria-hidden="true"></i>${newDestination}`;
-
-                            // Inserir a nova opção antes de "Criar novo destino"
-                            customDropdown.insertBefore(newOption, this);
-
-                            // Adicionar ouvinte de eventos à nova opção
-                            newOption.addEventListener('click', function(e) {
-                                e.stopPropagation();
-                                chipElement.innerHTML = this.innerHTML;
-                                customDropdown.classList.remove('show');
-                                addCloseButton(chipElement);
-                            });
-
-                            // Atualizar chipElement com o novo destino
-                            chipElement.innerHTML = newOption.innerHTML;
-                            addCloseButton(chipElement);
-                        }
-                    } else {
-                        // Atualizar chipElement com o item selecionado
-                        chipElement.innerHTML = this.innerHTML;
-                        customDropdown.classList.remove('show');
-                        addCloseButton(chipElement);
-                    }
-                });
-            });
-        });
-
-        // Função para adicionar um botão de fechar ao chip
+        // Função para adicionar um botão de fechar ao chip (se necessário)
         function addCloseButton(chipElement) {
             const closeButton = document.createElement('button');
             closeButton.type = 'button';
@@ -296,149 +221,9 @@ document.addEventListener('DOMContentLoaded', function() {
             chipElement.appendChild(closeButton);
         }
 
-        // Fechar dropdowns ao clicar fora
-        document.addEventListener('click', function(e) {
-            if (!e.target.closest('.dropdown-field')) {
-                modal.querySelectorAll('.custom-dropdown.show').forEach(dropdown => {
-                    dropdown.classList.remove('show');
-                });
-            }
-        });
+        // Adicionar lógica específica para o modal aqui (inputs, dropdowns, etc.)
+        // ...
 
-        // Formatar o valor como moeda
-        const valueInputs = modal.querySelectorAll('.value-input');
-        valueInputs.forEach(valueInput => {
-            valueInput.addEventListener('focus', function() {
-                if (this.value === '0,00') {
-                    this.value = '';
-                }
-            });
-
-            valueInput.addEventListener('blur', function() {
-                if (this.value === '') {
-                    this.value = '0,00';
-                }
-            });
-
-            valueInput.addEventListener('input', function(e) {
-                let value = e.target.value.replace(/\D/g, '');
-                if (value === '') {
-                    e.target.value = '';
-                    return;
-                }
-                value = (value / 100).toFixed(2) + '';
-                value = value.replace(".", ",");
-                value = value.replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.");
-                e.target.value = value;
-            });
-        });
-
-        // Configurar Flatpickr para seleção de data
-        flatpickr.localize(flatpickr.l10ns.pt);
-        const fp = flatpickr(".btn-date:last-child", {
-            dateFormat: "d/m/Y",
-            defaultDate: "today",
-            onChange: function(selectedDates, dateStr, instance) {
-                modal.querySelectorAll('.btn-date').forEach(btn => btn.classList.remove('active'));
-                instance.element.classList.add('active');
-                instance.element.textContent = dateStr;
-            },
-            onClose: function(selectedDates, dateStr, instance) {
-                const today = new Date();
-                const yesterday = new Date(Date.now() - 86400000);
-                if (dateStr === instance.formatDate(today, "d/m/Y")) {
-                    modal.querySelector('.btn-date:first-child').click();
-                } else if (dateStr === instance.formatDate(yesterday, "d/m/Y")) {
-                    modal.querySelector('.btn-date:nth-child(2)').click();
-                }
-            }
-        });
-
-        // Garantir que o calendário abra ao clicar em "Outro..."
-        modal.querySelector('.btn-date:last-child').addEventListener('click', function(e) {
-            e.preventDefault();
-            fp.open();
-        });
-
-        // Toggle da seção de mais detalhes
-        const moreDetailsBtn = modal.querySelector('#moreDetailsBtn');
-        const moreDetailsSection = modal.querySelector('#moreDetailsSection');
-        const repeatCheck = modal.querySelector('#repeatCheck');
-        const repeatOptionsSection = modal.querySelector('#repeatOptionsSection');
-        const repeatInput = modal.querySelector('#repeatOptionsSection input[type="number"]');
-
-        if (moreDetailsBtn && moreDetailsSection) {
-            moreDetailsBtn.addEventListener('click', function(e) {
-                e.preventDefault();
-                const isExpanded = this.getAttribute('aria-expanded') === 'true';
-                moreDetailsSection.style.display = isExpanded ? 'none' : 'block';
-                this.setAttribute('aria-expanded', !isExpanded);
-                this.innerHTML = !isExpanded ? 'Menos detalhes <i class="fas fa-chevron-up"></i>' : 'Mais detalhes <i class="fas fa-chevron-right"></i>';
-            });
-        }
-
-        if (repeatCheck && repeatOptionsSection) {
-            repeatCheck.addEventListener('change', function() {
-                repeatOptionsSection.style.display = this.checked ? 'flex' : 'none';
-            });
-        }
-
-        if (repeatInput) {
-            repeatInput.addEventListener('input', function() {
-                if (this.value < 1) {
-                    this.value = 1;
-                }
-            });
-        }
-
-        // Funcionalidade de tags
-        const tagsDropdown = modal.querySelector('#tagsDropdown');
-        const selectedTags = modal.querySelector('#selectedTags');
-        const tagsInput = modal.querySelector('#tagsInput');
-
-        if (tagsDropdown && selectedTags && tagsInput) {
-            const tagItems = tagsDropdown.querySelectorAll('.custom-dropdown-item');
-
-            tagItems.forEach(item => {
-                item.addEventListener('click', function() {
-                    const tagValue = this.getAttribute('data-value');
-                    const tagText = this.textContent;
-
-                    if (!tagsInput.value.includes(tagValue)) {
-                        if (tagsInput.value) {
-                            tagsInput.value += ',';
-                        }
-                        tagsInput.value += tagValue;
-
-                        const tagSpan = document.createElement('span');
-                        tagSpan.className = 'badge bg-secondary me-1';
-                        tagSpan.innerHTML = `${tagText} <button type="button" class="btn-close btn-close-white btn-sm" aria-label="Remove ${tagText}"></button>`;
-                        tagSpan.querySelector('.btn-close').addEventListener('click', function(e) {
-                            e.stopPropagation();
-                            tagSpan.remove();
-                            tagsInput.value = tagsInput.value.split(',').filter(t => t !== tagValue).join(',');
-                            updateSelectedTags();
-                        });
-
-                        selectedTags.appendChild(tagSpan);
-                        updateSelectedTags();
-                    }
-                });
-            });
-
-            selectedTags.addEventListener('click', function(e) {
-                e.stopPropagation();
-                tagsDropdown.querySelector('.custom-dropdown').classList.toggle('show');
-            });
-
-            function updateSelectedTags() {
-                if (selectedTags.querySelectorAll('.badge').length > 0) {
-                    selectedTags.querySelector('.text-muted')?.remove();
-                } else {
-                    selectedTags.innerHTML = '<span class="text-muted">Selecione as tags...</span>';
-                }
-            }
-        }
     }
 
     // Função para exibir uma notificação temporária de salvamento
@@ -459,4 +244,11 @@ document.addEventListener('DOMContentLoaded', function() {
             }, 300);
         }, 2000);
     }
+
+    window.alterarLinhasPorPagina = function(qtd) {
+        const url = new URL(window.location.href);
+        url.searchParams.set('linhasPorPagina', qtd);
+        url.searchParams.set('page', 1);
+        window.location.href = url.toString();
+    };
 });

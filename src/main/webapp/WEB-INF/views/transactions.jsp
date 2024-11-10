@@ -7,13 +7,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Transações - Controle Financeiro</title>
-
-    <!-- CSS Locais -->
     <link href="<c:url value='/static/lib/bootstrap.min.css'/>" rel="stylesheet">
     <link href="<c:url value='/static/css/modals-styles.css'/>" rel="stylesheet">
     <link href="<c:url value='/static/css/main-styles.css'/>" rel="stylesheet">
-
-    <!-- CSS Externos -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 </head>
@@ -26,15 +22,56 @@
             <div class="summary-header">
                 <div class="top-bar">
                     <!-- Dropdown de Transações -->
+                    <c:set var="currentNature" value="${nature}" />
                     <div class="dropdown">
                         <button class="btn btn-light-blue dropdown-toggle" type="button" id="transactionsDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                            Transações
+                            <c:choose>
+                                <c:when test="${currentNature == 'EXPENSE'}">Despesas</c:when>
+                                <c:when test="${currentNature == 'INCOME'}">Receitas</c:when>
+                                <c:when test="${currentNature == 'TRANSFER'}">Transferências</c:when>
+                                <c:otherwise>Transações</c:otherwise>
+                            </c:choose>
                         </button>
                         <ul class="dropdown-menu" aria-labelledby="transactionsDropdown">
-                            <li><a class="dropdown-item" href="#"><i class="fas fa-exchange-alt text-purple me-2"></i>Transações</a></li>
-                            <li><a class="dropdown-item" href="#"><i class="fas fa-arrow-down text-danger me-2"></i>Despesas</a></li>
-                            <li><a class="dropdown-item" href="#"><i class="fas fa-arrow-up text-success me-2"></i>Receitas</a></li>
-                            <li><a class="dropdown-item" href="#"><i class="fas fa-exchange-alt text-info me-2"></i>Transferências</a></li>
+                            <li>
+                                <c:url var="allTransactionsUrl" value="/transactions">
+                                    <c:param name="page" value="${paginaAtual}" />
+                                    <c:param name="linhasPorPagina" value="${linhasPorPagina}" />
+                                </c:url>
+                                <a class="dropdown-item" href="${allTransactionsUrl}">
+                                    <i class="fas fa-exchange-alt text-purple me-2"></i>Transações
+                                </a>
+                            </li>
+                            <li>
+                                <c:url var="expensesUrl" value="/transactions">
+                                    <c:param name="nature" value="EXPENSE" />
+                                    <c:param name="page" value="1" />
+                                    <c:param name="linhasPorPagina" value="${linhasPorPagina}" />
+                                </c:url>
+                                <a class="dropdown-item" href="${expensesUrl}">
+                                    <i class="fas fa-arrow-down text-danger me-2"></i>Despesas
+                                </a>
+                            </li>
+                            <li>
+                                <c:url var="incomesUrl" value="/transactions">
+                                    <c:param name="nature" value="INCOME" />
+                                    <c:param name="page" value="1" />
+                                    <c:param name="linhasPorPagina" value="${linhasPorPagina}" />
+                                </c:url>
+                                <a class="dropdown-item" href="${incomesUrl}">
+                                    <i class="fas fa-arrow-up text-success me-2"></i>Receitas
+                                </a>
+                            </li>
+                            <li>
+                                <c:url var="transfersUrl" value="/transactions">
+                                    <c:param name="nature" value="TRANSFER" />
+                                    <c:param name="page" value="1" />
+                                    <c:param name="linhasPorPagina" value="${linhasPorPagina}" />
+                                </c:url>
+                                <a class="dropdown-item" href="${transfersUrl}">
+                                    <i class="fas fa-exchange-alt text-info me-2"></i>Transferências
+                                </a>
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -53,7 +90,7 @@
                 </div>
             </div>
 
-            <!-- Adicionados os Summary Cards -->
+            <!-- Summary Cards -->
             <div class="summary-cards">
                 <div class="summary-card">
                     <h6>Saldo atual</h6>
@@ -140,7 +177,7 @@
                         </table>
                     </div>
 
-                    <!-- Adicionada a seção de Paginação -->
+                    <!-- Paginação -->
                     <div class="d-flex justify-content-between align-items-center mt-3">
                         <p class="mb-0">Saldo Previsto Final do Dia: R$ <c:out value="${saldoPrevisto}" /></p>
                         <div class="d-flex align-items-center">
@@ -154,15 +191,40 @@
                             <nav>
                                 <ul class="pagination pagination-sm">
                                     <c:if test="${paginaAtual > 1}">
-                                        <li class="page-item"><a class="page-link" href="<c:url value='/transactions?page=${paginaAtual - 1}'/>">&laquo;</a></li>
+                                        <c:url var="prevPageUrl" value="/transactions">
+                                            <c:param name="page" value="${paginaAtual - 1}" />
+                                            <c:if test="${currentNature != null}">
+                                                <c:param name="nature" value="${currentNature}" />
+                                            </c:if>
+                                            <c:param name="linhasPorPagina" value="${linhasPorPagina}" />
+                                        </c:url>
+                                        <li class="page-item">
+                                            <a class="page-link" href="${prevPageUrl}">&laquo;</a>
+                                        </li>
                                     </c:if>
                                     <c:forEach begin="1" end="${totalPaginas}" var="i">
+                                        <c:url var="pageUrl" value="/transactions">
+                                            <c:param name="page" value="${i}" />
+                                            <c:if test="${currentNature != null}">
+                                                <c:param name="nature" value="${currentNature}" />
+                                            </c:if>
+                                            <c:param name="linhasPorPagina" value="${linhasPorPagina}" />
+                                        </c:url>
                                         <li class="page-item <c:if test='${i == paginaAtual}'>active</c:if>">
-                                            <a class="page-link" href="<c:url value='/transactions?page=${i}'/>">${i}</a>
+                                            <a class="page-link" href="${pageUrl}">${i}</a>
                                         </li>
                                     </c:forEach>
                                     <c:if test="${paginaAtual < totalPaginas}">
-                                        <li class="page-item"><a class="page-link" href="<c:url value='/transactions?page=${paginaAtual + 1}'/>">&raquo;</a></li>
+                                        <c:url var="nextPageUrl" value="/transactions">
+                                            <c:param name="page" value="${paginaAtual + 1}" />
+                                            <c:if test="${currentNature != null}">
+                                                <c:param name="nature" value="${currentNature}" />
+                                            </c:if>
+                                            <c:param name="linhasPorPagina" value="${linhasPorPagina}" />
+                                        </c:url>
+                                        <li class="page-item">
+                                            <a class="page-link" href="${nextPageUrl}">&raquo;</a>
+                                        </li>
                                     </c:if>
                                 </ul>
                             </nav>
@@ -183,34 +245,28 @@
     </div>
 </div>
 
-<!-- Scripts JS Locais -->
 <script src="<c:url value='/static/lib/bootstrap.bundle.min.js'/>"></script>
 <script src="<c:url value='/static/js/main-scripts.js'/>"></script>
-
-<!-- Scripts JS Externos -->
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script src="https://npmcdn.com/flatpickr/dist/l10n/pt.js"></script>
 
-<!-- Scripts Personalizados -->
 <script>
     function editarTransacao(id) {
-        // Lógica para editar transação
         console.log('Editar transação:', id);
     }
 
     function excluirTransacao(id) {
-        // Lógica para excluir transação
         console.log('Excluir transação:', id);
     }
 
     function detalhesTransacao(id) {
-        // Lógica para exibir detalhes da transação
         console.log('Detalhes da transação:', id);
     }
 
     function alterarLinhasPorPagina(qtd) {
-        // Lógica para alterar a quantidade de linhas por página
-        window.location.href = '<c:url value="/transactions"/>?linhasPorPagina=' + qtd;
+        const url = new URL(window.location.href);
+        url.searchParams.set('linhasPorPagina', qtd);
+        window.location.href = url.toString();
     }
 </script>
 </body>

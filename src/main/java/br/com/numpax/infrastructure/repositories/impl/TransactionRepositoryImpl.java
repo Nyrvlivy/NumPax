@@ -32,12 +32,12 @@ public class TransactionRepositoryImpl implements TransactionRepository {
             preparedStatement.setBigDecimal(5, transaction.getAmount());
             preparedStatement.setString(6, transaction.getCategory().getId());
             preparedStatement.setString(7, transaction.getAccount().getAccountId());
-            preparedStatement.setString(8, String.valueOf(transaction.getNatureOfTransaction()));
+            preparedStatement.setString(8, transaction.getNatureOfTransaction().name());
             preparedStatement.setString(9, transaction.getReceiver());
             preparedStatement.setString(10, transaction.getSender());
             preparedStatement.setTimestamp(11, Timestamp.valueOf(transaction.getTransactionDate().atStartOfDay()));
             preparedStatement.setBoolean(12, transaction.isRepeatable());
-            preparedStatement.setString(13, String.valueOf(transaction.getRepeatableType()));
+            preparedStatement.setString(13, transaction.getRepeatableType().name());
             preparedStatement.setString(14, transaction.getNote());
             preparedStatement.setBoolean(15, transaction.isActive());
             preparedStatement.setBoolean(16, transaction.isEffective());
@@ -82,4 +82,37 @@ public class TransactionRepositoryImpl implements TransactionRepository {
         return transactions;
     }
 
+    @Override
+    public List<ActiveTransactionDTO> findActiveTransactionsByUserIdAndNature(String userId, String nature) {
+        String sql = "SELECT t.transaction_id, t.is_effective, t.transaction_date, t.name, " +
+            "c.name AS category_name, a.name AS account_name, t.amount " +
+            "FROM Transactions t " +
+            "JOIN Accounts a ON t.account_id = a.account_id " +
+            "JOIN Categories c ON t.category_id = c.category_id " +
+            "WHERE a.user_id = ? " +
+            "AND t.is_active = 1 " +
+            "AND t.nature_of_transaction = ?";
+
+        List<ActiveTransactionDTO> transactions = new ArrayList<>();
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setString(1, userId);
+            stmt.setString(2, nature);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    ActiveTransactionDTO dto = new ActiveTransactionDTO();
+                    dto.setTransactionId(rs.getString("transaction_id"));
+                    dto.setEffective(rs.getInt("is_effective") == 1);
+                    dto.setTransactionDate(rs.getDate("transaction_date"));
+                    dto.setName(rs.getString("name"));
+                    dto.setCategoryName(rs.getString("category_name"));
+                    dto.setAccountName(rs.getString("account_name"));
+                    dto.setAmount(rs.getBigDecimal("amount"));
+                    transactions.add(dto);
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Erro ao buscar transações ativas por natureza", e);
+        }
+        return transactions;
+    }
 }

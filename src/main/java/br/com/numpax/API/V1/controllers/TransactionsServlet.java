@@ -6,7 +6,6 @@ import br.com.numpax.application.services.impl.TransactionServiceImpl;
 import br.com.numpax.infrastructure.config.database.ConnectionManager;
 import br.com.numpax.infrastructure.entities.User;
 import br.com.numpax.infrastructure.repositories.*;
-
 import br.com.numpax.infrastructure.repositories.impl.*;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -24,7 +23,6 @@ public class TransactionsServlet extends HttpServlet {
 
     @Override
     public void init() throws ServletException {
-        // Inicialize os repositórios necessários
         ConnectionManager connectionManager = ConnectionManager.getInstance();
         TransactionRepository transactionRepository = new TransactionRepositoryImpl(connectionManager.getConnection());
         CheckingAccountRepository checkingAccountRepository = new CheckingAccountRepositoryImpl(connectionManager.getConnection());
@@ -33,7 +31,6 @@ public class TransactionsServlet extends HttpServlet {
         InvestmentAccountRepository investmentAccountRepository = new InvestmentAccountRepositoryImpl(connectionManager.getConnection());
         CategoryRepository categoryRepository = new CategoryRepositoryImpl(connectionManager.getConnection());
 
-        // Inicialize o TransactionService
         this.transactionService = new TransactionServiceImpl(
             transactionRepository,
             checkingAccountRepository,
@@ -48,28 +45,46 @@ public class TransactionsServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         try {
-            // Recuperar o usuário da sessão
             User user = (User) request.getSession().getAttribute("user");
 
             if (user == null) {
-                // Se o usuário não estiver logado, redirecionar para a página de login
                 response.sendRedirect(request.getContextPath() + "/signin");
                 return;
             }
 
-            // Use o método getter correto para obter o ID do usuário
             String userId = user.getUserId();
 
-            // Buscar as transações ativas do usuário
-            List<ActiveTransactionDTO> listaTransacoes = transactionService.listActiveTransactionsByUserId(userId);
+            String nature = request.getParameter("nature");
+            String pageStr = request.getParameter("page");
+            String linhasPorPaginaStr = request.getParameter("linhasPorPagina");
 
-            // Definir a lista de transações como atributo da requisição
-            request.setAttribute("listaTransacoes", listaTransacoes);
+            int paginaAtual = 1;
+            if (pageStr != null && !pageStr.isEmpty()) {
+                paginaAtual = Integer.parseInt(pageStr);
+            }
 
-            // Encaminhar para a JSP de transações
+            int linhasPorPagina = 10;
+            if (linhasPorPaginaStr != null && !linhasPorPaginaStr.isEmpty()) {
+                linhasPorPagina = Integer.parseInt(linhasPorPaginaStr);
+            }
+
+            List<ActiveTransactionDTO> listaTransacoes = transactionService.listActiveTransactionsByUserId(userId, nature);
+
+            int totalTransacoes = listaTransacoes.size();
+            int totalPaginas = (int) Math.ceil((double) totalTransacoes / linhasPorPagina);
+
+            int fromIndex = (paginaAtual - 1) * linhasPorPagina;
+            int toIndex = Math.min(fromIndex + linhasPorPagina, totalTransacoes);
+            List<ActiveTransactionDTO> transacoesPaginadas = listaTransacoes.subList(fromIndex, toIndex);
+
+            request.setAttribute("listaTransacoes", transacoesPaginadas);
+            request.setAttribute("nature", nature);
+            request.setAttribute("paginaAtual", paginaAtual);
+            request.setAttribute("totalPaginas", totalPaginas);
+            request.setAttribute("linhasPorPagina", linhasPorPagina);
+
             request.getRequestDispatcher("/WEB-INF/views/transactions.jsp").forward(request, response);
         } catch (Exception e) {
-            // Logue o erro e redirecione para uma página de erro ou exiba uma mensagem
             e.printStackTrace();
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Ocorreu um erro ao carregar as transações.");
         }

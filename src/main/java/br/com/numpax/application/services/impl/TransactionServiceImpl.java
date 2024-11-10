@@ -39,23 +39,18 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     public TransactionResponseDTO createTransaction(TransactionRequestDTO dto, String accountId, String categoryId) {
-        // Validação do DTO
         ValidatorUtil.validate(dto);
 
-        // Buscar a conta associada
         Account account = findAccountById(accountId)
             .orElseThrow(() -> new RuntimeException("Conta não encontrada: " + accountId));
 
-        // Buscar a categoria associada
         Category category = categoryRepository.findById(categoryId)
             .orElseThrow(() -> new RuntimeException("Categoria não encontrada: " + categoryId));
 
-        // Verificar se a natureza da transação é permitida para o tipo da conta
         if (!isTransactionAllowedForAccountType(dto.getNatureOfTransaction(), account)) {
             throw new RuntimeException("Tipo de transação não permitido para esta conta");
         }
 
-        // Criar a entidade Transaction
         Transaction transaction = new Transaction();
         transaction.setTransactionId(UUID.randomUUID().toString());
         transaction.setCode(dto.getCode());
@@ -76,16 +71,23 @@ public class TransactionServiceImpl implements TransactionService {
         transaction.setAccount(account);
         transaction.setCategory(category);
 
-        // Persistir a transação no banco de dados
         transactionRepository.create(transaction);
 
-        // Mapear a entidade para o DTO de resposta
         return mapToResponseDTO(transaction);
     }
 
     @Override
     public List<ActiveTransactionDTO> listActiveTransactionsByUserId(String userId) {
-        return transactionRepository.findActiveTransactionsByUserId(userId);
+        return listActiveTransactionsByUserId(userId, null);
+    }
+
+    @Override
+    public List<ActiveTransactionDTO> listActiveTransactionsByUserId(String userId, String nature) {
+        if (nature == null || nature.isEmpty()) {
+            return transactionRepository.findActiveTransactionsByUserId(userId);
+        } else {
+            return transactionRepository.findActiveTransactionsByUserIdAndNature(userId, nature);
+        }
     }
 
     private boolean isTransactionAllowedForAccountType(NatureOfTransaction natureOfTransaction, Account account) {
@@ -101,12 +103,6 @@ public class TransactionServiceImpl implements TransactionService {
         };
     }
 
-    /**
-     * Busca uma conta pelo seu ID, verificando em todos os tipos de contas.
-     *
-     * @param accountId O ID da conta.
-     * @return Um Optional contendo a conta se encontrada.
-     */
     private Optional<Account> findAccountById(String accountId) {
         return checkingAccountRepository.findById(accountId).map(account -> (Account) account)
             .or(() -> savingsAccountRepository.findById(accountId).map(account -> (Account) account))
@@ -114,12 +110,6 @@ public class TransactionServiceImpl implements TransactionService {
             .or(() -> investmentAccountRepository.findById(accountId).map(account -> (Account) account));
     }
 
-    /**
-     * Mapeia a entidade Transaction para o DTO de resposta.
-     *
-     * @param transaction A entidade Transaction.
-     * @return O DTO de resposta.
-     */
     private TransactionResponseDTO mapToResponseDTO(Transaction transaction) {
         TransactionResponseDTO dto = new TransactionResponseDTO();
         dto.setTransactionId(transaction.getTransactionId());

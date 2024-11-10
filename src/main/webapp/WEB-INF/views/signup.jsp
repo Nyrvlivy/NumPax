@@ -6,7 +6,7 @@
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <link rel="icon" type="image/x-icon" href="<c:url value='/static/img/numpax-coin.ico'/>"/>
-    <title>NumPax - Sign Up</title>
+    <title>NumPax - Cadastrar</title>
     <link rel="stylesheet" href="<c:url value='/static/lib/bootstrap.min.css'/>"/>
     <link rel="stylesheet" href="<c:url value='/static/css/signup/fonts.css'/>">
     <link rel="stylesheet" href="<c:url value='/static/css/signup/style.css'/>"/>
