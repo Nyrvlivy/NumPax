@@ -92,7 +92,8 @@
                             <img src="<c:url value='/static/img/facebook-icon.svg'/>" alt="Facebook Icon" class="icon"/>
                         </button>
                     </div>
-                    <p class="mt-2">Não tem uma conta? <a href="signup.jsp" class="sign-up-link">Cadastre-se</a></p>
+                    <p class="mt-2">Não tem uma conta? <a href="${pageContext.request.contextPath}/signup" class="sign-in-link">
+                        Entrar</a></p>
                 </div>
 
                 <!-- Logo NumPax -->
