@@ -11,8 +11,25 @@
     <link rel="stylesheet" href="<c:url value='/static/css/signup/fonts.css'/>">
     <link rel="stylesheet" href="<c:url value='/static/css/signup/style.css'/>"/>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+<style>
+    .alert-overlay {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 1050;
+        width: auto;
+        max-width: 300px;
+    }
+</style>
 </head>
 <body class="signin-page">
+
+<c:if test="${not empty error}">
+<div class="alert alert-danger alert-overlay" role="alert">
+        ${error}
+</div>
+</c:if>
+
 <div class="container">
     <div class="row justify-content-center align-items-center min-vh-100 h-100">
         <div class="custom-col">
@@ -107,7 +124,6 @@
     </div>
 </div>
 
-<!-- Scripts -->
 <script src="<c:url value='/static/lib/bootstrap.bundle.min.js'/>"></script>
 <script src="<c:url value='/static/js/signin/utils.js'/>"></script>
 <script src="<c:url value='/static/js/signin/script.js'/>"></script>

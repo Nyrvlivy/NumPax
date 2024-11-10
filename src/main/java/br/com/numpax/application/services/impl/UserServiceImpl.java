@@ -91,7 +91,7 @@ public class UserServiceImpl implements UserService {
         // Verificar se o email está sendo alterado e se já está em uso
         if (!user.getEmail().equals(dto.getEmail())) {
             if (userRepository.findByEmail(dto.getEmail()).isPresent()) {
-                throw new EmailAlreadyUsedException("O email já está em uso.");
+                throw new EmailAlreadyUsedException("O email já está em uso. Por favor, escolha outro.");
             }
         }
 

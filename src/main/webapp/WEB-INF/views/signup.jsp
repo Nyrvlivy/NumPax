@@ -12,13 +12,31 @@
     <link rel="stylesheet" href="<c:url value='/static/css/signup/style.css'/>"/>
     <link rel="stylesheet"
           href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"/>
+    <style>
+        .alert-overlay {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1050;
+            width: auto;
+            max-width: 300px;
+        }
+    </style>
 </head>
 <body class="signup-page">
+
+<c:if test="${not empty error}">
+    <div class="alert alert-danger alert-overlay" role="alert">
+            ${error}
+    </div>
+</c:if>
+
 <div class="container">
     <div class="row justify-content-center align-items-center min-vh-100 h-100">
         <div class="custom-col">
-            <form class="text-left" id="signup-form" onsubmit="validateForm(event)">
+            <form class="text-left" id="signup-form" action="${pageContext.request.contextPath}/signup" method="post">
                 <h2 class="mb-4">Cadastrar</h2>
+
                 <div class="form-group">
                     <label for="name">Nome</label>
                     <div class="input-group mb-3 name-group">
@@ -28,10 +46,11 @@
                             </span>
                         </div>
                         <input type="text" class="form-control no-border-left no-bg input-padding name-input" id="name"
-                               placeholder="Insira seu nome" required minlength="3" maxlength="50"/>
+                               name="name" placeholder="Insira seu nome" required minlength="3" maxlength="50"/>
                     </div>
                     <div class="error-message" id="name-error"></div>
                 </div>
+
                 <div class="form-group">
                     <label for="email">E-mail</label>
                     <div class="input-group mb-3 email-group">
@@ -40,8 +59,8 @@
                                 <span class="material-symbols-outlined">mail</span>
                             </span>
                         </div>
-                        <input type="email" class="form-control no-border-left no-bg input-padding email-input" id="email"
-                               placeholder="Insira seu e-mail" required/>
+                        <input type="email" class="form-control no-border-left no-bg input-padding email-input"
+                               id="email" name="email" placeholder="Insira seu e-mail" required/>
                     </div>
                     <div class="error-message" id="email-error"></div>
                 </div>
@@ -68,9 +87,8 @@
                                 <span class="material-symbols-outlined">lock</span>
                             </span>
                         </div>
-                        <input type="password"
-                               class="form-control no-border-left no-border-right no-bg input-padding password-input"
-                               id="password" placeholder="Digite sua senha" required/>
+                        <input type="password" class="form-control no-border-left no-border-right no-bg input-padding password-input"
+                               id="password" name="password" placeholder="Digite sua senha" required/>
                         <div class="input-group-append">
                             <button class="input-group-text no-border-left no-bg no-padding-left" type="button"
                                     onclick="togglePasswordVisibility()">
@@ -80,12 +98,13 @@
                     </div>
                     <div class="error-message" id="password-error"></div>
                 </div>
+
                 <div class="form-check mb-4">
                     <input type="checkbox" class="form-check-input" id="terms" required/>
-                    <label class="form-check-label" for="terms"> Estou de acordo com os <a href="#" class="terms-link">Termos &
-                        Condições</a></label>
+                    <label class="form-check-label" for="terms"> Estou de acordo com os <a href="#" class="terms-link">Termos & Condições</a></label>
                 </div>
                 <button type="submit" class="login-btn">Cadastrar</button>
+
                 <div class="text-center">
                     <p>cadastrar com</p>
                     <div class="d-flex justify-content-center mb-4 circles-wrapper">
@@ -93,8 +112,7 @@
                             <img src="<c:url value='/static/img/google-icon.svg'/>" alt="Google Icon" class="icon"/>
                         </button>
                         <button class="circle">
-                            <img src="<c:url value='/static/img/apple-icon.svg'/>" alt="Apple Icon" class="icon" width="24"
-                                 height="24"/>
+                            <img src="<c:url value='/static/img/apple-icon.svg'/>" alt="Apple Icon" class="icon" width="24" height="24"/>
                         </button>
                         <button class="circle">
                             <img src="<c:url value='/static/img/facebook-icon.svg'/>" alt="Facebook Icon" class="icon"/>
@@ -102,6 +120,7 @@
                     </div>
                     <p class="mt-2">Já possui uma conta? <a href="${pageContext.request.contextPath}/signin" class="sign-in-link">Entrar</a></p>
                 </div>
+
                 <div class="text-center mt-5">
                     <a href="<c:url value='/index.jsp'/>">
                         <img src="<c:url value='/static/img/numpax-logo.svg'/>" alt="numpax-logo" width="145" height="28"/>
@@ -114,5 +133,6 @@
 
 <script src="<c:url value='/static/lib/bootstrap.bundle.min.js'/>"></script>
 <script src="<c:url value='/static/js/signin/script.js'/>"></script>
+<script src="<c:url value='/static/js/signin/utils.js'/>"></script>
 </body>
 </html>

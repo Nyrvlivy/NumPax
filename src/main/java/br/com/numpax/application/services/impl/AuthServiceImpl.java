@@ -24,13 +24,13 @@ public class AuthServiceImpl implements AuthService {
     public LoginResponseDTO login(LoginRequestDTO loginRequestDTO) {
         Optional<User> userOptional = userRepository.findByEmail(loginRequestDTO.getEmail());
         if (userOptional.isEmpty()) {
-            throw new RuntimeException("Invalid email or password");
+            throw new RuntimeException("Email e/ou senha inválidos");
         }
 
         User user = userOptional.get();
         boolean passwordMatches = PasswordValidatorUtil.checkPassword(loginRequestDTO.getPassword(), user.getPassword());
         if (!passwordMatches) {
-            throw new RuntimeException("Invalid email or password");
+            throw new RuntimeException("Email e/ou senha inválidos");
         }
 
         String token = jwtUtil.generateToken(user);
