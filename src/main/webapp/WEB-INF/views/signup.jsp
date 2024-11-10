@@ -100,7 +100,7 @@
                             <img src="<c:url value='/static/img/facebook-icon.svg'/>" alt="Facebook Icon" class="icon"/>
                         </button>
                     </div>
-                    <p class="mt-2">Já possui uma conta? <a href="signin.jsp" class="sign-in-link">Entrar</a></p>
+                    <p class="mt-2">Já possui uma conta? <a href="${pageContext.request.contextPath}/signin" class="sign-in-link">Entrar</a></p>
                 </div>
                 <div class="text-center mt-5">
                     <a href="<c:url value='/index.jsp'/>">

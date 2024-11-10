@@ -43,7 +43,17 @@
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
 
-<!--    <error-page>-->
+    <servlet>
+        <servlet-name>SignupServlet</servlet-name>
+        <jsp-file>/WEB-INF/views/signup.jsp</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SignupServlet</servlet-name>
+        <url-pattern>/signup</url-pattern>
+    </servlet-mapping>
+
+
+    <!--    <error-page>-->
 <!--        <error-code>404</error-code>-->
 <!--        <location>404.jsp</location>-->
 <!--    </error-page>-->
