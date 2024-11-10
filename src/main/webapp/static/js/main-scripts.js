@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     if (typeof contextPath === 'undefined') {
         console.error('contextPath não está definido.');
         return;
@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', function() {
     var underDevelopmentModal = new bootstrap.Modal(document.getElementById('underDevelopmentModal'));
 
     document.querySelectorAll('.sidebar a').forEach(link => {
-        link.addEventListener('click', function(e) {
+        link.addEventListener('click', function (e) {
             console.log('Link clicado:', this.getAttribute('href'));
 
             if (this.classList.contains('logout-link')) {
@@ -61,7 +61,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             const href = this.getAttribute('href');
 
-            switch(href) {
+            switch (href) {
                 case '#transacoes':
                     loadContent(transactionsUrl);
                     break;
@@ -99,7 +99,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (underDevModal) {
         const subscribeBtn = underDevModal.querySelector('.btn-primary');
         if (subscribeBtn) {
-            subscribeBtn.addEventListener('click', function() {
+            subscribeBtn.addEventListener('click', function () {
                 console.log('Subscribe button clicked');
                 underDevelopmentModal.hide();
             });
@@ -113,20 +113,20 @@ document.addEventListener('DOMContentLoaded', function() {
         const modalContainer = document.getElementById('modalContainer');
 
         if (openExpenseModalBtn) {
-            openExpenseModalBtn.addEventListener('click', function() {
-                loadModal(contextPath + '/static/modals/new-expense-modal.jsp');
+            openExpenseModalBtn.addEventListener('click', function () {
+                loadModal(contextPath + '/modal/new-expense');
             });
         }
 
         if (openIncomeModalBtn) {
-            openIncomeModalBtn.addEventListener('click', function() {
-                loadModal(contextPath + '/static/modals/new-income-modal.jsp');
+            openIncomeModalBtn.addEventListener('click', function () {
+                loadModal(contextPath + '/modal/new-income');
             });
         }
 
         if (openTransferModalBtn) {
-            openTransferModalBtn.addEventListener('click', function() {
-                loadModal(contextPath + '/static/modals/new-transfer-modal.jsp');
+            openTransferModalBtn.addEventListener('click', function () {
+                loadModal(contextPath + '/modal/new-transfer');
             });
         }
     }
@@ -134,7 +134,12 @@ document.addEventListener('DOMContentLoaded', function() {
     function loadModal(modalFile) {
         const modalContainer = document.getElementById('modalContainer');
         fetch(modalFile)
-            .then(response => response.text())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.text();
+            })
             .then(html => {
                 modalContainer.innerHTML = html;
                 const modal = modalContainer.querySelector('.modal');
@@ -177,7 +182,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         if (saveBtn) {
-            saveBtn.addEventListener('click', function() {
+            saveBtn.addEventListener('click', function () {
                 setTimeout(() => {
                     showSaveNotification();
                     closeModal();
@@ -186,7 +191,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         if (saveAndNewBtn) {
-            saveAndNewBtn.addEventListener('click', function() {
+            saveAndNewBtn.addEventListener('click', function () {
                 setTimeout(() => {
                     showSaveNotification();
                     form.reset();
@@ -199,7 +204,7 @@ document.addEventListener('DOMContentLoaded', function() {
             closeButton.type = 'button';
             closeButton.className = 'btn-close btn-close-white btn-sm ms-2';
             closeButton.setAttribute('aria-label', 'Remove selection');
-            closeButton.addEventListener('click', function(e) {
+            closeButton.addEventListener('click', function (e) {
                 e.stopPropagation();
                 chipElement.innerHTML = chipElement.dataset.defaultText;
             });
@@ -228,7 +233,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 2000);
     }
 
-    window.alterarLinhasPorPagina = function(qtd) {
+    window.alterarLinhasPorPagina = function (qtd) {
         const url = new URL(window.location.href);
         url.searchParams.set('linhasPorPagina', qtd);
         url.searchParams.set('page', 1);
