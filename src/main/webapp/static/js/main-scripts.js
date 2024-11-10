@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Defina a URL do servlet como uma variável direta
-    const transactionsUrl = '/numpax_war_exploded/transactions'; // Substitua com o contexto correto se necessário
+    const transactionsUrl = '/numpax_war_exploded/transactions';
 
     // Function to load content
     function loadContent(page) {
@@ -82,7 +82,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 const backdrop = document.createElement('div');
                 backdrop.className = 'modal-backdrop';
                 document.body.appendChild(backdrop);
-                
+
                 setTimeout(() => {
                     backdrop.classList.add('show');
                     modal.classList.add('show');
@@ -336,18 +336,18 @@ document.addEventListener('DOMContentLoaded', function() {
 
         if (tagsDropdown && selectedTags && tagsInput) {
             const tagItems = tagsDropdown.querySelectorAll('.custom-dropdown-item');
-            
+
             tagItems.forEach(item => {
                 item.addEventListener('click', function() {
                     const tagValue = this.getAttribute('data-value');
                     const tagText = this.textContent;
-                    
+
                     if (!tagsInput.value.includes(tagValue)) {
                         if (tagsInput.value) {
                             tagsInput.value += ',';
                         }
                         tagsInput.value += tagValue;
-                        
+
                         const tagSpan = document.createElement('span');
                         tagSpan.className = 'badge bg-secondary me-1';
                         tagSpan.innerHTML = `${tagText} <button type="button" class="btn-close btn-close-white btn-sm" aria-label="Remove ${tagText}"></button>`;
@@ -357,7 +357,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             tagsInput.value = tagsInput.value.split(',').filter(t => t !== tagValue).join(',');
                             updateSelectedTags();
                         });
-                        
+
                         selectedTags.appendChild(tagSpan);
                         updateSelectedTags();
                     }
