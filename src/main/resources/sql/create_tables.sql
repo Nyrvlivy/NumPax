@@ -9,7 +9,6 @@ DROP TABLE InvestmentAccounts CASCADE CONSTRAINTS;
 DROP TABLE GoalAccounts CASCADE CONSTRAINTS;
 DROP TABLE SavingsAccounts CASCADE CONSTRAINTS;
 DROP TABLE CheckingAccounts CASCADE CONSTRAINTS;
-DROP TABLE RegularAccounts CASCADE CONSTRAINTS;
 DROP TABLE Accounts CASCADE CONSTRAINTS;
 DROP TABLE Categories CASCADE CONSTRAINTS;
 DROP TABLE Users CASCADE CONSTRAINTS;
@@ -40,14 +39,6 @@ CREATE TABLE Accounts (
                           CONSTRAINT fk_accounts_user_id FOREIGN KEY (user_id) REFERENCES Users(user_id)
 );
 
--- Create RegularAccounts table
-CREATE TABLE RegularAccounts (
-                                 account_id      VARCHAR2(36) PRIMARY KEY,
-                                 account_type    VARCHAR2(50) NOT NULL,
-                                 CONSTRAINT fk_regular_accounts_account_id FOREIGN KEY (account_id) REFERENCES Accounts(account_id),
-                                 CONSTRAINT chk_account_type CHECK (account_type IN ('CHECKING', 'SAVINGS', 'INVESTMENT', 'GOAL'))
-);
-
 -- Create RelatedAccounts table
 CREATE TABLE RelatedAccounts (
                                  account_id      VARCHAR2(36) PRIMARY KEY,
@@ -70,7 +61,7 @@ CREATE TABLE CheckingAccounts (
                                   bank_code       VARCHAR2(4),
                                   agency          VARCHAR2(4),
                                   account_number  VARCHAR2(12),
-                                  CONSTRAINT fk_checking_accounts_account_id FOREIGN KEY (account_id) REFERENCES RegularAccounts(account_id)
+                                  CONSTRAINT fk_checking_accounts_account_id FOREIGN KEY (account_id) REFERENCES Accounts(account_id)
 );
 
 -- Create SavingsAccounts table
@@ -83,7 +74,7 @@ CREATE TABLE SavingsAccounts (
                                  number_of_fixed_investments NUMBER(14,2),
                                  total_maturity_amount       NUMBER(14,2),
                                  total_deposit_amount        NUMBER(14,2),
-                                 CONSTRAINT fk_savings_accounts_account_id FOREIGN KEY (account_id) REFERENCES RegularAccounts(account_id)
+                                 CONSTRAINT fk_savings_accounts_account_id FOREIGN KEY (account_id) REFERENCES Accounts(account_id)
 );
 
 -- Create InvestmentAccounts table
@@ -101,7 +92,7 @@ CREATE TABLE InvestmentAccounts (
                                     total_dividend_yield    NUMBER(14,2),
                                     risk_level_type         VARCHAR2(50),
                                     investment_subtype      VARCHAR2(50),
-                                    CONSTRAINT fk_investment_accounts_account_id FOREIGN KEY (account_id) REFERENCES RegularAccounts(account_id),
+                                    CONSTRAINT fk_investment_accounts_account_id FOREIGN KEY (account_id) REFERENCES Accounts(account_id),
                                     CONSTRAINT chk_risk_level_type CHECK (risk_level_type IN ('VERY_LOW', 'LOW', 'MEDIUM', 'HIGH', 'VERY_HIGH')),
                                     CONSTRAINT chk_investment_subtype CHECK (investment_subtype IN ('FIXED_INVESTMENT', 'VARIABLE_INVESTMENT', 'STOCKS', 'BONDS', 'ETF', 'FII', 'CRYPTO', 'FOREX', 'OTHER'))
 );
@@ -120,19 +111,6 @@ CREATE TABLE Categories (
                             CONSTRAINT chk_category_type CHECK (category_type IN ('ACCOUNTS', 'TRANSACTIONS', 'PERSONAL', 'EXPENSE', 'INCOME', 'SAVINGS', 'INVESTMENT'))
 );
 
--- Exemplo:
-INSERT ALL
-    INTO Categories (category_id, name, description, icon, category_type, is_active, is_default)
-VALUES
-    ('11111111-2222-3333-4444-555555555555', 'Salário', 'Receitas provenientes de salário', 'salary_icon.png', 'INCOME', 1, 1)
-INTO Categories (category_id, name, description, icon, category_type, is_active, is_default)
-VALUES
-    ('66666666-7777-8888-9999-000000000000', 'Aluguel', 'Despesas com aluguel de imóvel', 'rent_icon.png', 'EXPENSE', 1, 1)
-INTO Categories (category_id, name, description, icon, category_type, is_active, is_default)
-VALUES
-    ('22222222-3333-4444-5555-666666666666', 'Investimentos', 'Aplicações em investimentos', 'investment_icon.png', 'INVESTMENT', 1, 1)
-SELECT 1 FROM dual;
-
 -- Create GoalAccounts table
 CREATE TABLE GoalAccounts (
                               account_id              VARCHAR2(36) PRIMARY KEY,
@@ -146,7 +124,7 @@ CREATE TABLE GoalAccounts (
                               target_date             DATE,
                               start_date              DATE,
                               end_date                DATE,
-                              CONSTRAINT fk_goal_accounts_account_id FOREIGN KEY (account_id) REFERENCES RegularAccounts(account_id),
+                              CONSTRAINT fk_goal_accounts_account_id FOREIGN KEY (account_id) REFERENCES Accounts(account_id),
                               CONSTRAINT fk_goal_accounts_category_id FOREIGN KEY (category_id) REFERENCES Categories(category_id)
 );
 
@@ -172,7 +150,7 @@ CREATE TABLE Transactions (
                               updated_at              TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
                               CONSTRAINT fk_transactions_category_id FOREIGN KEY (category_id) REFERENCES Categories(category_id),
                               CONSTRAINT fk_transactions_account_id FOREIGN KEY (account_id) REFERENCES Accounts(account_id),
-                              CONSTRAINT chk_nature_of_transaction CHECK (nature_of_transaction IN ('GOAL', 'INVESTMENT', 'INCOME', 'EXPENSE', 'TRANSFER')),
+                              CONSTRAINT chk_nature_of_transaction CHECK (nature_of_transaction IN ('GOAL_INCOME', 'GOAL_EXPENSE', 'SAVINGS' ,'INVESTMENTS', 'INCOME', 'EXPENSE', 'TRANSFER')),
                               CONSTRAINT chk_repeatable_type CHECK (repeatable_type IN ('NEVER', 'DAILY', 'WEEKLY', 'MONTHLY', 'YEARLY', 'CUSTOM', 'NONE'))
 );
 
@@ -224,9 +202,3 @@ CREATE TABLE Fees (
                       CONSTRAINT fk_fees_transaction_id FOREIGN KEY (transaction_id) REFERENCES Transactions(transaction_id),
                       CONSTRAINT chk_fee_type CHECK (fee_type IN ('BROKER', 'OTHER'))
 );
-
--- Create indexes
-CREATE INDEX idx_accounts_user_id ON Accounts(user_id);
-CREATE INDEX idx_transactions_account_id ON Transactions(account_id);
-CREATE INDEX idx_transactions_category_id ON Transactions(category_id);
-CREATE INDEX idx_goal_accounts_category_id ON GoalAccounts(category_id);
