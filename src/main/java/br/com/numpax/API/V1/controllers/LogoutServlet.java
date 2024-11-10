@@ -1,4 +1,4 @@
-package br.com.numpax.API.V1.servlets;
+package br.com.numpax.API.V1.controllers;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;

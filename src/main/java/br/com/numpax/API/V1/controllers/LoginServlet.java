@@ -1,4 +1,4 @@
-package br.com.numpax.API.V1.servlets;
+package br.com.numpax.API.V1.controllers;
 
 import br.com.numpax.API.V1.dto.request.LoginRequestDTO;
 import br.com.numpax.API.V1.dto.response.LoginResponseDTO;
