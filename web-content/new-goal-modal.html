@@ -1,0 +1,63 @@
+<div class="modal goals-modal show d-block" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Novo Objetivo</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="goalName" class="form-label">Nome do objetivo</label>
+                                <input type="text" class="form-control" id="goalName" placeholder="Educação">
+                            </div>
+                            <div class="mb-3">
+                                <label for="goalDate" class="form-label">Data</label>
+                                <input type="text" class="form-control" id="goalDate" placeholder="08 novembro 2024">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Ícone</label>
+                                <div class="d-flex align-items-center">
+                                    <button type="button" class="btn btn-icon"><i class="fas fa-book"></i></button>
+                                    <button type="button" class="btn btn-icon"><i class="fas fa-dollar-sign"></i></button>
+                                    <button type="button" class="btn btn-icon"><i class="fas fa-gift"></i></button>
+                                    <button type="button" class="btn btn-icon"><i class="fas fa-chart-line"></i></button>
+                                    <button type="button" class="btn btn-secondary ms-2">OUTROS</button>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="goalDescription" class="form-label">Descrição</label>
+                                <textarea class="form-control" id="goalDescription" rows="3"></textarea>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="goalValue" class="form-label">Valor do objetivo</label>
+                                <input type="text" class="form-control" id="goalValue" placeholder="R$ 0,00">
+                            </div>
+                            <div class="mb-3">
+                                <label for="initialValue" class="form-label">Valor inicial do objetivo</label>
+                                <input type="text" class="form-control" id="initialValue" placeholder="R$ 0,00">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Cor</label>
+                                <div class="d-flex align-items-center">
+                                    <button type="button" class="btn btn-color" style="background-color: #8bc34a;"></button>
+                                    <button type="button" class="btn btn-color" style="background-color: #03a9f4;"></button>
+                                    <button type="button" class="btn btn-color" style="background-color: #9c27b0;"></button>
+                                    <button type="button" class="btn btn-color" style="background-color: #4caf50;"></button>
+                                    <button type="button" class="btn btn-secondary ms-2">OUTROS</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-save">SALVAR</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,228 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div id="contentContainer">
+            <h3 class="month-title">novembro, 2024</h3>
+            <div class="summary-header">
+                <div class="top-bar">
+                    <div class="dropdown">
+                        <button class="btn btn-light-blue dropdown-toggle" type="button" id="transactionsDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            Transações
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="transactionsDropdown">
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-exchange-alt text-purple me-2"></i>Transações</a></li>
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-arrow-down text-danger me-2"></i>Despesas</a></li>
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-arrow-up text-success me-2"></i>Receitas</a></li>
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-exchange-alt text-info me-2"></i>Transferências</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="summary-buttons">
+                    <div id="modalContainer"></div>
+                    <button type="button" class="btn btn-expense" id="openExpenseModalBtn">
+                        <i class="fas fa-arrow-down text-danger"></i> Nova Despesa
+                    </button>
+                    <button type="button" class="btn btn-income" id="openIncomeModalBtn">
+                        <i class="fas fa-arrow-up text-success"></i> Nova Receita
+                    </button>
+                    <button type="button" class="btn btn-transfer" id="openTransferModalBtn">
+                        <i class="fas fa-exchange-alt text-purple"></i> Nova Transferência
+                    </button>
+                </div>
+                </div>
+            </div>
+
+            <div class="summary-cards">
+                <div class="summary-card">
+                    <h6>Saldo atual</h6>
+                    <h4>R$ -0,11</h4>
+                </div>
+                <div class="summary-card">
+                    <h6>Receitas</h6>
+                    <h4 class="text-success">R$ 0,00</h4>
+                </div>
+                <div class="summary-card">
+                    <h6>Despesas</h6>
+                    <h4 class="text-danger">R$ 0,11</h4>
+                </div>
+                <div class="summary-card">
+                    <h6>Balanço mensal</h6>
+                    <h4 class="text-primary">R$ -0,11</h4>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="card-title mb-0">Lista de Transações</h5>
+                        <div>
+                            <button class="btn btn-outline-secondary me-2"><i class="fas fa-search"></i> Buscar</button>
+                            <button class="btn btn-outline-secondary"><i class="fas fa-filter"></i> Filtrar</button>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Situação</th>
+                                    <th>Data</th>
+                                    <th>Descrição</th>
+                                    <th>Categoria</th>
+                                    <th>Conta</th>
+                                    <th class="text-end">Valor</th>
+                                    <th class="text-end">Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><i class="fas fa-check-circle text-success status-icon"></i></td>
+                                    <td>08/11/2024</td>
+                                    <td>Alimentação</td>
+                                    <td><span class="badge bg-danger"><i class="fas fa-utensils"></i> Alimentação</span></td>
+                                    <td>Carteira</td>
+                                    <td class="text-end text-danger">R$ 0,11</td>
+                                    <td class="text-end">
+                                        <button class="btn btn-sm btn-outline-secondary"><i class="fas fa-edit"></i></button>
+                                        <button class="btn btn-sm btn-outline-secondary"><i class="fas fa-trash"></i></button>
+                                        <button class="btn btn-sm btn-outline-secondary"><i class="fas fa-ellipsis-v"></i></button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><i class="fas fa-check-circle text-success status-icon"></i></td>
+                                    <td>08/11/2024</td>
+                                    <td>Alimentação</td>
+                                    <td><span class="badge bg-danger"><i class="fas fa-utensils"></i> Alimentação</span></td>
+                                    <td>Carteira</td>
+                                    <td class="text-end text-danger">R$ 0,11</td>
+                                    <td class="text-end">
+                                        <button class="btn btn-sm btn-outline-secondary"><i class="fas fa-edit"></i></button>
+                                        <button class="btn btn-sm btn-outline-secondary"><i class="fas fa-trash"></i></button>
+                                        <button class="btn btn-sm btn-outline-secondary"><i class="fas fa-ellipsis-v"></i></button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><i class="fas fa-check-circle text-success status-icon"></i></td>
+                                    <td>08/11/2024</td>
+                                    <td>Alimentação</td>
+                                    <td><span class="badge bg-danger"><i class="fas fa-utensils"></i> Alimentação</span></td>
+                                    <td>Carteira</td>
+                                    <td class="text-end text-danger">R$ 0,11</td>
+                                    <td class="text-end">
+                                        <button class="btn btn-sm btn-outline-secondary"><i class="fas fa-edit"></i></button>
+                                        <button class="btn btn-sm btn-outline-secondary"><i class="fas fa-trash"></i></button>
+                                        <button class="btn btn-sm btn-outline-secondary"><i class="fas fa-ellipsis-v"></i></button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><i class="fas fa-check-circle text-success status-icon"></i></td>
+                                    <td>08/11/2024</td>
+                                    <td>Alimentação</td>
+                                    <td><span class="badge bg-danger"><i class="fas fa-utensils"></i> Alimentação</span></td>
+                                    <td>Carteira</td>
+                                    <td class="text-end text-danger">R$ 0,11</td>
+                                    <td class="text-end">
+                                        <button class="btn btn-sm btn-outline-secondary"><i class="fas fa-edit"></i></button>
+                                        <button class="btn btn-sm btn-outline-secondary"><i class="fas fa-trash"></i></button>
+                                        <button class="btn btn-sm btn-outline-secondary"><i class="fas fa-ellipsis-v"></i></button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><i class="fas fa-check-circle text-success status-icon"></i></td>
+                                    <td>08/11/2024</td>
+                                    <td>Alimentação</td>
+                                    <td><span class="badge bg-danger"><i class="fas fa-utensils"></i> Alimentação</span></td>
+                                    <td>Carteira</td>
+                                    <td class="text-end text-danger">R$ 0,11</td>
+                                    <td class="text-end">
+                                        <button class="btn btn-sm btn-outline-secondary"><i class="fas fa-edit"></i></button>
+                                        <button class="btn btn-sm btn-outline-secondary"><i class="fas fa-trash"></i></button>
+                                        <button class="btn btn-sm btn-outline-secondary"><i class="fas fa-ellipsis-v"></i></button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><i class="fas fa-check-circle text-success status-icon"></i></td>
+                                    <td>08/11/2024</td>
+                                    <td>Alimentação</td>
+                                    <td><span class="badge bg-danger"><i class="fas fa-utensils"></i> Alimentação</span></td>
+                                    <td>Carteira</td>
+                                    <td class="text-end text-danger">R$ 0,11</td>
+                                    <td class="text-end">
+                                        <button class="btn btn-sm btn-outline-secondary"><i class="fas fa-edit"></i></button>
+                                        <button class="btn btn-sm btn-outline-secondary"><i class="fas fa-trash"></i></button>
+                                        <button class="btn btn-sm btn-outline-secondary"><i class="fas fa-ellipsis-v"></i></button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><i class="fas fa-check-circle text-success status-icon"></i></td>
+                                    <td>08/11/2024</td>
+                                    <td>Alimentação</td>
+                                    <td><span class="badge bg-danger"><i class="fas fa-utensils"></i> Alimentação</span></td>
+                                    <td>Carteira</td>
+                                    <td class="text-end text-danger">R$ 0,11</td>
+                                    <td class="text-end">
+                                        <button class="btn btn-sm btn-outline-secondary"><i class="fas fa-edit"></i></button>
+                                        <button class="btn btn-sm btn-outline-secondary"><i class="fas fa-trash"></i></button>
+                                        <button class="btn btn-sm btn-outline-secondary"><i class="fas fa-ellipsis-v"></i></button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><i class="fas fa-check-circle text-success status-icon"></i></td>
+                                    <td>08/11/2024</td>
+                                    <td>Alimentação</td>
+                                    <td><span class="badge bg-danger"><i class="fas fa-utensils"></i> Alimentação</span></td>
+                                    <td>Carteira</td>
+                                    <td class="text-end text-danger">R$ 0,11</td>
+                                    <td class="text-end">
+                                        <button class="btn btn-sm btn-outline-secondary"><i class="fas fa-edit"></i></button>
+                                        <button class="btn btn-sm btn-outline-secondary"><i class="fas fa-trash"></i></button>
+                                        <button class="btn btn-sm btn-outline-secondary"><i class="fas fa-ellipsis-v"></i></button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><i class="fas fa-check-circle text-success status-icon"></i></td>
+                                    <td>08/11/2024</td>
+                                    <td>Alimentação</td>
+                                    <td><span class="badge bg-danger"><i class="fas fa-utensils"></i> Alimentação</span></td>
+                                    <td>Carteira</td>
+                                    <td class="text-end text-danger">R$ 0,11</td>
+                                    <td class="text-end">
+                                        <button class="btn btn-sm btn-outline-secondary"><i class="fas fa-edit"></i></button>
+                                        <button class="btn btn-sm btn-outline-secondary"><i class="fas fa-trash"></i></button>
+                                        <button class="btn btn-sm btn-outline-secondary"><i class="fas fa-ellipsis-v"></i></button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><i class="fas fa-check-circle text-success status-icon"></i></td>
+                                    <td>08/11/2024</td>
+                                    <td>Alimentação</td>
+                                    <td><span class="badge bg-danger"><i class="fas fa-utensils"></i> Alimentação</span></td>
+                                    <td>Carteira</td>
+                                    <td class="text-end text-danger">R$ 0,11</td>
+                                    <td class="text-end">
+                                        <button class="btn btn-sm btn-outline-secondary"><i class="fas fa-edit"></i></button>
+                                        <button class="btn btn-sm btn-outline-secondary"><i class="fas fa-trash"></i></button>
+                                        <button class="btn btn-sm btn-outline-secondary"><i class="fas fa-ellipsis-v"></i></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center mt-3">
+                        <p class="mb-0">Saldo Previsto Final do Dia: R$ -0,11</p>
+                        <div class="d-flex align-items-center">
+                            <span class="me-2">Linhas por página: 50</span>
+                            <nav>
+                                <ul class="pagination pagination-sm">
+                                    <li class="page-item disabled"><a class="page-link" href="#">&laquo;</a></li>
+                                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">&raquo;</a></li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
