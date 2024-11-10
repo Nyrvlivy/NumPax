@@ -134,6 +134,14 @@
                             </tr>
                             </thead>
                             <tbody>
+                            <!-- Verifica se a lista de transações está vazia -->
+                            <c:if test="${empty listaTransacoes}">
+                                <tr>
+                                    <td colspan="7" class="text-center">Sem transações registradas.</td>
+                                </tr>
+                            </c:if>
+
+                            <!-- Itera sobre a lista de transações se não estiver vazia -->
                             <c:forEach var="transacao" items="${listaTransacoes}">
                                 <tr>
                                     <td>
@@ -151,10 +159,10 @@
                                     </td>
                                     <td><c:out value="${transacao.name}" /></td>
                                     <td>
-                                        <span class="badge bg-primary">
-                                            <i class="fas fa-tag me-2"></i>
-                                            <c:out value="${transacao.categoryName}" />
-                                        </span>
+                                            <span class="badge bg-primary">
+                                                <i class="fas fa-tag me-2"></i>
+                                                <c:out value="${transacao.categoryName}" />
+                                            </span>
                                     </td>
                                     <td><c:out value="${transacao.accountName}" /></td>
                                     <td class="text-end <c:out value='${transacao.amount < 0 ? "text-danger" : "text-success"}' />">
