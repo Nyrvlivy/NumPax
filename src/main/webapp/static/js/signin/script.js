@@ -66,3 +66,19 @@ function validatePassword(password) {
     const re = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
     return re.test(password);
 }
+
+function setDateLimits() {
+    const dateInput = document.getElementById('birthday_date');
+
+    const today = new Date();
+    const minAgeDate = new Date();
+    minAgeDate.setFullYear(today.getFullYear() - 13);
+
+    const maxDate = minAgeDate.toISOString().split('T')[0];
+    const minDate = '1900-01-01';
+
+    dateInput.setAttribute('max', maxDate);
+    dateInput.setAttribute('min', minDate);
+}
+
+window.onload = setDateLimits;

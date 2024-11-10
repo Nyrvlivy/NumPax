@@ -23,9 +23,9 @@
                     <label for="name">Nome</label>
                     <div class="input-group mb-3 name-group">
                         <div class="input-group-prepend">
-                                    <span class="input-group-text no-border-right no-bg no-padding-right">
-                                        <span class="material-symbols-outlined">account_circle</span>
-                                    </span>
+                            <span class="input-group-text no-border-right no-bg no-padding-right">
+                                <span class="material-symbols-outlined">account_circle</span>
+                            </span>
                         </div>
                         <input type="text" class="form-control no-border-left no-bg input-padding name-input" id="name"
                                placeholder="Insira seu nome" required minlength="3" maxlength="50"/>
@@ -36,9 +36,9 @@
                     <label for="email">E-mail</label>
                     <div class="input-group mb-3 email-group">
                         <div class="input-group-prepend">
-                                    <span class="input-group-text no-border-right no-bg no-padding-right">
-                                        <span class="material-symbols-outlined">mail</span>
-                                    </span>
+                            <span class="input-group-text no-border-right no-bg no-padding-right">
+                                <span class="material-symbols-outlined">mail</span>
+                            </span>
                         </div>
                         <input type="email" class="form-control no-border-left no-bg input-padding email-input" id="email"
                                placeholder="Insira seu e-mail" required/>
@@ -47,15 +47,15 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="email">Data de Nascimento</label>
+                    <label for="birthday_date">Data de Nascimento</label>
                     <div class="input-group mb-3 email-group">
                         <div class="input-group-prepend">
-                                    <span class="input-group-text no-border-right no-bg no-padding-right">
-                                        <span class="material-symbols-outlined"> calendar_month </span>
-                                    </span>
+                            <span class="input-group-text no-border-right no-bg no-padding-right">
+                                <span class="material-symbols-outlined">calendar_month</span>
+                            </span>
                         </div>
-                        <input type="date" class="form-control no-border-left no-bg input-padding email-input" id="birthday_date"
-                               placeholder="Insira sua data de nascimento" required/>
+                        <input type="date" class="form-control no-border-left no-bg input-padding email-input"
+                               id="birthday_date" name="birthday_date" placeholder="Insira sua data de nascimento" required/>
                     </div>
                     <div class="error-message" id="birthday-error"></div>
                 </div>
@@ -64,9 +64,9 @@
                     <label for="password">Senha</label>
                     <div class="input-group mb-3 password-group">
                         <div class="input-group-prepend">
-                                    <span class="input-group-text no-border-right no-bg no-padding-right">
-                                        <span class="material-symbols-outlined">lock</span>
-                                    </span>
+                            <span class="input-group-text no-border-right no-bg no-padding-right">
+                                <span class="material-symbols-outlined">lock</span>
+                            </span>
                         </div>
                         <input type="password"
                                class="form-control no-border-left no-border-right no-bg input-padding password-input"
@@ -111,8 +111,8 @@
         </div>
     </div>
 </div>
+
 <script src="<c:url value='/static/lib/bootstrap.bundle.min.js'/>"></script>
-<script src="<c:url value='/static/js/signin/utils.js'/>"></script>
 <script src="<c:url value='/static/js/signin/script.js'/>"></script>
 </body>
 </html>
