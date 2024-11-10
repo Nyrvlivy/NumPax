@@ -8,10 +8,12 @@ import br.com.numpax.infrastructure.config.auth.JwtUtil;
 import br.com.numpax.infrastructure.config.database.ConnectionManager;
 import br.com.numpax.infrastructure.repositories.UserRepository;
 import br.com.numpax.infrastructure.repositories.impl.UserRepositoryImpl;
-import jakarta.ws.rs.*;
-import jakarta.ws.rs.core.*;
-
-import java.sql.Connection;
+import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.POST;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 
 @Path("/auth")
 public class AuthController {
@@ -19,9 +21,8 @@ public class AuthController {
     private final AuthService authService;
 
     public AuthController() {
-        // Instanciar as dependências necessárias
-        Connection connection = ConnectionManager.getInstance().getConnection();
-        UserRepository userRepository = new UserRepositoryImpl(connection);
+        ConnectionManager connectionManager = ConnectionManager.getInstance();
+        UserRepository userRepository = new UserRepositoryImpl(connectionManager.getConnection());
         JwtUtil jwtUtil = new JwtUtil();
         this.authService = new AuthServiceImpl(userRepository, jwtUtil);
     }
@@ -35,7 +36,9 @@ public class AuthController {
             LoginResponseDTO responseDTO = authService.login(loginRequestDTO);
             return Response.ok(responseDTO).build();
         } catch (RuntimeException e) {
-            return Response.status(Response.Status.UNAUTHORIZED).entity(e.getMessage()).build();
+            return Response.status(Response.Status.UNAUTHORIZED)
+                .entity("{\"message\":\"" + e.getMessage() + "\"}")
+                .build();
         }
     }
 }
