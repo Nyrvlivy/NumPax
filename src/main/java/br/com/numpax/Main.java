@@ -14,6 +14,7 @@ import br.com.numpax.infrastructure.repositories.impl.*;
 import java.math.BigDecimal;
 import java.sql.Connection;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 public class Main {
@@ -55,6 +56,7 @@ public class Main {
 
             UserResponseDTO userResponse = userService.createUser(userRequest);
             String userId = userResponse.getUserId();
+            System.out.println("Usuário criado: " + userResponse);
 
             // Criar uma conta corrente
             CheckingAccountRequestDTO checkingAccountRequest = new CheckingAccountRequestDTO();
@@ -111,6 +113,13 @@ public class Main {
                 System.out.println("Conta de meta não foi criada. Transações de meta não serão testadas.");
             }
 
+            // Listar transações ativas do usuário
+            System.out.println("\nListando transações ativas para o usuário ID: " + userId);
+            List<ActiveTransactionDTO> activeTransactions = transactionService.listActiveTransactionsByUserId(userId);
+            for (ActiveTransactionDTO transaction : activeTransactions) {
+                System.out.println(transaction);
+            }
+
             // Deletar usuário
             userService.deleteUser(userId);
             System.out.println("Usuário deletado.");
@@ -142,8 +151,9 @@ public class Main {
         incomeTransaction.setAccountId(checkingAccountId);
         incomeTransaction.setCategoryId(categoryId);
         incomeTransaction.setRepeatable(false);
-        incomeTransaction.setRepeatableType(RepeatableType.valueOf("NEVER"));
-        System.out.println("Transação INCOME criada: " + transactionService.createTransaction(incomeTransaction, checkingAccountId, categoryId));
+        incomeTransaction.setRepeatableType(RepeatableType.NEVER);
+        TransactionResponseDTO incomeResponse = transactionService.createTransaction(incomeTransaction, checkingAccountId, categoryId);
+        System.out.println("Transação INCOME criada: " + incomeResponse);
 
         // EXPENSE
         TransactionRequestDTO expenseTransaction = new TransactionRequestDTO();
@@ -156,8 +166,9 @@ public class Main {
         expenseTransaction.setAccountId(checkingAccountId);
         expenseTransaction.setCategoryId(categoryId);
         expenseTransaction.setRepeatable(false);
-        expenseTransaction.setRepeatableType(RepeatableType.valueOf("NEVER"));
-        System.out.println("Transação EXPENSE criada: " + transactionService.createTransaction(expenseTransaction, checkingAccountId, categoryId));
+        expenseTransaction.setRepeatableType(RepeatableType.NEVER);
+        TransactionResponseDTO expenseResponse = transactionService.createTransaction(expenseTransaction, checkingAccountId, categoryId);
+        System.out.println("Transação EXPENSE criada: " + expenseResponse);
 
         // TRANSFER
         TransactionRequestDTO transferTransaction = new TransactionRequestDTO();
@@ -170,8 +181,9 @@ public class Main {
         transferTransaction.setAccountId(checkingAccountId);
         transferTransaction.setCategoryId(categoryId);
         transferTransaction.setRepeatable(false);
-        transferTransaction.setRepeatableType(RepeatableType.valueOf("NEVER"));
-        System.out.println("Transação TRANSFER criada: " + transactionService.createTransaction(transferTransaction, checkingAccountId, categoryId));
+        transferTransaction.setRepeatableType(RepeatableType.NEVER);
+        TransactionResponseDTO transferResponse = transactionService.createTransaction(transferTransaction, checkingAccountId, categoryId);
+        System.out.println("Transação TRANSFER criada: " + transferResponse);
 
         // GOAL_INCOME
         TransactionRequestDTO goalIncomeTransaction = new TransactionRequestDTO();
@@ -184,8 +196,9 @@ public class Main {
         goalIncomeTransaction.setAccountId(goalAccountId);
         goalIncomeTransaction.setCategoryId(categoryId);
         goalIncomeTransaction.setRepeatable(true);
-        goalIncomeTransaction.setRepeatableType(RepeatableType.valueOf("NEVER"));
-        System.out.println("Transação GOAL_INCOME criada: " + transactionService.createTransaction(goalIncomeTransaction, goalAccountId, categoryId));
+        goalIncomeTransaction.setRepeatableType(RepeatableType.NEVER);
+        TransactionResponseDTO goalIncomeResponse = transactionService.createTransaction(goalIncomeTransaction, goalAccountId, categoryId);
+        System.out.println("Transação GOAL_INCOME criada: " + goalIncomeResponse);
 
         // GOAL_EXPENSE
         TransactionRequestDTO goalExpenseTransaction = new TransactionRequestDTO();
@@ -198,8 +211,9 @@ public class Main {
         goalExpenseTransaction.setAccountId(goalAccountId);
         goalExpenseTransaction.setCategoryId(categoryId);
         goalExpenseTransaction.setRepeatable(true);
-        goalExpenseTransaction.setRepeatableType(RepeatableType.valueOf("NEVER"));
-        System.out.println("Transação GOAL_EXPENSE criada: " + transactionService.createTransaction(goalExpenseTransaction, goalAccountId, categoryId));
+        goalExpenseTransaction.setRepeatableType(RepeatableType.NEVER);
+        TransactionResponseDTO goalExpenseResponse = transactionService.createTransaction(goalExpenseTransaction, goalAccountId, categoryId);
+        System.out.println("Transação GOAL_EXPENSE criada: " + goalExpenseResponse);
     }
 
     private static String generateRandomEmail() {
