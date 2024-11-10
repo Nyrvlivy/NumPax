@@ -21,8 +21,7 @@
 <div class="main-content">
     <div class="container-fluid">
         <div id="contentContainer">
-            <!-- Título Dinâmico do Mês (Opcional, pode ser removido se não for necessário) -->
-            <h3 class="month-title"><c:out value="${currentMonth}" /></h3>
+            <h3 class="page-title month-title">Minhas Transações</h3>
 
             <div class="summary-header">
                 <div class="top-bar">
@@ -51,6 +50,26 @@
                     <button type="button" class="btn btn-transfer" id="openTransferModalBtn">
                         <i class="fas fa-exchange-alt text-purple"></i> Nova Transferência
                     </button>
+                </div>
+            </div>
+
+            <!-- Adicionados os Summary Cards -->
+            <div class="summary-cards">
+                <div class="summary-card">
+                    <h6>Saldo atual</h6>
+                    <h4>R$ <c:out value="${saldoAtual}" /></h4>
+                </div>
+                <div class="summary-card">
+                    <h6>Receitas</h6>
+                    <h4 class="text-success">R$ <c:out value="${totalReceitas}" /></h4>
+                </div>
+                <div class="summary-card">
+                    <h6>Despesas</h6>
+                    <h4 class="text-danger">R$ <c:out value="${totalDespesas}" /></h4>
+                </div>
+                <div class="summary-card">
+                    <h6>Balanço mensal</h6>
+                    <h4 class="text-primary">R$ <c:out value="${balancoMensal}" /></h4>
                 </div>
             </div>
 
@@ -95,8 +114,8 @@
                                     </td>
                                     <td><c:out value="${transacao.name}" /></td>
                                     <td>
-                                        <span class="badge bg-primary"> <!-- Ajuste a classe de cor conforme necessário -->
-                                            <i class="fas fa-tag me-2"></i> <!-- Ajuste o ícone conforme necessário -->
+                                        <span class="badge bg-primary">
+                                            <i class="fas fa-tag me-2"></i>
                                             <c:out value="${transacao.categoryName}" />
                                         </span>
                                     </td>
@@ -120,7 +139,35 @@
                             </tbody>
                         </table>
                     </div>
-                    <!-- Removido a seção de Paginação -->
+
+                    <!-- Adicionada a seção de Paginação -->
+                    <div class="d-flex justify-content-between align-items-center mt-3">
+                        <p class="mb-0">Saldo Previsto Final do Dia: R$ <c:out value="${saldoPrevisto}" /></p>
+                        <div class="d-flex align-items-center">
+                            <span class="me-2">Linhas por página:</span>
+                            <select id="linhasPorPagina" class="form-select form-select-sm me-3" onchange="alterarLinhasPorPagina(this.value)">
+                                <option value="10" <c:if test="${linhasPorPagina == 10}">selected</c:if>>10</option>
+                                <option value="20" <c:if test="${linhasPorPagina == 20}">selected</c:if>>20</option>
+                                <option value="50" <c:if test="${linhasPorPagina == 50}">selected</c:if>>50</option>
+                            </select>
+
+                            <nav>
+                                <ul class="pagination pagination-sm">
+                                    <c:if test="${paginaAtual > 1}">
+                                        <li class="page-item"><a class="page-link" href="<c:url value='/transactions?page=${paginaAtual - 1}'/>">&laquo;</a></li>
+                                    </c:if>
+                                    <c:forEach begin="1" end="${totalPaginas}" var="i">
+                                        <li class="page-item <c:if test='${i == paginaAtual}'>active</c:if>">
+                                            <a class="page-link" href="<c:url value='/transactions?page=${i}'/>">${i}</a>
+                                        </li>
+                                    </c:forEach>
+                                    <c:if test="${paginaAtual < totalPaginas}">
+                                        <li class="page-item"><a class="page-link" href="<c:url value='/transactions?page=${paginaAtual + 1}'/>">&raquo;</a></li>
+                                    </c:if>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
