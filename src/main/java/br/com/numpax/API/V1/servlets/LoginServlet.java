@@ -6,6 +6,7 @@ import br.com.numpax.application.services.AuthService;
 import br.com.numpax.application.services.impl.AuthServiceImpl;
 import br.com.numpax.infrastructure.config.auth.JwtUtil;
 import br.com.numpax.infrastructure.config.database.ConnectionManager;
+import br.com.numpax.infrastructure.entities.User;
 import br.com.numpax.infrastructure.repositories.UserRepository;
 import br.com.numpax.infrastructure.repositories.impl.UserRepositoryImpl;
 import jakarta.servlet.ServletException;
@@ -15,17 +16,18 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.util.Optional;
 
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
 
     private AuthService authService;
+    private UserRepository userRepository;
 
     @Override
     public void init() throws ServletException {
-
         ConnectionManager connectionManager = ConnectionManager.getInstance();
-        UserRepository userRepository = new UserRepositoryImpl(connectionManager.getConnection());
+        this.userRepository = new UserRepositoryImpl(connectionManager.getConnection());
         JwtUtil jwtUtil = new JwtUtil();
         this.authService = new AuthServiceImpl(userRepository, jwtUtil);
     }
@@ -51,12 +53,20 @@ public class LoginServlet extends HttpServlet {
         try {
             LoginResponseDTO loginResponseDTO = authService.login(loginRequestDTO);
 
+            // Set token in session
             request.getSession().setAttribute("token", loginResponseDTO.getToken());
 
+            // Fetch user and set in session
+            Optional<User> userOptional = userRepository.findByEmail(email);
+            if (userOptional.isPresent()) {
+                User user = userOptional.get();
+                request.getSession().setAttribute("user", user);
+            }
+
+            // Forward to home.jsp
             request.getRequestDispatcher("/WEB-INF/views/protected/home.jsp").forward(request, response);
 
         } catch (RuntimeException e) {
-
             request.setAttribute("error", e.getMessage());
             request.getRequestDispatcher("/WEB-INF/views/login.jsp").forward(request, response);
         }
