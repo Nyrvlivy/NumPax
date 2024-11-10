@@ -39,15 +39,25 @@ public class CheckingAccountRepositoryImpl implements CheckingAccountRepository 
             throw new RuntimeException("Erro ao criar conta na tabela Accounts", e);
         }
 
+        // Inserir na tabela RegularAccounts
+        String regularAccountSql = "INSERT INTO RegularAccounts (account_id, account_type) VALUES (?, ?)";
+        try (PreparedStatement regularAccountStmt = connection.prepareStatement(regularAccountSql)) {
+            regularAccountStmt.setString(1, account.getAccountId());
+            regularAccountStmt.setString(2, account.getAccountType().toString());  // Should be one of 'CHECKING', 'SAVINGS', 'INVESTMENT', 'GOAL'
+            regularAccountStmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException("Error inserting into RegularAccounts", e);
+        }
+
         // Inserir na tabela CheckingAccounts
-        String sql = "INSERT INTO CheckingAccounts (account_id, bank_code, agency, account_number) VALUES (?, ?, ?, ?)";
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+        String checkingAccountSql = "INSERT INTO CheckingAccounts (account_id, bank_code, agency, account_number) VALUES (?, ?, ?, ?)";
+        try (PreparedStatement checkingAccountStmt = connection.prepareStatement(checkingAccountSql)) {
             System.out.println("Checking Account: " + account.getAccountId());
-            stmt.setString(1, account.getAccountId());
-            stmt.setString(2, account.getBankCode());
-            stmt.setString(3, account.getAgency());
-            stmt.setString(4, account.getAccountNumber());
-            stmt.executeUpdate();
+            checkingAccountStmt.setString(1, account.getAccountId());
+            checkingAccountStmt.setString(2, account.getBankCode() != null ? account.getBankCode() : null);
+            checkingAccountStmt.setString(3, account.getAgency() != null ? account.getAgency() : null);
+            checkingAccountStmt.setString(4, account.getAccountNumber() != null ? account.getAccountNumber() : null);
+            checkingAccountStmt.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException("Erro ao criar conta na tabela CheckingAccounts", e);
         }
