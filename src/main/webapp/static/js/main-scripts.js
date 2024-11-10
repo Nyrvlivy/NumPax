@@ -1,54 +1,108 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Defina a URL do servlet como uma variável direta
-    const transactionsUrl = '/numpax_war_exploded/transactions';
+    // Definir a URL do servlet usando contextPath
+    const transactionsUrl = contextPath + '/transactions';
+    const accountsUrl = contextPath + '/accounts'; // Ajuste conforme mapeamento
+    const premiumUrl = contextPath + '/premium';
+    const dashboardUrl = contextPath + '/dashboard';
+    const reportsUrl = contextPath + '/reports';
+    const optionsUrl = contextPath + '/options';
+    const configsUrl = contextPath + '/configs';
+    const helpcenterUrl = contextPath + '/helpcenter';
 
-    // Function to load content
-    function loadContent(page) {
-        fetch(page)
-            .then(response => response.text())
+    // Função para carregar conteúdo
+    function loadContent(pageUrl) {
+        fetch(pageUrl)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.text();
+            })
             .then(html => {
                 document.getElementById('contentContainer').innerHTML = html;
+                adjustMainContentBackground();
                 initializePageFunctions();
             })
             .catch(error => {
                 console.error('Error loading content:', error);
+                // Opcional: carregar uma página de erro personalizada
+                document.getElementById('contentContainer').innerHTML = '<p> ⚠️ Em desenvolvimento 🚧</p>';
+                document.querySelector('.main-content').classList.remove('no-background');
             });
     }
 
-    // Load transactions page by default
+    // Função para ajustar o fundo da main-content
+    function adjustMainContentBackground() {
+        const mainContent = document.querySelector('.main-content');
+        const emptyView = document.getElementById('contentContainer').querySelector('[data-empty="true"]');
+
+        if (emptyView) {
+            mainContent.classList.add('no-background');
+        } else {
+            mainContent.classList.remove('no-background');
+        }
+    }
+
+    // Carregar a página de transações por padrão
     loadContent(transactionsUrl);
 
+    // Inicializar o modal de desenvolvimento
     var underDevelopmentModal = new bootstrap.Modal(document.getElementById('underDevelopmentModal'));
 
+    // Adicionar ouvintes de eventos aos links da sidebar
     document.querySelectorAll('.sidebar a').forEach(link => {
         link.addEventListener('click', function(e) {
             e.preventDefault();
             document.querySelectorAll('.sidebar a').forEach(l => l.classList.remove('active'));
             this.classList.add('active');
 
-            if (this.getAttribute('href') === '#transacoes') {
-                loadContent(transactionsUrl);
-            } else if (this.getAttribute('href') === '#contas') {
-                loadContent('accounts-page.jsp');
-            } else if (this.getAttribute('href') === '#') {
-                underDevelopmentModal.show();
-            } else {
-                console.log('Clicked link:', this.getAttribute('href'));
+            const href = this.getAttribute('href');
+
+            switch(href) {
+                case '#transacoes':
+                    loadContent(transactionsUrl);
+                    break;
+                case '#contas':
+                    loadContent(accountsUrl);
+                    break;
+                case '#premium':
+                    loadContent(premiumUrl);
+                    break;
+                case '#dashboard':
+                    loadContent(dashboardUrl);
+                    break;
+                case '#relatorios':
+                    loadContent(reportsUrl);
+                    break;
+                case '#opcoes':
+                    loadContent(optionsUrl);
+                    break;
+                case '#configuracoes':
+                    loadContent(configsUrl);
+                    break;
+                case '#ajuda':
+                    loadContent(helpcenterUrl);
+                    break;
+                case '#':
+                    underDevelopmentModal.show();
+                    break;
+                default:
+                    console.log('Clicked link:', href);
             }
         });
     });
 
+    // Simular o clique no link de transações para carregar o conteúdo inicial
     document.querySelector('.sidebar a[href="#transacoes"]').click();
 
-
-// Add event listener to the Subscribe button in the modal
+    // Adicionar ouvinte de eventos ao botão de inscrição no modal de desenvolvimento
     document.querySelector('#underDevelopmentModal .btn-primary').addEventListener('click', function() {
         console.log('Subscribe button clicked');
-        // Add your subscription logic here
+        // Adicione sua lógica de inscrição aqui
         underDevelopmentModal.hide();
     });
 
-    // Function to initialize page-specific functions
+    // Função para inicializar funções específicas da página
     function initializePageFunctions() {
         const openExpenseModalBtn = document.getElementById('openExpenseModalBtn');
         const openIncomeModalBtn = document.getElementById('openIncomeModalBtn');
@@ -57,22 +111,24 @@ document.addEventListener('DOMContentLoaded', function() {
 
         if (openExpenseModalBtn) {
             openExpenseModalBtn.addEventListener('click', function() {
-                loadModal('new-expense-modal.html');
+                loadModal(contextPath + '/static/modals/new-expense-modal.jsp'); // Use JSP para modais
             });
         }
 
         if (openIncomeModalBtn) {
             openIncomeModalBtn.addEventListener('click', function() {
-                loadModal('new-income-modal.html');
+                loadModal(contextPath + '/static/modals/new-income-modal.jsp');
             });
         }
+
         if (openTransferModalBtn) {
             openTransferModalBtn.addEventListener('click', function() {
-                loadModal('new-transfer-modal.html');
+                loadModal(contextPath + '/static/modals/new-transfer-modal.jsp');
             });
         }
     }
 
+    // Função para carregar modais via AJAX
     function loadModal(modalFile) {
         fetch(modalFile)
             .then(response => response.text())
@@ -80,54 +136,59 @@ document.addEventListener('DOMContentLoaded', function() {
                 modalContainer.innerHTML = html;
                 const modal = modalContainer.querySelector('.modal');
                 const backdrop = document.createElement('div');
-                backdrop.className = 'modal-backdrop';
+                backdrop.className = 'modal-backdrop show';
                 document.body.appendChild(backdrop);
 
                 setTimeout(() => {
-                    backdrop.classList.add('show');
                     modal.classList.add('show');
                 }, 10);
 
                 initializeModalFunctions(modal, backdrop);
+            })
+            .catch(error => {
+                console.error('Error loading modal:', error);
             });
     }
 
+    // Função para inicializar funcionalidades dos modais
     function initializeModalFunctions(modal, backdrop) {
         const closeModalBtn = modal.querySelector('.btn-close');
         const saveBtn = modal.querySelector('.btn-save');
         const saveAndNewBtn = modal.querySelector('.btn-save-and-new');
         const form = modal.querySelector('form');
 
-        // Function to close the modal
+        // Função para fechar o modal
         function closeModal() {
             modal.classList.remove('show');
             backdrop.classList.remove('show');
             setTimeout(() => {
-                modalContainer.innerHTML = ''; // Remove modal from DOM after animation
+                modalContainer.innerHTML = ''; // Remove modal do DOM após a animação
                 document.body.removeChild(backdrop);
             }, 300);
         }
 
-        // Close modal when clicking outside
+        // Fechar o modal ao clicar no backdrop
         backdrop.addEventListener('click', closeModal);
 
-        // Prevent closing when clicking inside the modal
+        // Prevenir fechamento ao clicar dentro do modal
         modal.addEventListener('click', (e) => e.stopPropagation());
 
-        // Add event listener to close button
+        // Adicionar ouvinte de eventos ao botão de fechar
         closeModalBtn.addEventListener('click', closeModal);
 
-        // Add event listener to save button
+        // Adicionar ouvinte de eventos ao botão de salvar
         saveBtn.addEventListener('click', function() {
+            // Adicione sua lógica de salvamento aqui
             setTimeout(() => {
                 showSaveNotification();
                 closeModal();
             }, 500);
         });
 
-        // Add event listener to save and new button if it exists
+        // Adicionar ouvinte de eventos ao botão de salvar e adicionar novo
         if (saveAndNewBtn) {
             saveAndNewBtn.addEventListener('click', function() {
+                // Adicione sua lógica de salvamento aqui
                 setTimeout(() => {
                     showSaveNotification();
                     form.reset();
@@ -135,7 +196,7 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
 
-        // File input functionality
+        // Funcionalidade de input de arquivos
         const fileInput = modal.querySelector('#fileInput');
         const attachFileBtn = modal.querySelector('#attachFileBtn');
         if (fileInput && attachFileBtn) {
@@ -153,7 +214,7 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
 
-        // Date buttons functionality
+        // Funcionalidade de botões de data
         modal.querySelectorAll('.btn-date').forEach(button => {
             button.addEventListener('click', function() {
                 modal.querySelector('.btn-date.active').classList.remove('active');
@@ -161,16 +222,17 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
 
-        // Custom dropdown functionality for categories and wallets
+        // Funcionalidade de dropdown personalizado para categorias e contas
         modal.querySelectorAll('.dropdown-field').forEach(dropdown => {
             const chipElement = dropdown.querySelector('.category-chip, .wallet-chip');
             const customDropdown = dropdown.querySelector('.custom-dropdown');
 
-            // Toggle dropdown visibility when the chip is clicked
+            // Alternar visibilidade do dropdown ao clicar no chip
             chipElement.addEventListener('click', function(e) {
                 e.stopPropagation();
                 const isActive = customDropdown.classList.contains('show');
 
+                // Fechar outros dropdowns abertos
                 modal.querySelectorAll('.custom-dropdown.show').forEach(openDropdown => {
                     openDropdown.classList.remove('show');
                 });
@@ -180,26 +242,26 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             });
 
-            // Handle selection of dropdown items
+            // Lidar com a seleção de itens do dropdown
             dropdown.querySelectorAll('.custom-dropdown-item').forEach(item => {
                 item.addEventListener('click', function(e) {
                     e.stopPropagation();
 
-                    // Handle "Criar novo destino" option for "Para Onde Foi"
+                    // Lidar com a opção "Criar novo destino" para "Para Onde Foi"
                     if (this.id === 'addNewDestination') {
-                        // Prompt user for new destination
+                        // Solicitar ao usuário o novo destino
                         const newDestination = prompt('Insira o nome do novo destino:');
                         if (newDestination) {
-                            // Create new dropdown item
+                            // Criar novo item no dropdown
                             const newOption = document.createElement('div');
                             newOption.classList.add('custom-dropdown-item');
                             newOption.setAttribute('role', 'option');
                             newOption.innerHTML = `<i class="fas fa-map-marker-alt me-2" aria-hidden="true"></i>${newDestination}`;
 
-                            // Insert new option before "Criar novo destino"
+                            // Inserir a nova opção antes de "Criar novo destino"
                             customDropdown.insertBefore(newOption, this);
 
-                            // Add event listener to the new option
+                            // Adicionar ouvinte de eventos à nova opção
                             newOption.addEventListener('click', function(e) {
                                 e.stopPropagation();
                                 chipElement.innerHTML = this.innerHTML;
@@ -207,12 +269,12 @@ document.addEventListener('DOMContentLoaded', function() {
                                 addCloseButton(chipElement);
                             });
 
-                            // Update chipElement with new destination
+                            // Atualizar chipElement com o novo destino
                             chipElement.innerHTML = newOption.innerHTML;
                             addCloseButton(chipElement);
                         }
                     } else {
-                        // Update chipElement with selected item
+                        // Atualizar chipElement com o item selecionado
                         chipElement.innerHTML = this.innerHTML;
                         customDropdown.classList.remove('show');
                         addCloseButton(chipElement);
@@ -221,7 +283,7 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
 
-        // Function to add a close button to the chip element
+        // Função para adicionar um botão de fechar ao chip
         function addCloseButton(chipElement) {
             const closeButton = document.createElement('button');
             closeButton.type = 'button';
@@ -234,7 +296,7 @@ document.addEventListener('DOMContentLoaded', function() {
             chipElement.appendChild(closeButton);
         }
 
-        // Close dropdowns when clicking outside
+        // Fechar dropdowns ao clicar fora
         document.addEventListener('click', function(e) {
             if (!e.target.closest('.dropdown-field')) {
                 modal.querySelectorAll('.custom-dropdown.show').forEach(dropdown => {
@@ -243,7 +305,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
 
-        // Format the value as currency
+        // Formatar o valor como moeda
         const valueInputs = modal.querySelectorAll('.value-input');
         valueInputs.forEach(valueInput => {
             valueInput.addEventListener('focus', function() {
@@ -271,7 +333,7 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
 
-        // Setup Flatpickr for date selection
+        // Configurar Flatpickr para seleção de data
         flatpickr.localize(flatpickr.l10ns.pt);
         const fp = flatpickr(".btn-date:last-child", {
             dateFormat: "d/m/Y",
@@ -292,13 +354,13 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
 
-        // Ensure the calendar opens when clicking "Outro..."
+        // Garantir que o calendário abra ao clicar em "Outro..."
         modal.querySelector('.btn-date:last-child').addEventListener('click', function(e) {
             e.preventDefault();
             fp.open();
         });
 
-        // More details section toggle
+        // Toggle da seção de mais detalhes
         const moreDetailsBtn = modal.querySelector('#moreDetailsBtn');
         const moreDetailsSection = modal.querySelector('#moreDetailsSection');
         const repeatCheck = modal.querySelector('#repeatCheck');
@@ -329,7 +391,7 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
 
-        // Tags functionality
+        // Funcionalidade de tags
         const tagsDropdown = modal.querySelector('#tagsDropdown');
         const selectedTags = modal.querySelector('#selectedTags');
         const tagsInput = modal.querySelector('#tagsInput');
@@ -379,7 +441,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Function to show a temporary save notification
+    // Função para exibir uma notificação temporária de salvamento
     function showSaveNotification() {
         const notification = document.createElement('div');
         notification.className = 'save-notification';

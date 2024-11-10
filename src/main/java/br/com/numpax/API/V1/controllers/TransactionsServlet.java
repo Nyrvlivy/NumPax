@@ -14,3 +14,4 @@ public class TransactionsServlet extends HttpServlet {
         request.getRequestDispatcher("/WEB-INF/views/transactions.jsp").forward(request, response);
     }
 }
+

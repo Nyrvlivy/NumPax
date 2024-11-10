@@ -1,11 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Controle Financeiro</title>
+    <title>Transações - Controle Financeiro</title>
 
     <!-- CSS Locais -->
     <link href="<c:url value='/static/lib/bootstrap.min.css'/>" rel="stylesheet">
@@ -17,6 +18,11 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 </head>
 <body>
+<!-- Definir o contextPath para uso no JS -->
+<script>
+    var contextPath = '<c:out value="${pageContext.request.contextPath}" />';
+</script>
+
 <div class="sidebar">
     <h1>numpax</h1>
     <a href="#" class="btn btn-novo mb-3"><i class="fas fa-plus"></i> Novo</a>
@@ -36,7 +42,7 @@
             <c:if test="${not empty message}">
                 <div class="alert alert-${messageType}">${message}</div>
             </c:if>
-            <!-- Conteúdo adicional pode ser incluído aqui -->
+            <!-- Conteúdo adicional será carregado via AJAX -->
         </div>
     </div>
 </div>
