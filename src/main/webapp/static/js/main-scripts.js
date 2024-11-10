@@ -1,11 +1,13 @@
 document.addEventListener('DOMContentLoaded', function() {
+    // Defina a URL do servlet como uma variável direta
+    const transactionsUrl = '/numpax_war_exploded/transactions'; // Substitua com o contexto correto se necessário
+
     // Function to load content
     function loadContent(page) {
         fetch(page)
             .then(response => response.text())
             .then(html => {
                 document.getElementById('contentContainer').innerHTML = html;
-                // After loading content, initialize any necessary functions
                 initializePageFunctions();
             })
             .catch(error => {
@@ -14,29 +16,21 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Load transactions page by default
-    loadContent('<c:url value="/transactions" />');
+    loadContent(transactionsUrl);
 
-    // Initialize the modal for under development features
     var underDevelopmentModal = new bootstrap.Modal(document.getElementById('underDevelopmentModal'));
 
-    // Add click event listener to all sidebar links
     document.querySelectorAll('.sidebar a').forEach(link => {
         link.addEventListener('click', function(e) {
             e.preventDefault();
-
-            // Remove 'active' class from all links
             document.querySelectorAll('.sidebar a').forEach(l => l.classList.remove('active'));
-
-            // Add 'active' class to clicked link
             this.classList.add('active');
 
-            // Check if the clicked link is the Transactions link
             if (this.getAttribute('href') === '#transacoes') {
-                loadContent('/transactions.jsp');
+                loadContent(transactionsUrl);
             } else if (this.getAttribute('href') === '#contas') {
                 loadContent('accounts-page.jsp');
             } else if (this.getAttribute('href') === '#') {
-                // Show the modal for other links
                 underDevelopmentModal.show();
             } else {
                 console.log('Clicked link:', this.getAttribute('href'));
@@ -44,7 +38,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Manually trigger click on Transactions link to make it active by default
     document.querySelector('.sidebar a[href="#transacoes"]').click();
 
 
