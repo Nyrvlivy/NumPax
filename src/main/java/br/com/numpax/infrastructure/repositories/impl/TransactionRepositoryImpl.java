@@ -51,7 +51,7 @@ public class TransactionRepositoryImpl implements TransactionRepository {
 
     @Override
     public List<ActiveTransactionDTO> findActiveTransactionsByUserId(String userId) {
-        String sql = "SELECT t.is_effective, t.transaction_date, t.name, " +
+        String sql = "SELECT t.transaction_id, t.is_effective, t.transaction_date, t.name, " +
             "c.name AS category_name, a.name AS account_name, t.amount " +
             "FROM Transactions t " +
             "JOIN Accounts a ON t.account_id = a.account_id " +
@@ -66,8 +66,9 @@ public class TransactionRepositoryImpl implements TransactionRepository {
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
                     ActiveTransactionDTO dto = new ActiveTransactionDTO();
+                    dto.setTransactionId(rs.getString("transaction_id"));
                     dto.setEffective(rs.getInt("is_effective") == 1);
-                    dto.setTransactionDate(rs.getDate("transaction_date").toLocalDate());
+                    dto.setTransactionDate(rs.getDate("transaction_date"));
                     dto.setName(rs.getString("name"));
                     dto.setCategoryName(rs.getString("category_name"));
                     dto.setAccountName(rs.getString("account_name"));

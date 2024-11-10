@@ -2,17 +2,15 @@ package br.com.numpax.API.V1.dto.response;
 
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
-
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.util.Date;
 
 @Getter
 @Setter
-//@ToString
 public class ActiveTransactionDTO {
+    private String transactionId;
     private boolean isEffective;
-    private LocalDate transactionDate;
+    private Date transactionDate;
     private String name;
     private String categoryName;
     private String accountName;

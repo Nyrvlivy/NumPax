@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -20,7 +21,7 @@
 <div class="main-content">
     <div class="container-fluid">
         <div id="contentContainer">
-            <!-- Título Dinâmico do Mês -->
+            <!-- Título Dinâmico do Mês (Opcional, pode ser removido se não for necessário) -->
             <h3 class="month-title"><c:out value="${currentMonth}" /></h3>
 
             <div class="summary-header">
@@ -53,26 +54,6 @@
                 </div>
             </div>
 
-            <!-- Resumos Financeiros Dinâmicos -->
-            <div class="summary-cards">
-                <div class="summary-card">
-                    <h6>Saldo atual</h6>
-                    <h4>R$ <c:out value="${saldoAtual}" /></h4>
-                </div>
-                <div class="summary-card">
-                    <h6>Receitas</h6>
-                    <h4 class="text-success">R$ <c:out value="${totalReceitas}" /></h4>
-                </div>
-                <div class="summary-card">
-                    <h6>Despesas</h6>
-                    <h4 class="text-danger">R$ <c:out value="${totalDespesas}" /></h4>
-                </div>
-                <div class="summary-card">
-                    <h6>Balanço mensal</h6>
-                    <h4 class="text-primary">R$ <c:out value="${balancoMensal}" /></h4>
-                </div>
-            </div>
-
             <!-- Lista de Transações -->
             <div class="card">
                 <div class="card-body">
@@ -101,7 +82,7 @@
                                 <tr>
                                     <td>
                                         <c:choose>
-                                            <c:when test="${transacao.status eq 'COMPLETADA'}">
+                                            <c:when test="${transacao.effective}">
                                                 <i class="fas fa-check-circle text-success status-icon"></i>
                                             </c:when>
                                             <c:otherwise>
@@ -109,26 +90,28 @@
                                             </c:otherwise>
                                         </c:choose>
                                     </td>
-                                    <td><c:out value="${transacao.data}" /></td>
-                                    <td><c:out value="${transacao.descricao}" /></td>
                                     <td>
-                                                <span class="badge bg-<c:out value='${transacao.categoria.cor}' />">
-                                                    <i class="fas <c:out value='${transacao.categoria.icone}' />"></i>
-                                                    <c:out value="${transacao.categoria.nome}" />
-                                                </span>
+                                        <fmt:formatDate value="${transacao.transactionDate}" pattern="dd/MM/yyyy" />
                                     </td>
-                                    <td><c:out value="${transacao.conta}" /></td>
-                                    <td class="text-end <c:out value='${transacao.tipo == "DESPESA" ? "text-danger" : "text-success"}' />">
-                                        R$ <fmt:formatNumber value="${transacao.valor}" type="currency" currencySymbol="" />
+                                    <td><c:out value="${transacao.name}" /></td>
+                                    <td>
+                                        <span class="badge bg-primary"> <!-- Ajuste a classe de cor conforme necessário -->
+                                            <i class="fas fa-tag me-2"></i> <!-- Ajuste o ícone conforme necessário -->
+                                            <c:out value="${transacao.categoryName}" />
+                                        </span>
+                                    </td>
+                                    <td><c:out value="${transacao.accountName}" /></td>
+                                    <td class="text-end <c:out value='${transacao.amount < 0 ? "text-danger" : "text-success"}' />">
+                                        R$ <fmt:formatNumber value="${transacao.amount}" type="currency" currencySymbol="" />
                                     </td>
                                     <td class="text-end">
-                                        <button class="btn btn-sm btn-outline-secondary" onclick="editarTransacao(${transacao.id})">
+                                        <button class="btn btn-sm btn-outline-secondary" onclick="editarTransacao('${transacao.transactionId}')">
                                             <i class="fas fa-edit"></i>
                                         </button>
-                                        <button class="btn btn-sm btn-outline-secondary" onclick="excluirTransacao(${transacao.id})">
+                                        <button class="btn btn-sm btn-outline-secondary" onclick="excluirTransacao('${transacao.transactionId}')">
                                             <i class="fas fa-trash"></i>
                                         </button>
-                                        <button class="btn btn-sm btn-outline-secondary" onclick="detalhesTransacao(${transacao.id})">
+                                        <button class="btn btn-sm btn-outline-secondary" onclick="detalhesTransacao('${transacao.transactionId}')">
                                             <i class="fas fa-ellipsis-v"></i>
                                         </button>
                                     </td>
@@ -137,34 +120,7 @@
                             </tbody>
                         </table>
                     </div>
-                    <!-- Paginação Dinâmica -->
-                    <div class="d-flex justify-content-between align-items-center mt-3">
-                        <p class="mb-0">Saldo Previsto Final do Dia: R$ <c:out value="${saldoPrevisto}" /></p>
-                        <div class="d-flex align-items-center">
-                            <span class="me-2">Linhas por página:</span>
-                            <select id="linhasPorPagina" class="form-select form-select-sm me-3" onchange="alterarLinhasPorPagina(this.value)">
-                                <option value="10" <c:if test="${linhasPorPagina == 10}">selected</c:if>>10</option>
-                                <option value="20" <c:if test="${linhasPorPagina == 20}">selected</c:if>>20</option>
-                                <option value="50" <c:if test="${linhasPorPagina == 50}">selected</c:if>>50</option>
-                            </select>
-
-                            <nav>
-                                <ul class="pagination pagination-sm">
-                                    <c:if test="${paginaAtual > 1}">
-                                        <li class="page-item"><a class="page-link" href="<c:url value='/transactions?page=${paginaAtual - 1}'/>">&laquo;</a></li>
-                                    </c:if>
-                                    <c:forEach begin="1" end="${totalPaginas}" var="i">
-                                        <li class="page-item <c:if test='${i == paginaAtual}'>active</c:if>">
-                                            <a class="page-link" href="<c:url value='/transactions?page=${i}'/>">${i}</a>
-                                        </li>
-                                    </c:forEach>
-                                    <c:if test="${paginaAtual < totalPaginas}">
-                                        <li class="page-item"><a class="page-link" href="<c:url value='/transactions?page=${paginaAtual + 1}'/>">&raquo;</a></li>
-                                    </c:if>
-                                </ul>
-                            </nav>
-                        </div>
-                    </div>
+                    <!-- Removido a seção de Paginação -->
                 </div>
             </div>
         </div>
@@ -192,14 +148,17 @@
 <script>
     function editarTransacao(id) {
         // Lógica para editar transação
+        console.log('Editar transação:', id);
     }
 
     function excluirTransacao(id) {
         // Lógica para excluir transação
+        console.log('Excluir transação:', id);
     }
 
     function detalhesTransacao(id) {
         // Lógica para exibir detalhes da transação
+        console.log('Detalhes da transação:', id);
     }
 
     function alterarLinhasPorPagina(qtd) {

@@ -85,20 +85,9 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     public List<ActiveTransactionDTO> listActiveTransactionsByUserId(String userId) {
-        // (Opcional) Validar se o usuário existe e está ativo
-        // Por exemplo, você pode injetar e utilizar um UserRepository para essa validação
-
-        // Buscar as transações ativas com as naturezas especificadas
         return transactionRepository.findActiveTransactionsByUserId(userId);
     }
 
-    /**
-     * Verifica se a natureza da transação é permitida para o tipo da conta.
-     *
-     * @param natureOfTransaction A natureza da transação.
-     * @param account             A conta associada.
-     * @return true se permitido, false caso contrário.
-     */
     private boolean isTransactionAllowedForAccountType(NatureOfTransaction natureOfTransaction, Account account) {
         return switch (account.getAccountType()) {
             case CHECKING -> natureOfTransaction == NatureOfTransaction.INCOME ||
