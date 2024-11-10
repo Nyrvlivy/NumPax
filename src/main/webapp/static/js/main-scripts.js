@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Load transactions page by default
-    loadContent('transactions-page.html');
+    loadContent('<c:url value="/transactions" />');
 
     // Initialize the modal for under development features
     var underDevelopmentModal = new bootstrap.Modal(document.getElementById('underDevelopmentModal'));
@@ -23,23 +23,22 @@ document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('.sidebar a').forEach(link => {
         link.addEventListener('click', function(e) {
             e.preventDefault();
-            
+
             // Remove 'active' class from all links
             document.querySelectorAll('.sidebar a').forEach(l => l.classList.remove('active'));
-            
+
             // Add 'active' class to clicked link
             this.classList.add('active');
 
             // Check if the clicked link is the Transactions link
             if (this.getAttribute('href') === '#transacoes') {
-                loadContent('transactions-page.html');
+                loadContent('/transactions.jsp');
             } else if (this.getAttribute('href') === '#contas') {
-                loadContent('accounts-page.html');
+                loadContent('accounts-page.jsp');
             } else if (this.getAttribute('href') === '#') {
                 // Show the modal for other links
                 underDevelopmentModal.show();
             } else {
-                // For other specific links, you can add custom behavior here
                 console.log('Clicked link:', this.getAttribute('href'));
             }
         });
@@ -48,7 +47,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // Manually trigger click on Transactions link to make it active by default
     document.querySelector('.sidebar a[href="#transacoes"]').click();
 
-    // Add event listener to the Subscribe button in the modal
+
+// Add event listener to the Subscribe button in the modal
     document.querySelector('#underDevelopmentModal .btn-primary').addEventListener('click', function() {
         console.log('Subscribe button clicked');
         // Add your subscription logic here
