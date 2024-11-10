@@ -1,8 +1,11 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Definir a URL do servlet usando contextPath
-    const contextPath = window.location.pathname.substring(0, window.location.pathname.indexOf("/", 1));
+    if (typeof contextPath === 'undefined') {
+        console.error('contextPath não está definido.');
+        return;
+    }
+
     const transactionsUrl = contextPath + '/transactions';
-    const accountsUrl = contextPath + '/accounts'; // Ajuste conforme mapeamento
+    const accountsUrl = contextPath + '/accounts';
     const premiumUrl = contextPath + '/premium';
     const dashboardUrl = contextPath + '/dashboard';
     const reportsUrl = contextPath + '/reports';
@@ -10,7 +13,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const configsUrl = contextPath + '/configs';
     const helpcenterUrl = contextPath + '/helpcenter';
 
-    // Função para carregar conteúdo
     function loadContent(pageUrl) {
         fetch(pageUrl)
             .then(response => {
@@ -26,13 +28,11 @@ document.addEventListener('DOMContentLoaded', function() {
             })
             .catch(error => {
                 console.error('Error loading content:', error);
-                // Opcional: carregar uma página de erro personalizada
                 document.getElementById('contentContainer').innerHTML = '<p> ⚠️ Em desenvolvimento 🚧</p>';
                 document.querySelector('.main-content').classList.remove('no-background');
             });
     }
 
-    // Função para ajustar o fundo da main-content
     function adjustMainContentBackground() {
         const mainContent = document.querySelector('.main-content');
         const emptyView = document.getElementById('contentContainer').querySelector('[data-empty="true"]');
@@ -44,15 +44,17 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Carregar a página de transações por padrão
-    // loadContent(transactionsUrl); // Removido para evitar carregamento duplicado
-
-    // Inicializar o modal de desenvolvimento
     var underDevelopmentModal = new bootstrap.Modal(document.getElementById('underDevelopmentModal'));
 
-    // Adicionar ouvintes de eventos aos links da sidebar
     document.querySelectorAll('.sidebar a').forEach(link => {
         link.addEventListener('click', function(e) {
+            console.log('Link clicado:', this.getAttribute('href'));
+
+            if (this.classList.contains('logout-link')) {
+                console.log('Logout link clicado. Permitir navegação.');
+                return;
+            }
+
             e.preventDefault();
             document.querySelectorAll('.sidebar a').forEach(l => l.classList.remove('active'));
             this.classList.add('active');
@@ -93,23 +95,17 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Simular o clique no link de transações para carregar o conteúdo inicial
-    // document.querySelector('.sidebar a[href="#transacoes"]').click(); // Removido para evitar carregamento duplicado
-
-    // Adicionar ouvinte de eventos ao botão de inscrição no modal de desenvolvimento
     const underDevModal = document.getElementById('underDevelopmentModal');
     if (underDevModal) {
         const subscribeBtn = underDevModal.querySelector('.btn-primary');
         if (subscribeBtn) {
             subscribeBtn.addEventListener('click', function() {
                 console.log('Subscribe button clicked');
-                // Adicione sua lógica de inscrição aqui
                 underDevelopmentModal.hide();
             });
         }
     }
 
-    // Função para inicializar funções específicas da página
     function initializePageFunctions() {
         const openExpenseModalBtn = document.getElementById('openExpenseModalBtn');
         const openIncomeModalBtn = document.getElementById('openIncomeModalBtn');
@@ -118,7 +114,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         if (openExpenseModalBtn) {
             openExpenseModalBtn.addEventListener('click', function() {
-                loadModal(contextPath + '/static/modals/new-expense-modal.jsp'); // Use JSP para modais
+                loadModal(contextPath + '/static/modals/new-expense-modal.jsp');
             });
         }
 
@@ -135,7 +131,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Função para carregar modais via AJAX
     function loadModal(modalFile) {
         const modalContainer = document.getElementById('modalContainer');
         fetch(modalFile)
@@ -158,14 +153,12 @@ document.addEventListener('DOMContentLoaded', function() {
             });
     }
 
-    // Função para inicializar funcionalidades dos modais
     function initializeModalFunctions(modal, backdrop) {
         const closeModalBtn = modal.querySelector('.btn-close');
         const saveBtn = modal.querySelector('.btn-save');
         const saveAndNewBtn = modal.querySelector('.btn-save-and-new');
         const form = modal.querySelector('form');
 
-        // Função para fechar o modal
         function closeModal() {
             modal.classList.remove('show');
             backdrop.classList.remove('show');
@@ -175,21 +168,16 @@ document.addEventListener('DOMContentLoaded', function() {
             }, 300);
         }
 
-        // Fechar o modal ao clicar no backdrop
         backdrop.addEventListener('click', closeModal);
 
-        // Prevenir fechamento ao clicar dentro do modal
         modal.addEventListener('click', (e) => e.stopPropagation());
 
-        // Adicionar ouvinte de eventos ao botão de fechar
         if (closeModalBtn) {
             closeModalBtn.addEventListener('click', closeModal);
         }
 
-        // Adicionar ouvinte de eventos ao botão de salvar
         if (saveBtn) {
             saveBtn.addEventListener('click', function() {
-                // Adicione sua lógica de salvamento aqui
                 setTimeout(() => {
                     showSaveNotification();
                     closeModal();
@@ -197,10 +185,8 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
 
-        // Adicionar ouvinte de eventos ao botão de salvar e adicionar novo
         if (saveAndNewBtn) {
             saveAndNewBtn.addEventListener('click', function() {
-                // Adicione sua lógica de salvamento aqui
                 setTimeout(() => {
                     showSaveNotification();
                     form.reset();
@@ -208,7 +194,6 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
 
-        // Função para adicionar um botão de fechar ao chip (se necessário)
         function addCloseButton(chipElement) {
             const closeButton = document.createElement('button');
             closeButton.type = 'button';
@@ -223,10 +208,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Adicionar lógica específica para o modal aqui (inputs, dropdowns, etc.)
         // ...
-
     }
 
-    // Função para exibir uma notificação temporária de salvamento
     function showSaveNotification() {
         const notification = document.createElement('div');
         notification.className = 'save-notification';

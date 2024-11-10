@@ -12,6 +12,17 @@
     <link href="<c:url value='/static/css/main-styles.css'/>" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <style>
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+        .logout-button {
+            margin-top: auto;
+            padding: 10px;
+        }
+    </style>
 </head>
 <body>
 <script>
@@ -29,6 +40,10 @@
     <a href="#"><i class="fas fa-ellipsis-h"></i> Mais opções</a>
     <a href="#"><i class="fas fa-cog"></i> Configurações</a>
     <a href="#"><i class="fas fa-question-circle"></i> Central de Ajuda</a>
+
+    <a href="${pageContext.request.contextPath}/logout" class="btn btn-logout logout-button logout-link">
+        <i class="fas fa-sign-out-alt"></i> Logout
+    </a>
 </div>
 
 <div class="main-content">

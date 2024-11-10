@@ -159,10 +159,10 @@
                                     </td>
                                     <td><c:out value="${transacao.name}" /></td>
                                     <td>
-                                            <span class="badge bg-primary">
-                                                <i class="fas fa-tag me-2"></i>
-                                                <c:out value="${transacao.categoryName}" />
-                                            </span>
+                                                <span class="badge bg-primary">
+                                                    <i class="fas fa-tag me-2"></i>
+                                                    <c:out value="${transacao.categoryName}" />
+                                                </span>
                                     </td>
                                     <td><c:out value="${transacao.accountName}" /></td>
                                     <td class="text-end <c:out value='${transacao.amount < 0 ? "text-danger" : "text-success"}' />">
@@ -242,40 +242,40 @@
             </div>
         </div>
     </div>
-</div>
 
-<!-- Modais para Adicionar/Editar Transações (Exemplo) -->
-<div class="modal fade" id="expenseModal" tabindex="-1" aria-labelledby="expenseModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <!-- Conteúdo do Modal -->
+    <!-- Modais para Adicionar/Editar Transações (Exemplo) -->
+    <div class="modal fade" id="expenseModal" tabindex="-1" aria-labelledby="expenseModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- Conteúdo do Modal -->
+            </div>
         </div>
     </div>
+
+    <script src="<c:url value='/static/lib/bootstrap.bundle.min.js'/>"></script>
+    <script src="<c:url value='/static/js/main-scripts.js'/>"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://npmcdn.com/flatpickr/dist/l10n/pt.js"></script>
+
+    <script>
+        function editarTransacao(id) {
+            console.log('Editar transação:', id);
+        }
+
+        function excluirTransacao(id) {
+            console.log('Excluir transação:', id);
+        }
+
+        function detalhesTransacao(id) {
+            console.log('Detalhes da transação:', id);
+        }
+
+        function alterarLinhasPorPagina(qtd) {
+            const url = new URL(window.location.href);
+            url.searchParams.set('linhasPorPagina', qtd);
+            window.location.href = url.toString();
+        }
+    </script>
 </div>
-
-<script src="<c:url value='/static/lib/bootstrap.bundle.min.js'/>"></script>
-<script src="<c:url value='/static/js/main-scripts.js'/>"></script>
-<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-<script src="https://npmcdn.com/flatpickr/dist/l10n/pt.js"></script>
-
-<script>
-    function editarTransacao(id) {
-        console.log('Editar transação:', id);
-    }
-
-    function excluirTransacao(id) {
-        console.log('Excluir transação:', id);
-    }
-
-    function detalhesTransacao(id) {
-        console.log('Detalhes da transação:', id);
-    }
-
-    function alterarLinhasPorPagina(qtd) {
-        const url = new URL(window.location.href);
-        url.searchParams.set('linhasPorPagina', qtd);
-        window.location.href = url.toString();
-    }
-</script>
 </body>
 </html>

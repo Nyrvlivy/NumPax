@@ -6,7 +6,6 @@
             https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd"
          version="6.0">
 
-    <!-- Configuração do Servlet do Jersey -->
     <servlet>
         <servlet-name>jersey-servlet</servlet-name>
         <servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
@@ -21,13 +20,11 @@
         <load-on-startup>1</load-on-startup>
     </servlet>
 
-    <!-- Mapeamento do Servlet do Jersey para URLs com prefixo /api/* -->
     <servlet-mapping>
         <servlet-name>jersey-servlet</servlet-name>
         <url-pattern>/api/*</url-pattern>
     </servlet-mapping>
 
-    <!-- Filtro de Autenticação JWT -->
     <filter>
         <filter-name>JwtAuthenticationFilter</filter-name>
         <filter-class>br.com.numpax.infrastructure.config.auth.JwtAuthenticationFilter</filter-class>
@@ -35,11 +32,11 @@
 
     <filter-mapping>
         <filter-name>JwtAuthenticationFilter</filter-name>
-        <url-pattern>/api/protected/*</url-pattern> <!-- Defina os endpoints que deseja proteger -->
+        <url-pattern>/api/protected/*</url-pattern>
     </filter-mapping>
 
     <!--    <error-page>-->
-<!--        <error-code>404</error-code>-->
-<!--        <location>404.jsp</location>-->
-<!--    </error-page>-->
+    <!--        <error-code>404</error-code>-->
+    <!--        <location>404.jsp</location>-->
+    <!--    </error-page>-->
 </web-app>
