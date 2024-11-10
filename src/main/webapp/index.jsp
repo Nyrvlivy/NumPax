@@ -7,6 +7,6 @@
 <body>
 <h1>Bem-vindo ao NumPax</h1>
 <br/>
-<a href="login">Login</a>
+<a href="WEB-INF/views/signup.jsp">Cadastrar</a>
 </body>
 </html>

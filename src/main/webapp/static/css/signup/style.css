@@ -1,0 +1,321 @@
+html,
+body {
+    min-width: 320px;
+}
+
+body {
+    font-family: "SF Pro Display", "Roboto", sans-serif;
+    background: linear-gradient(167deg, #f8f9fa 62.55%, #e2ecf5 84.28%, #abcbea 98.29%);
+    color: #212529;
+    overflow-x: hidden;
+    user-select: none;
+}
+
+h2 {
+    color: #001845;
+    font-size: 24px;
+    font-weight: 600;
+}
+
+label {
+    color: #212529;
+    font-size: 14px;
+    font-weight: 400;
+}
+
+input::placeholder {
+    color: #7a7a7a;
+    font-size: 16px;
+    font-weight: 400;
+    font-family: "SF Pro Display", "Roboto", sans-serif;
+}
+
+.material-symbols-outlined {
+    font-size: 24px;
+    color: #7a7a7a;
+    transition: color 0.3s ease;
+}
+
+.circle {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background-color: #f2f2f2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: margin 0.3s ease, transform 0.3s ease;
+    border: none;
+}
+
+.circle:hover {
+    transform: scale(1.1);
+}
+
+.icon {
+    width: 28px;
+    height: 28px;
+}
+
+.input-group-text.no-border-right,
+.input-group-text.no-border-left,
+.form-control.no-border-left {
+    background-color: #f2f2f2;
+}
+
+.input-group-text.no-border-right,
+.form-control.no-border-right {
+    border-right: none;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.input-group-text.no-border-left {
+    border-left: none;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.form-control.no-border-left {
+    border-left: none;
+    padding-left: 10px;
+}
+
+.email-input {
+    border-right: 1px solid #ced4da;
+}
+
+.input-group-text.no-padding-right {
+    padding-right: 0;
+    padding-left: 10px;
+}
+
+.input-group-text.no-padding-left {
+    padding-left: 0;
+}
+
+.input-padding {
+    padding-left: 10px;
+}
+
+.input-group.email-group:focus-within,
+.input-group.password-group:focus-within,
+.input-group.name-group:focus-within {
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    border-radius: 0.375rem;
+}
+
+.input-group.email-group:focus-within .input-group-prepend .input-group-text,
+.input-group.email-group:focus-within .form-control,
+.input-group.email-group:focus-within .input-group-append .input-group-text,
+.input-group.password-group:focus-within .input-group-prepend .input-group-text,
+.input-group.password-group:focus-within .form-control,
+.input-group.password-group:focus-within .input-group-append .input-group-text,
+.input-group.name-group:focus-within .input-group-prepend .input-group-text,
+.input-group.name-group:focus-within .form-control,
+.input-group.name-group:focus-within .input-group-append .input-group-text {
+    background-color: #e8f0fe;
+    border-color: #80bdff;
+    box-shadow: none;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.input-group.email-group .email-input,
+.input-group.name-group .name-input {
+    border-right: 1px solid #ced4da;
+}
+
+.input-group .material-symbols-outlined {
+    color: #7a7a7a;
+    transition: color 0.3s ease;
+}
+
+.input-group-text:hover .material-symbols-outlined,
+.circle:hover .material-symbols-outlined {
+    color: #4a4a4a;
+}
+
+form {
+    padding: 0 50px;
+    max-width: 500px;
+    margin: auto;
+    transition: max-width 0.3s ease, padding 0.3s ease;
+}
+
+.custom-col {
+    width: 100%;
+    max-width: 500px;
+    padding: 0;
+    transition: max-width 0.3s ease;
+}
+
+a {
+    color: #002855;
+    font-size: 14px;
+    font-family: "SF Pro Display", "Roboto", sans-serif;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    color: #001633;
+}
+
+.terms-link {
+    color: #002855;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.terms-link:hover {
+    color: #001633;
+}
+
+a[href="signup.html"] {
+    color: #0466c8;
+    font-style: italic;
+}
+
+a[href="signup.html"]:hover {
+    color: #034a9b;
+}
+
+.text-center p {
+    font-size: 14px;
+    font-family: "SF Pro Display", "Roboto", sans-serif;
+}
+
+.text-center p.mt-2 {
+    margin-top: 0.5rem;
+}
+
+.signup-page .text-center p,
+.signup-page .text-center .mt-2 {
+    margin-bottom: 1rem;
+}
+
+.signup-page .sign-in-link {
+    color: #0466c8;
+    font-style: italic;
+    text-decoration: none;
+}
+
+button.login-btn {
+    background-color: #002855;
+    color: white;
+    border: none;
+    padding: 8px 50px;
+    font-size: 14px;
+    font-weight: 400;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    display: block;
+    width: calc(100% - 100px);
+    margin: 10px auto;
+    margin-bottom: 1em;
+}
+
+button.login-btn:hover {
+    background-color: #001633;
+}
+
+/* Sign Up */
+.signup-page .mt-5 {
+    margin-top: 3rem !important;
+}
+
+.signup-page .text-center .mt-2 {
+    margin-top: 1rem !important;
+}
+
+.signup-page .text-center p:not(.mt-2) {
+    margin-top: 1rem !important;
+}
+
+.signup-page .text-center p.mt-2 {
+    margin-top: 0.5rem !important;
+}
+
+@media (max-width: 990px) {
+    .custom-col {
+        max-width: calc(100% - 100px);
+    }
+}
+
+@media (max-width: 900px) {
+    .custom-col {
+        max-width: calc(450px + 100px);
+    }
+}
+
+@media (max-width: 600px) {
+    .custom-col {
+        max-width: calc(293px + 100px);
+    }
+    .circle {
+        margin: 0 10px;
+    }
+}
+
+@media (max-width: 393px) {
+    form {
+        padding: 0 40px;
+    }
+}
+
+.row > * {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+.error-message {
+    color: red;
+    font-size: 12px;
+    margin-bottom: 0.5em;
+    margin-top: -0.5em;
+}
+
+.mt-2 {
+    margin-top: 0 !important;
+    font-size: 14px !important;
+}
+
+.home-title {
+    font-size: 2rem;
+}
+
+.svg-home {
+    width: 100%;
+    max-width: 500px;
+    height: auto;
+}
+
+@media (max-width: 768px) {
+    .home-title {
+        font-size: 1.5rem;
+    }
+    .svg-home {
+        max-width: 400px;
+    }
+}
+
+@media (max-width: 576px) {
+    .home-title {
+        font-size: 1.25rem;
+    }
+    .svg-home {
+        max-width: 300px;
+    }
+}
+
+@media (max-width: 400px) {
+    .home-title {
+        font-size: 1rem;
+    }
+    .svg-home {
+        max-width: 200px;
+    }
+}

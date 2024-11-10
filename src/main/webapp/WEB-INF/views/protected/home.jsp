@@ -18,7 +18,7 @@
 } else {
 %>
 <p>Usuário não autenticado.</p>
-<a href="${pageContext.request.contextPath}/login">Fazer Login</a>
+<a href="${pageContext.request.contextPath}/signin">Fazer Login</a>
 <%
     }
 %>

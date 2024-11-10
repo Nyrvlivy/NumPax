@@ -18,7 +18,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Optional;
 
-@WebServlet("/login")
+@WebServlet("/signin")
 public class LoginServlet extends HttpServlet {
 
     private AuthService authService;
@@ -36,7 +36,7 @@ public class LoginServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
 
-        request.getRequestDispatcher("/WEB-INF/views/login.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/views/signin.jsp").forward(request, response);
     }
 
     @Override
@@ -68,7 +68,7 @@ public class LoginServlet extends HttpServlet {
 
         } catch (RuntimeException e) {
             request.setAttribute("error", e.getMessage());
-            request.getRequestDispatcher("/WEB-INF/views/login.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/views/signin.jsp").forward(request, response);
         }
     }
 }
