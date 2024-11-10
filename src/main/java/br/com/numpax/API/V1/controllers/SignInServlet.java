@@ -1,4 +1,4 @@
-package br.com.numpax.API.V1.servlets;
+package br.com.numpax.API.V1.controllers;
 
 import br.com.numpax.API.V1.dto.request.LoginRequestDTO;
 import br.com.numpax.API.V1.dto.response.LoginResponseDTO;
@@ -34,13 +34,15 @@ public class SignInServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+        throws ServletException, IOException {
+
         request.getRequestDispatcher("/WEB-INF/views/signin.jsp").forward(request, response);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+        throws ServletException, IOException {
+
         String email = request.getParameter("email");
         String password = request.getParameter("password");
 
@@ -50,7 +52,7 @@ public class SignInServlet extends HttpServlet {
 
         try {
             LoginResponseDTO loginResponseDTO = authService.login(loginRequestDTO);
-            
+
             // Set token in session
             request.getSession().setAttribute("token", loginResponseDTO.getToken());
 
@@ -61,10 +63,12 @@ public class SignInServlet extends HttpServlet {
                 request.getSession().setAttribute("user", user);
             }
 
-            response.sendRedirect(request.getContextPath() + "/WEB-INF/views/protected/home.jsp");
+            // Forward to home.jsp
+            request.getRequestDispatcher("/WEB-INF/views/protected/home.jsp").forward(request, response);
+
         } catch (RuntimeException e) {
             request.setAttribute("error", e.getMessage());
             request.getRequestDispatcher("/WEB-INF/views/signin.jsp").forward(request, response);
         }
     }
-} 
+}
