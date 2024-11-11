@@ -49,7 +49,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     var underDevelopmentModal = new bootstrap.Modal(document.getElementById('underDevelopmentModal'));
 
-    // Função para carregar e mostrar modais dinamicamente
     function loadModal(modalFile, callback) {
         fetch(modalFile)
             .then(response => {
@@ -62,7 +61,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 modalContainer.innerHTML = html;
                 const modalElement = modalContainer.querySelector('.modal');
                 const bootstrapModal = new bootstrap.Modal(modalElement);
-                // Inicializar funcionalidades do modal antes de mostrar
                 if (callback && typeof callback === 'function') {
                     callback(modalElement, bootstrapModal);
                 }
@@ -89,7 +87,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
         if (saveBtn) {
             saveBtn.addEventListener('click', function () {
-                // Adicione aqui a lógica de salvamento
                 setTimeout(() => {
                     showSaveNotification();
                     closeModal();
@@ -99,7 +96,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
         if (saveAndNewBtn) {
             saveAndNewBtn.addEventListener('click', function () {
-                // Adicione aqui a lógica de salvamento
                 setTimeout(() => {
                     showSaveNotification();
                     form.reset();
@@ -107,9 +103,6 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         }
 
-        // Início das funcionalidades específicas dos modais
-
-        // File input functionality
         const fileInput = modal.querySelector('#fileInput');
         const attachFileBtn = modal.querySelector('#attachFileBtn');
         if (fileInput && attachFileBtn) {
@@ -127,7 +120,6 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         }
 
-        // Date buttons functionality
         modal.querySelectorAll('.btn-date').forEach(button => {
             button.addEventListener('click', function () {
                 modal.querySelectorAll('.btn-date').forEach(btn => btn.classList.remove('active'));
@@ -135,12 +127,10 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         });
 
-        // Custom dropdown functionality for categories and wallets
         modal.querySelectorAll('.dropdown-field').forEach(dropdown => {
             const chipElement = dropdown.querySelector('.category-chip, .wallet-chip');
             const customDropdown = dropdown.querySelector('.custom-dropdown');
 
-            // Toggle dropdown visibility when the chip is clicked
             chipElement.addEventListener('click', function (e) {
                 e.stopPropagation();
                 const isActive = customDropdown.classList.contains('show');
@@ -154,7 +144,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             });
 
-            // Handle selection of dropdown items
             customDropdown.querySelectorAll('.custom-dropdown-item').forEach(item => {
                 item.addEventListener('click', function (e) {
                     e.stopPropagation();
@@ -165,9 +154,7 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         });
 
-        // Function to add a close button to the chip element
         function addCloseButton(chipElement) {
-            // Remove existing close button if any
             const existingCloseBtn = chipElement.querySelector('.btn-close');
             if (existingCloseBtn) {
                 existingCloseBtn.remove();
@@ -184,7 +171,6 @@ document.addEventListener('DOMContentLoaded', function () {
             chipElement.appendChild(closeButton);
         }
 
-        // Close dropdowns when clicking outside
         document.addEventListener('click', function (e) {
             if (!e.target.closest('.dropdown-field')) {
                 modal.querySelectorAll('.custom-dropdown.show').forEach(dropdown => {
@@ -193,7 +179,6 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
 
-        // Format the value as currency
         const valueInputs = modal.querySelectorAll('.value-input');
         valueInputs.forEach(valueInput => {
             valueInput.addEventListener('focus', function () {
@@ -221,7 +206,6 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         });
 
-        // Setup Flatpickr for date selection
         if (typeof flatpickr !== 'undefined') {
             flatpickr.localize(flatpickr.l10ns.pt);
             const dateButtons = modal.querySelectorAll('.btn-date');
@@ -245,7 +229,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             });
 
-            // Ensure the calendar opens when clicking "Outro..."
             otherDateButton.addEventListener('click', function (e) {
                 e.preventDefault();
                 fp.open();
@@ -254,7 +237,6 @@ document.addEventListener('DOMContentLoaded', function () {
             console.error('Flatpickr library is not loaded.');
         }
 
-        // More details section toggle
         const moreDetailsBtn = modal.querySelector('#moreDetailsBtn');
         const moreDetailsSection = modal.querySelector('#moreDetailsSection');
         if (moreDetailsBtn && moreDetailsSection) {
@@ -267,7 +249,6 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         }
 
-        // Repeat options toggle
         const repeatCheck = modal.querySelector('#repeatCheck');
         const repeatOptionsSection = modal.querySelector('#repeatOptionsSection');
         if (repeatCheck && repeatOptionsSection) {
@@ -276,7 +257,6 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         }
 
-        // End of modal-specific functionalities
     }
 
     function showSaveNotification() {
@@ -297,7 +277,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }, 2000);
     }
 
-    // Manipulação dos links da sidebar
     document.querySelectorAll('.sidebar a').forEach(link => {
         link.addEventListener('click', function (e) {
             console.log('Link clicado:', this.getAttribute('href'));
@@ -339,6 +318,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
             e.preventDefault();
+
             document.querySelectorAll('.sidebar a').forEach(l => l.classList.remove('active'));
             this.classList.add('active');
 
@@ -378,9 +358,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    // Inicializar funções na carga da página
-    initializePageFunctions();
-
     function initializePageFunctions() {
         const openExpenseModalBtn = document.getElementById('openExpenseModalBtn');
         const openIncomeModalBtn = document.getElementById('openIncomeModalBtn');
@@ -411,4 +388,6 @@ document.addEventListener('DOMContentLoaded', function () {
         url.searchParams.set('page', 1);
         window.location.href = url.toString();
     };
+
+    loadContent(transactionsUrl);
 });
