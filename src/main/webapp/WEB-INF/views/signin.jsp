@@ -11,23 +11,53 @@
     <link rel="stylesheet" href="<c:url value='/static/css/signup/fonts.css'/>">
     <link rel="stylesheet" href="<c:url value='/static/css/signup/style.css'/>"/>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
-<style>
-    .alert-overlay {
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        z-index: 1050;
-        width: auto;
-        max-width: 300px;
-    }
-</style>
+    <style>
+        .alert-overlay {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1050;
+            width: auto;
+            max-width: 300px;
+        }
+    </style>
 </head>
 <body class="signin-page">
+<div class="alert alert-light alert-overlay" role="alert">
+    <p>
+        Acesse pelo usuário sugerido:<br>
+        <strong>E-mail:</strong> user_fd97f771@example.com <br>
+        <strong>Senha:</strong> SenhaForte123!
+    </p>
+</div>
+<div class="modal fade" id="attentionModal" tabindex="-1" aria-labelledby="attentionModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">ATENÇÃO</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+            </div>
+            <div class="modal-body">
+                <p>Infelizmente, tivemos algumas dificuldades com a integração que se
+                    prolongou por um tempo, mas ao acessar com o usuário acima e entrar
+                    na aba Transação, é possível enxergar as transações já lançadas pelo
+                    usuário no banco de dados, além do login/logout com senha criptografada,
+                    conexão autenticada e cadastro de usuário com geração de conta automática.
+                    <br><br>
+                    No backend, temos o CRUD e métodos para usuários, categorias,
+                    diversos tipos de contas e transações de diversas naturezas.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OKAY</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <c:if test="${not empty error}">
-<div class="alert alert-danger alert-overlay" role="alert">
-        ${error}
-</div>
+    <div class="alert alert-danger alert-overlay" role="alert">
+            ${error}
+    </div>
 </c:if>
 
 <div class="container">
@@ -36,7 +66,6 @@
             <form class="text-left" id="signin-form" action="${pageContext.request.contextPath}/signin" method="post">
                 <h2 class="mb-4">Entrar</h2>
 
-                <!-- Campo de e-mail -->
                 <div class="form-group">
                     <label for="email">E-mail</label>
                     <div class="input-group mb-3 email-group">
@@ -55,7 +84,6 @@
                     </div>
                 </div>
 
-                <!-- Campo de senha -->
                 <div class="form-group">
                     <label for="password">Senha</label>
                     <div class="input-group mb-3 password-group">
@@ -79,22 +107,18 @@
                     </div>
                 </div>
 
-                <!-- Checkbox Lembrar-me e link Esqueceu a senha -->
                 <div class="form-check mb-3">
                     <input type="checkbox" class="form-check-input" id="remember" name="remember" />
                     <label class="form-check-label" for="remember">Lembrar-me</label>
                     <a href="#" class="float-end forgot-password">Esqueceu a senha?</a>
                 </div>
 
-                <!-- Botão de login -->
                 <button type="submit" class="login-btn mb-3">Entrar</button>
 
-                <!-- Mensagem de erro para falha de autenticação -->
                 <c:if test="${not empty error}">
                     <p style="color:red; text-align: center;">${error}</p>
                 </c:if>
 
-                <!-- Opções de login com redes sociais -->
                 <div class="text-center">
                     <p>ou entre com</p>
                     <div class="d-flex justify-content-center mb-4 circles-wrapper">
@@ -127,5 +151,13 @@
 <script src="<c:url value='/static/lib/bootstrap.bundle.min.js'/>"></script>
 <script src="<c:url value='/static/js/signin/utils.js'/>"></script>
 <script src="<c:url value='/static/js/signin/script.js'/>"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var attentionModal = new bootstrap.Modal(document.getElementById('attentionModal'));
+        attentionModal.show();
+    });
+</script>
+
 </body>
 </html>

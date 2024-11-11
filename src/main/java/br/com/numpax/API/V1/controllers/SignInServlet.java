@@ -53,17 +53,14 @@ public class SignInServlet extends HttpServlet {
         try {
             LoginResponseDTO loginResponseDTO = authService.login(loginRequestDTO);
 
-            // Set token in session
             request.getSession().setAttribute("token", loginResponseDTO.getToken());
 
-            // Fetch user and set in session
             Optional<User> userOptional = userRepository.findByEmail(email);
             if (userOptional.isPresent()) {
                 User user = userOptional.get();
                 request.getSession().setAttribute("user", user);
             }
 
-            // Forward to home.jsp
             request.getRequestDispatcher("/WEB-INF/views/protected/home.jsp").forward(request, response);
 
         } catch (RuntimeException e) {
