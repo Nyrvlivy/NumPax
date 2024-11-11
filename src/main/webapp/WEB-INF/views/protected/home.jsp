@@ -12,17 +12,6 @@
     <link href="<c:url value='/static/css/main-styles.css'/>" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-    <style>
-        .sidebar {
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
-        }
-        .logout-button {
-            margin-top: auto;
-            padding: 10px;
-        }
-    </style>
 </head>
 <body>
 <script>
@@ -31,7 +20,7 @@
 
 <div class="sidebar">
     <h1>numpax</h1>
-    <a href="#" class="btn btn-novo mb-3"><i class="fas fa-plus"></i> Novo</a>
+    <a href="#" class="btn btn-novo mb-3" id="novoButton"><i class="fas fa-plus"></i> Novo</a>
     <a href="#"><i class="fas fa-crown"></i> Seja Premium!</a>
     <a href="#transacoes" id="transacoes" class="active"><i class="fas fa-exchange-alt"></i> Transações</a>
     <a href="#"><i class="fas fa-home"></i> Dashboard</a>
@@ -73,6 +62,10 @@
         </div>
     </div>
 </div>
+
+<div id="modalContainer"></div>
+
+<jsp:include page="/WEB-INF/jsp/partials/modals/new-transaction-menu-modal.jsp" />
 
 <script src="<c:url value='/static/lib/bootstrap.bundle.min.js'/>"></script>
 <script src="<c:url value='/static/js/main-scripts.js'/>"></script>

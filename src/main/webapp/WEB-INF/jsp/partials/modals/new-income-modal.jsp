@@ -1,92 +1,139 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-
-<div class="modal income-modal show d-block" tabindex="-1">
+<%@ page contentType="text/html; charset=UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jstl/core" prefix="c" %>
+<div class="modal income-modal" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
+            <!-- Modal Header -->
             <div class="modal-header">
                 <h5 class="modal-title">Nova Receita</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                <button type="button" class="btn-close" aria-label="Fechar"></button>
             </div>
+            <!-- Modal Body -->
             <div class="modal-body">
-                <form:form modelAttribute="incomeForm" method="POST" action="${pageContext.request.contextPath}/income/save">
+                <form>
+                    <!-- Valor da Receita -->
                     <div class="mb-3 value-input-container">
                         <span class="value-input-prefix" aria-hidden="true">R$</span>
-                        <form:input path="value" type="text" class="value-input" value="0,00" aria-label="Valor da receita"/>
+                        <input type="text" class="value-input" value="0,00" aria-label="Valor da receita">
                         <span class="currency-suffix">BRL</span>
                     </div>
-                    <form:errors path="value" class="form-text text-danger" aria-live="polite"/>
-                    
+                    <div class="form-text text-danger" aria-live="polite">Deve ter um valor maior que 0</div>
+
+                    <!-- Foi Recebida Switch -->
                     <div class="mb-3 d-flex justify-content-between align-items-center">
                         <label class="form-check-label" for="receivedCheck">Foi recebida</label>
                         <div class="form-check form-switch">
-                            <form:checkbox path="received" class="form-check-input" id="receivedCheck" aria-label="Marcar como recebida"/>
+                            <input class="form-check-input" type="checkbox" id="receivedCheck" aria-label="Marcar como recebida">
                         </div>
                     </div>
-                    
-                    <!-- ... existing date buttons ... -->
-                    
+
+                    <!-- Data da Receita -->
                     <div class="mb-3">
-                        <form:input path="description" type="text" class="form-control" placeholder="Descrição" aria-label="Descrição da receita"/>
+                        <button type="button" class="btn btn-sm btn-date active" aria-label="Selecionar data: Hoje">Hoje</button>
+                        <button type="button" class="btn btn-sm btn-date" aria-label="Selecionar data: Ontem">Ontem</button>
+                        <button type="button" class="btn btn-sm btn-date" aria-label="Selecionar outra data">Outro...</button>
                     </div>
-                    
+
+                    <!-- Descrição da Receita -->
+                    <div class="mb-3">
+                        <input type="text" class="form-control" placeholder="Descrição" aria-label="Descrição da receita">
+                    </div>
+
+                    <!-- Categoria da Receita -->
                     <div class="mb-3 dropdown-field" id="categoryDropdown">
-                        <form:select path="category" class="d-none">
-                            <form:options items="${categories}" itemLabel="name" itemValue="id"/>
-                        </form:select>
-                        <!-- ... existing category dropdown UI ... -->
-                    </div>
-                    
-                    <div class="mb-3 dropdown-field" id="destinationAccountDropdown">
-                        <form:select path="destinationAccount" class="d-none">
-                            <form:options items="${accounts}" itemLabel="name" itemValue="id"/>
-                        </form:select>
-                        <!-- ... existing account dropdown UI ... -->
-                    </div>
-                    
-                    <div class="mb-3">
-                        <form:input path="source" type="text" class="form-control" placeholder="De Onde Veio" aria-label="Origem da receita"/>
-                    </div>
-                    
-                    <!-- ... existing file attachment section ... -->
-                    
-                    <div id="moreDetailsSection" style="display: none;">
-                        <div class="mb-3">
-                            <form:textarea path="observation" class="form-control" placeholder="Observação" rows="3" aria-label="Observações adicionais"/>
+                        <div class="category-chip" aria-label="Categoria selecionada" tabindex="0" role="button" data-default-text='<i class="fas fa-tag me-2" aria-hidden="true"></i>Categoria'>
+                            <i class="fas fa-tag me-2" aria-hidden="true"></i>Categoria
                         </div>
-                        
+                        <div class="custom-dropdown" role="listbox" aria-label="Lista de categorias">
+                            <div class="custom-dropdown-item" role="option">
+                                <i class="fas fa-star me-2" aria-hidden="true"></i>Bonificação
+                            </div>
+                            <div class="custom-dropdown-item" role="option">
+                                <i class="fas fa-briefcase me-2" aria-hidden="true"></i>Salário
+                            </div>
+                            <div class="custom-dropdown-item" role="option">
+                                <i class="fas fa-gift me-2" aria-hidden="true"></i>Presente
+                            </div>
+                            <!-- Adicione mais categorias aqui se necessário -->
+                        </div>
+                    </div>
+
+                    <!-- Conta Destino -->
+                    <div class="mb-3 dropdown-field" id="destinationAccountDropdown">
+                        <div class="wallet-chip" aria-label="Conta destino selecionada" tabindex="0" role="button" data-default-text='<i class="fas fa-wallet me-2" aria-hidden="true"></i>Conta Destino'>
+                            <i class="fas fa-wallet me-2" aria-hidden="true"></i>Conta Destino
+                        </div>
+                        <div class="custom-dropdown" role="listbox" aria-label="Lista de contas destino">
+                            <div class="custom-dropdown-item" role="option">
+                                <i class="fas fa-wallet me-2" aria-hidden="true"></i>Carteira
+                            </div>
+                            <div class="custom-dropdown-item" role="option">
+                                <i class="fas fa-credit-card me-2" aria-hidden="true"></i>Conta Bancária
+                            </div>
+                            <div class="custom-dropdown-item" role="option">
+                                <i class="fas fa-piggy-bank me-2" aria-hidden="true"></i>Poupança
+                            </div>
+                            <!-- Adicione mais contas aqui se necessário -->
+                        </div>
+                    </div>
+
+                    <!-- De Onde Veio -->
+                    <div class="mb-3">
+                        <input type="text" class="form-control" placeholder="De Onde Veio" aria-label="Origem da receita">
+                    </div>
+                    <!-- Anexar Arquivo -->
+                    <div class="mb-3">
+                        <input type="file" id="fileInput" style="display: none;" multiple aria-label="Anexar arquivos">
+                        <button type="button" class="btn btn-link p-0" id="attachFileBtn" aria-label="Anexar arquivo">
+                            <i class="fas fa-paperclip me-2" aria-hidden="true"></i>Anexar Arquivo
+                        </button>
+                    </div>
+
+                    <!-- Mais Detalhes -->
+                    <div class="mb-3 text-end">
+                        <a href="#" class="btn btn-link" id="moreDetailsBtn" aria-expanded="false" aria-controls="moreDetailsSection">Mais detalhes <i class="fas fa-chevron-right" aria-hidden="true"></i></a>
+                    </div>
+
+                    <!-- Seção Mais Detalhes -->
+                    <div id="moreDetailsSection" style="display: none;">
+                        <!-- Observações Adicionais -->
+                        <div class="mb-3">
+                            <textarea class="form-control" placeholder="Observação" rows="3" aria-label="Observações adicionais"></textarea>
+                        </div>
+
+                        <!-- Receita Fixa -->
                         <div class="mb-3 d-flex justify-content-between align-items-center">
                             <label class="form-check-label" for="fixedIncomeCheck">Receita fixa</label>
                             <div class="form-check form-switch">
-                                <form:checkbox path="fixed" class="form-check-input" id="fixedIncomeCheck" aria-label="Marcar como receita fixa"/>
-                            </div>
-                        </div>
-                        
-                        <div class="mb-3 d-flex justify-content-between align-items-center">
-                            <label class="form-check-label" for="repeatCheck">Repetir</label>
-                            <div class="form-check form-switch">
-                                <form:checkbox path="repeat" class="form-check-input" id="repeatCheck" aria-label="Repetir receita"/>
+                                <input class="form-check-input" type="checkbox" id="fixedIncomeCheck" aria-label="Marcar como receita fixa">
                             </div>
                         </div>
 
+                        <!-- Repetir -->
+                        <div class="mb-3 d-flex justify-content-between align-items-center">
+                            <label class="form-check-label" for="repeatCheck">Repetir</label>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="repeatCheck" aria-label="Repetir receita">
+                            </div>
+                        </div>
+
+                        <!-- Opções de Repetição -->
                         <div class="mb-3" id="repeatOptionsSection" style="display: none;">
                             <label for="repeatFrequency" class="form-label">Frequência: </label>
-                            <form:select path="frequency" class="form-select" id="repeatFrequency" aria-label="Frequência de repetição">
-                                <form:option value="diariamente">Diariamente</form:option>
-                                <form:option value="semanalmente">Semanalmente</form:option>
-                                <form:option value="mensalmente">Mensalmente</form:option>
-                                <form:option value="anualmente">Anualmente</form:option>
-                            </form:select>
+                            <select class="form-select" id="repeatFrequency" aria-label="Frequência de repetição">
+                                <option value="diariamente">Diariamente</option>
+                                <option value="semanalmente">Semanalmente</option>
+                                <option value="mensalmente">Mensalmente</option>
+                                <option value="anualmente">Anualmente</option>
+                            </select>
                         </div>
                     </div>
-                    
-                    <div class="modal-footer">
-                        <button type="submit" name="saveAndNew" class="btn btn-save-and-new" aria-label="Salvar e criar nova receita">SALVAR E CRIAR NOVA</button>
-                        <button type="submit" class="btn btn-save" aria-label="Salvar receita">SALVAR</button>
-                    </div>
-                </form:form>
+                </form>
+            </div>
+            <!-- Modal Footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-save-and-new" aria-label="Salvar e criar nova receita">SALVAR E CRIAR NOVA</button>
+                <button type="button" class="btn btn-save" aria-label="Salvar receita">SALVAR</button>
             </div>
         </div>
     </div>

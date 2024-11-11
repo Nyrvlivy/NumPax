@@ -26,6 +26,9 @@ public class ModalServlet extends HttpServlet {
         String jspPath = null;
 
         switch(modalName) {
+            case "new-transaction-menu":
+                jspPath = "/WEB-INF/jsp/partials/modals/new-transaction-menu-modal.jsp";
+                break;
             case "new-expense":
                 jspPath = "/WEB-INF/jsp/partials/modals/new-expense-modal.jsp";
                 break;
