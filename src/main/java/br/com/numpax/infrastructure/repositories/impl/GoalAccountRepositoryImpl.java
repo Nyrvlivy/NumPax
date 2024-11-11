@@ -22,7 +22,7 @@ public class GoalAccountRepositoryImpl implements GoalAccountRepository {
 
     @Override
     public void create(GoalAccount account) {
-        // Inserir na tabela Accounts
+
         String accountSql = "INSERT INTO Accounts (account_id, name, description, balance, account_type, is_active, user_id, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement accountStmt = connection.prepareStatement(accountSql)) {
             accountStmt.setString(1, account.getAccountId());
@@ -101,7 +101,6 @@ public class GoalAccountRepositoryImpl implements GoalAccountRepository {
                     account.setMonthlyEstimate(rs.getBigDecimal("monthly_estimate"));
                     account.setMonthlyAchievement(rs.getBigDecimal("monthly_achievement"));
 
-                    // Verificar se os campos de data não são null antes de converter
                     Timestamp targetDateTimestamp = rs.getTimestamp("target_date");
                     if (targetDateTimestamp != null) {
                         account.setTargetDate(targetDateTimestamp.toLocalDateTime().toLocalDate());
@@ -117,7 +116,6 @@ public class GoalAccountRepositoryImpl implements GoalAccountRepository {
                         account.setEndDate(endDateTimestamp.toLocalDateTime().toLocalDate());
                     }
 
-                    // Carregar a categoria, se disponível
                     Category category = new Category();
                     category.setId(rs.getString("category_id"));
                     category.setName(rs.getString("category_name"));
@@ -132,8 +130,6 @@ public class GoalAccountRepositoryImpl implements GoalAccountRepository {
         }
         return Optional.empty();
     }
-
-
 
     @Override
     public void update(GoalAccount account) {

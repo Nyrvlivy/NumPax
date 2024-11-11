@@ -30,16 +30,13 @@ public class CheckingAccountServiceImpl implements CheckingAccountService {
 
     @Override
     public CheckingAccountResponseDTO createAccount(CheckingAccountRequestDTO dto, String userId) {
-        // Validate DTO
+
         ValidatorUtil.validate(dto);
 
-        // Fetch User entity
         User user = userService.findUserById(userId);
 
-        // Map DTO to Entity
         CheckingAccount account = CheckingAccountMapper.toEntity(dto, user);
 
-        // Set additional fields
         String accountId = UUID.randomUUID().toString();
         System.out.println(accountId);
 
@@ -49,10 +46,8 @@ public class CheckingAccountServiceImpl implements CheckingAccountService {
         account.setCreatedAt(LocalDateTime.now());
         account.setUpdatedAt(LocalDateTime.now());
 
-        // Save account
         repository.create(account);
 
-        // Return response DTO
         return CheckingAccountMapper.toResponseDTO(account);
     }
 
@@ -68,7 +63,7 @@ public class CheckingAccountServiceImpl implements CheckingAccountService {
 
     @Override
     public CheckingAccountResponseDTO updateAccount(String accountId, CheckingAccountRequestDTO dto) {
-        // Validação do DTO
+
         ValidatorUtil.validate(dto);
 
         Optional<CheckingAccount> accountOptional = repository.findById(accountId);

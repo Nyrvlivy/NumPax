@@ -4,9 +4,6 @@ import br.com.numpax.application.enums.AccountType;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-
 @Getter
 @Setter
 public class SavingsAccountRequestDTO extends AccountRequestDTO {

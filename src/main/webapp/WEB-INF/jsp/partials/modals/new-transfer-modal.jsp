@@ -4,16 +4,14 @@
 <div class="modal transfer-modal" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
-            <!-- Modal Header -->
+
             <div class="modal-header">
                 <h5 class="modal-title">Nova Transferência</h5>
                 <button type="button" class="btn-close" aria-label="Fechar"></button>
             </div>
 
-            <!-- Modal Body -->
             <div class="modal-body">
                 <form>
-                    <!-- Valor da Transferência -->
                     <div class="mb-3 value-input-container">
                         <span class="value-input-prefix" aria-hidden="true">R$</span>
                         <input type="text" class="value-input" value="0,00" aria-label="Valor da transferência">
@@ -21,7 +19,6 @@
                     </div>
                     <div class="form-text text-danger" aria-live="polite">Deve ter um valor maior que 0</div>
 
-                    <!-- Foi Efetuada Switch -->
                     <div class="mb-3 d-flex justify-content-between align-items-center">
                         <label class="form-check-label" for="effectedCheck">Foi efetuada</label>
                         <div class="form-check form-switch">
@@ -29,38 +26,26 @@
                         </div>
                     </div>
 
-                    <!-- Data da Transferência -->
                     <div class="mb-3">
                         <button type="button" class="btn btn-sm btn-date active" aria-label="Selecionar data: Hoje">Hoje</button>
                         <button type="button" class="btn btn-sm btn-date" aria-label="Selecionar data: Ontem">Ontem</button>
                         <button type="button" class="btn btn-sm btn-date" aria-label="Selecionar outra data">Outro...</button>
                     </div>
 
-                    <!-- Conta de Origem -->
                     <div class="mb-3 dropdown-field" id="sourceAccountDropdown">
                         <div class="wallet-chip" aria-label="Conta de origem selecionada" tabindex="0" role="button" data-default-text='<i class="fas fa-wallet me-2" aria-hidden="true"></i>Conta Origem'>
                             <i class="fas fa-wallet me-2" aria-hidden="true"></i>Conta Origem
                         </div>
                         <div class="custom-dropdown" role="listbox" aria-label="Lista de contas de origem">
-                            <!-- Assuming dynamic accounts, use JSTL here -->
                             <c:forEach var="account" items="${accounts}">
                                 <div class="custom-dropdown-item" role="option">
                                     <i class="fas ${account.icon} me-2" aria-hidden="true"></i>${account.name}
                                 </div>
                             </c:forEach>
-                            <!-- If not dynamic, hardcode some accounts -->
-                            <!--
-                            <div class="custom-dropdown-item" role="option">
-                                <i class="fas fa-wallet me-2" aria-hidden="true"></i>Carteira
-                            </div>
-                            <div class="custom-dropdown-item" role="option">
-                                <i class="fas fa-credit-card me-2" aria-hidden="true"></i>Cartão de Crédito
-                            </div>
-                            -->
+
                         </div>
                     </div>
 
-                    <!-- Conta de Destino -->
                     <div class="mb-3 dropdown-field" id="destinationAccountDropdown">
                         <div class="wallet-chip" aria-label="Conta de destino selecionada" tabindex="0" role="button" data-default-text='<i class="fas fa-wallet me-2" aria-hidden="true"></i>Conta Destino'>
                             <i class="fas fa-wallet me-2" aria-hidden="true"></i>Conta Destino
@@ -72,24 +57,13 @@
                                     <i class="fas ${account.icon} me-2" aria-hidden="true"></i>${account.name}
                                 </div>
                             </c:forEach>
-                            <!-- If not dynamic, hardcode some accounts -->
-                            <!--
-                            <div class="custom-dropdown-item" role="option">
-                                <i class="fas fa-university me-2" aria-hidden="true"></i>Conta Bancária
-                            </div>
-                            <div class="custom-dropdown-item" role="option">
-                                <i class="fas fa-piggy-bank me-2" aria-hidden="true"></i>Poupança
-                            </div>
-                            -->
                         </div>
                     </div>
 
-                    <!-- Descrição da Transferência -->
                     <div class="mb-3">
                         <input type="text" class="form-control" placeholder="Descrição" aria-label="Descrição da transferência">
                     </div>
 
-                    <!-- Anexar Arquivo -->
                     <div class="mb-3">
                         <input type="file" id="fileInput" style="display: none;" multiple aria-label="Anexar arquivos">
                         <button type="button" class="btn btn-link p-0" id="attachFileBtn" aria-label="Anexar arquivo">
@@ -97,19 +71,15 @@
                         </button>
                     </div>
 
-                    <!-- Mais Detalhes -->
                     <div class="mb-3 text-end">
                         <a href="#" class="btn btn-link" id="moreDetailsBtn" aria-expanded="false" aria-controls="moreDetailsSection">Mais detalhes <i class="fas fa-chevron-right" aria-hidden="true"></i></a>
                     </div>
 
-                    <!-- Seção Mais Detalhes -->
                     <div id="moreDetailsSection" style="display: none;">
-                        <!-- Observações Adicionais -->
                         <div class="mb-3">
                             <textarea class="form-control" placeholder="Observação" rows="3" aria-label="Observações adicionais"></textarea>
                         </div>
 
-                        <!-- Transferência Fixa -->
                         <div class="mb-3 d-flex justify-content-between align-items-center">
                             <label class="form-check-label" for="fixedTransferCheck">Transferência fixa</label>
                             <div class="form-check form-switch">
@@ -117,7 +87,6 @@
                             </div>
                         </div>
 
-                        <!-- Repetir -->
                         <div class="mb-3 d-flex justify-content-between align-items-center">
                             <label class="form-check-label" for="repeatCheck">Repetir</label>
                             <div class="form-check form-switch">
@@ -125,7 +94,6 @@
                             </div>
                         </div>
 
-                        <!-- Opções de Repetição -->
                         <div class="mb-3" id="repeatOptionsSection" style="display: none;">
                             <label for="repeatFrequency" class="form-label">Frequência: </label>
                             <select class="form-select" id="repeatFrequency" aria-label="Frequência de repetição">
@@ -139,7 +107,6 @@
                 </form>
             </div>
 
-            <!-- Modal Footer -->
             <div class="modal-footer">
                 <button type="button" class="btn btn-save-and-new" aria-label="Salvar e criar nova transferência">SALVAR E CRIAR NOVA</button>
                 <button type="button" class="btn btn-save" aria-label="Salvar transferência">SALVAR</button>

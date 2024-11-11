@@ -1,11 +1,11 @@
 package br.com.numpax.API.V1.dto.request;
 
 import br.com.numpax.application.enums.CategoryType;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
-import jakarta.validation.constraints.NotNull;
 
 @Getter
 @Setter

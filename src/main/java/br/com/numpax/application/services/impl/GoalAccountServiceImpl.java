@@ -67,7 +67,7 @@ public class GoalAccountServiceImpl implements GoalAccountService {
 
     @Override
     public GoalAccountResponseDTO updateAccount(String accountId, GoalAccountUpdateRequestDTO dto) {
-        // Validação do DTO
+
         ValidatorUtil.validate(dto);
 
         Optional<GoalAccount> accountOptional = repository.findById(accountId);
@@ -86,7 +86,7 @@ public class GoalAccountServiceImpl implements GoalAccountService {
         account.setMonthlyEstimate(dto.getMonthlyEstimate());
         account.setMonthlyAchievement(dto.getMonthlyAchievement());
 
-        // Atualizar categoria se fornecida
+
         if (dto.getCategoryId() != null) {
             Category category = categoryService.findCategoryById(dto.getCategoryId());
             account.setCategory(category);

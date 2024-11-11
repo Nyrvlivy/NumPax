@@ -32,24 +32,19 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponseDTO createUser(UserRequestDTO dto) {
-        // Validação do DTO
+
         ValidatorUtil.validate(dto);
 
-        // Verificar se o email já está em uso
         if (userRepository.findByEmail(dto.getEmail()).isPresent()) {
             throw new EmailAlreadyUsedException("O email já está em uso.");
         }
 
-        // Mapear DTO para Entidade
         User user = UserMapper.toEntity(dto);
 
-        // Criar Usuário
         userRepository.create(user);
 
-        // Criar Conta Corrente Padrão
         createDefaultCheckingAccount(user);
 
-        // Retornar UserResponseDTO
         return UserMapper.toResponseDTO(user);
     }
 
@@ -68,7 +63,6 @@ public class UserServiceImpl implements UserService {
         defaultAccount.setAgency("0000");
         defaultAccount.setAccountNumber("0000000000");
 
-        // Salvar a conta
         checkingAccountRepository.create(defaultAccount);
     }
 
@@ -81,24 +75,21 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponseDTO updateUser(String userId, UserUpdateRequestDTO dto) {
-        // Validação do DTO
+
         ValidatorUtil.validate(dto);
 
-        // Buscar usuário existente
+
         User user = userRepository.findById(userId)
             .orElseThrow(() -> new UserNotFoundException("Usuário não encontrado"));
 
-        // Verificar se o email está sendo alterado e se já está em uso
         if (!user.getEmail().equals(dto.getEmail())) {
             if (userRepository.findByEmail(dto.getEmail()).isPresent()) {
                 throw new EmailAlreadyUsedException("O email já está em uso. Por favor, escolha outro.");
             }
         }
 
-        // Atualizar os dados do usuário
         UserMapper.updateEntity(user, dto);
 
-        // Atualizar o usuário no repositório
         userRepository.update(user);
 
         return UserMapper.toResponseDTO(user);

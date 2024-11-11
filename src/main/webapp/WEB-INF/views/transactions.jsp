@@ -21,7 +21,6 @@
 
             <div class="summary-header">
                 <div class="top-bar">
-                    <!-- Dropdown de Transações -->
                     <c:set var="currentNature" value="${nature}" />
                     <div class="dropdown">
                         <button class="btn btn-light-blue dropdown-toggle" type="button" id="transactionsDropdown" data-bs-toggle="dropdown" aria-expanded="false">
@@ -90,7 +89,6 @@
                 </div>
             </div>
 
-            <!-- Summary Cards -->
             <div class="summary-cards">
                 <div class="summary-card">
                     <h6>Saldo atual</h6>
@@ -110,7 +108,6 @@
                 </div>
             </div>
 
-            <!-- Lista de Transações -->
             <div class="card">
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center mb-3">
@@ -134,14 +131,12 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <!-- Verifica se a lista de transações está vazia -->
                             <c:if test="${empty listaTransacoes}">
                                 <tr>
                                     <td colspan="7" class="text-center">Sem transações registradas.</td>
                                 </tr>
                             </c:if>
 
-                            <!-- Itera sobre a lista de transações se não estiver vazia -->
                             <c:forEach var="transacao" items="${listaTransacoes}">
                                 <tr>
                                     <td>
@@ -185,7 +180,6 @@
                         </table>
                     </div>
 
-                    <!-- Paginação -->
                     <div class="d-flex justify-content-between align-items-center mt-3">
                         <p class="mb-0">Saldo Previsto Final do Dia: R$ <c:out value="${saldoPrevisto}" /></p>
                         <div class="d-flex align-items-center">
@@ -243,11 +237,9 @@
         </div>
     </div>
 
-    <!-- Modais para Adicionar/Editar Transações (Exemplo) -->
     <div class="modal fade" id="expenseModal" tabindex="-1" aria-labelledby="expenseModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-                <!-- Conteúdo do Modal -->
             </div>
         </div>
     </div>

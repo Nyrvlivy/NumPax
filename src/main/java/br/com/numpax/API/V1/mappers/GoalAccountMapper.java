@@ -14,10 +14,8 @@ import java.util.UUID;
 public class GoalAccountMapper {
 
     public static GoalAccount toEntity(GoalAccountRequestDTO dto, User user, Category category) {
-        // Validação do DTO
         ValidatorUtil.validate(dto);
 
-        // Mapeamento para entidade
         GoalAccount account = new GoalAccount();
         account.setAccountId(UUID.randomUUID().toString());
         account.setName(dto.getName());

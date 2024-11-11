@@ -2,6 +2,7 @@ package br.com.numpax.API.V1.dto.response;
 
 import lombok.Getter;
 import lombok.Setter;
+
 import java.math.BigDecimal;
 import java.util.Date;
 

@@ -6,6 +6,7 @@ import br.com.numpax.infrastructure.entities.Transaction;
 import java.util.List;
 
 public interface TransactionRepository {
+
     void create(Transaction transaction);
 
     List<ActiveTransactionDTO> findActiveTransactionsByUserId(String userId);

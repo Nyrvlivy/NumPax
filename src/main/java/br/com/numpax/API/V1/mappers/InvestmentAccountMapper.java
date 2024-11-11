@@ -14,10 +14,9 @@ import java.util.UUID;
 public class InvestmentAccountMapper {
 
     public static InvestmentAccount toEntity(InvestmentAccountRequestDTO dto, User user) {
-        // Validação do DTO
+
         ValidatorUtil.validate(dto);
 
-        // Mapeamento para entidade
         InvestmentAccount account = new InvestmentAccount();
         account.setAccountId(UUID.randomUUID().toString());
         account.setName(dto.getName());
@@ -29,7 +28,6 @@ public class InvestmentAccountMapper {
         account.setCreatedAt(LocalDateTime.now());
         account.setUpdatedAt(LocalDateTime.now());
 
-//        // Campos específicos da InvestmentAccount
 //        account.setTotalInvestedAmount(dto.getTotalInvestedAmount());
 //        account.setTotalProfit(dto.getTotalProfit());
 //        account.setTotalCurrentAmount(dto.getTotalCurrentAmount());
@@ -57,7 +55,6 @@ public class InvestmentAccountMapper {
         dto.setCreatedAt(account.getCreatedAt());
         dto.setUpdatedAt(account.getUpdatedAt());
 
-        // Campos específicos da InvestmentAccount
         dto.setTotalInvestedAmount(account.getTotalInvestedAmount());
         dto.setTotalProfit(account.getTotalProfit());
         dto.setTotalCurrentAmount(account.getTotalCurrentAmount());

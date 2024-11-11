@@ -3,15 +3,12 @@
 <div class="modal income-modal" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
-            <!-- Modal Header -->
             <div class="modal-header">
                 <h5 class="modal-title">Nova Receita</h5>
                 <button type="button" class="btn-close" aria-label="Fechar"></button>
             </div>
-            <!-- Modal Body -->
             <div class="modal-body">
                 <form>
-                    <!-- Valor da Receita -->
                     <div class="mb-3 value-input-container">
                         <span class="value-input-prefix" aria-hidden="true">R$</span>
                         <input type="text" class="value-input" value="0,00" aria-label="Valor da receita">
@@ -19,7 +16,6 @@
                     </div>
                     <div class="form-text text-danger" aria-live="polite">Deve ter um valor maior que 0</div>
 
-                    <!-- Foi Recebida Switch -->
                     <div class="mb-3 d-flex justify-content-between align-items-center">
                         <label class="form-check-label" for="receivedCheck">Foi recebida</label>
                         <div class="form-check form-switch">
@@ -27,19 +23,16 @@
                         </div>
                     </div>
 
-                    <!-- Data da Receita -->
                     <div class="mb-3">
                         <button type="button" class="btn btn-sm btn-date active" aria-label="Selecionar data: Hoje">Hoje</button>
                         <button type="button" class="btn btn-sm btn-date" aria-label="Selecionar data: Ontem">Ontem</button>
                         <button type="button" class="btn btn-sm btn-date" aria-label="Selecionar outra data">Outro...</button>
                     </div>
 
-                    <!-- Descrição da Receita -->
                     <div class="mb-3">
                         <input type="text" class="form-control" placeholder="Descrição" aria-label="Descrição da receita">
                     </div>
 
-                    <!-- Categoria da Receita -->
                     <div class="mb-3 dropdown-field" id="categoryDropdown">
                         <div class="category-chip" aria-label="Categoria selecionada" tabindex="0" role="button" data-default-text='<i class="fas fa-tag me-2" aria-hidden="true"></i>Categoria'>
                             <i class="fas fa-tag me-2" aria-hidden="true"></i>Categoria
@@ -54,11 +47,9 @@
                             <div class="custom-dropdown-item" role="option">
                                 <i class="fas fa-gift me-2" aria-hidden="true"></i>Presente
                             </div>
-                            <!-- Adicione mais categorias aqui se necessário -->
                         </div>
                     </div>
 
-                    <!-- Conta Destino -->
                     <div class="mb-3 dropdown-field" id="destinationAccountDropdown">
                         <div class="wallet-chip" aria-label="Conta destino selecionada" tabindex="0" role="button" data-default-text='<i class="fas fa-wallet me-2" aria-hidden="true"></i>Conta Destino'>
                             <i class="fas fa-wallet me-2" aria-hidden="true"></i>Conta Destino
@@ -73,15 +64,13 @@
                             <div class="custom-dropdown-item" role="option">
                                 <i class="fas fa-piggy-bank me-2" aria-hidden="true"></i>Poupança
                             </div>
-                            <!-- Adicione mais contas aqui se necessário -->
                         </div>
                     </div>
 
-                    <!-- De Onde Veio -->
                     <div class="mb-3">
                         <input type="text" class="form-control" placeholder="De Onde Veio" aria-label="Origem da receita">
                     </div>
-                    <!-- Anexar Arquivo -->
+
                     <div class="mb-3">
                         <input type="file" id="fileInput" style="display: none;" multiple aria-label="Anexar arquivos">
                         <button type="button" class="btn btn-link p-0" id="attachFileBtn" aria-label="Anexar arquivo">
@@ -89,19 +78,16 @@
                         </button>
                     </div>
 
-                    <!-- Mais Detalhes -->
                     <div class="mb-3 text-end">
                         <a href="#" class="btn btn-link" id="moreDetailsBtn" aria-expanded="false" aria-controls="moreDetailsSection">Mais detalhes <i class="fas fa-chevron-right" aria-hidden="true"></i></a>
                     </div>
 
-                    <!-- Seção Mais Detalhes -->
                     <div id="moreDetailsSection" style="display: none;">
-                        <!-- Observações Adicionais -->
+
                         <div class="mb-3">
                             <textarea class="form-control" placeholder="Observação" rows="3" aria-label="Observações adicionais"></textarea>
                         </div>
 
-                        <!-- Receita Fixa -->
                         <div class="mb-3 d-flex justify-content-between align-items-center">
                             <label class="form-check-label" for="fixedIncomeCheck">Receita fixa</label>
                             <div class="form-check form-switch">
@@ -109,7 +95,6 @@
                             </div>
                         </div>
 
-                        <!-- Repetir -->
                         <div class="mb-3 d-flex justify-content-between align-items-center">
                             <label class="form-check-label" for="repeatCheck">Repetir</label>
                             <div class="form-check form-switch">
@@ -117,7 +102,6 @@
                             </div>
                         </div>
 
-                        <!-- Opções de Repetição -->
                         <div class="mb-3" id="repeatOptionsSection" style="display: none;">
                             <label for="repeatFrequency" class="form-label">Frequência: </label>
                             <select class="form-select" id="repeatFrequency" aria-label="Frequência de repetição">
@@ -130,7 +114,7 @@
                     </div>
                 </form>
             </div>
-            <!-- Modal Footer -->
+
             <div class="modal-footer">
                 <button type="button" class="btn btn-save-and-new" aria-label="Salvar e criar nova receita">SALVAR E CRIAR NOVA</button>
                 <button type="button" class="btn btn-save" aria-label="Salvar receita">SALVAR</button>

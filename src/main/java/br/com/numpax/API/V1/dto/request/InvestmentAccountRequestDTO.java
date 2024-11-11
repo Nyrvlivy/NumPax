@@ -1,14 +1,8 @@
 package br.com.numpax.API.V1.dto.request;
 
 import br.com.numpax.application.enums.AccountType;
-import br.com.numpax.application.enums.InvestmentSubtype;
-import br.com.numpax.application.enums.RiskLevelType;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.PositiveOrZero;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.math.BigDecimal;
 
 @Getter
 @Setter

@@ -1,13 +1,15 @@
 package br.com.numpax.application.services.impl;
 
 import br.com.numpax.API.V1.dto.request.TransactionRequestDTO;
-import br.com.numpax.API.V1.dto.response.TransactionResponseDTO;
 import br.com.numpax.API.V1.dto.response.ActiveTransactionDTO;
+import br.com.numpax.API.V1.dto.response.TransactionResponseDTO;
+import br.com.numpax.application.enums.NatureOfTransaction;
 import br.com.numpax.application.services.TransactionService;
 import br.com.numpax.application.utils.ValidatorUtil;
-import br.com.numpax.infrastructure.entities.*;
+import br.com.numpax.infrastructure.entities.Account;
+import br.com.numpax.infrastructure.entities.Category;
+import br.com.numpax.infrastructure.entities.Transaction;
 import br.com.numpax.infrastructure.repositories.*;
-import br.com.numpax.application.enums.NatureOfTransaction;
 
 import java.time.LocalDateTime;
 import java.util.List;
